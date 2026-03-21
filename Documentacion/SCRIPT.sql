@@ -133,10 +133,3 @@ CREATE TABLE cancelacion(
 	cancelacion_cantidad_rembolso DECIMAL(15,2) NOT NULL,
 	CONSTRAINT fk_cancelacion_reservacion FOREIGN KEY (cancelacion_id_reservacion) REFERENCES reservacion(rs_numero_reservacion) ON DELETE CASCADE
 );
-
-
-
-
-
-
-
