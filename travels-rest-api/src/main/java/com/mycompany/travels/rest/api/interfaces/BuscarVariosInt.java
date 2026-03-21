@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author edu
  */
-public interface BusquedaConParametroInt <T>{
+public interface BuscarVariosInt <T>{
     
-    public ArrayList<T> buscarConUnParametroInt(int param) throws ExceptionGenerica;
+    public ArrayList<T> buscarVariosInt(int param) throws ExceptionGenerica;
 }

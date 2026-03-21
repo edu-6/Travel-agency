@@ -4,12 +4,12 @@
  */
 package com.mycompany.travels.rest.api.interfaces;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
-import java.util.ArrayList;
 
 /**
  *
  * @author edu
+ * @param <T>
  */
-public interface BusquedaPorString <T> {
-    public ArrayList<T> buscarPorString(String parametro) throws ExceptionGenerica;
+public interface BusquedaUnitariaString <T>{
+    public  T buscar(String nombre) throws ExceptionGenerica;
 }
