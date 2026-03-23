@@ -29,7 +29,7 @@ CREATE TABLE nacionalidad (
 CREATE TABLE cliente (
      cliente_id VARCHAR(20) NOT NULL PRIMARY KEY,
      cliente_nombre VARCHAR(100) NOT NULL,
-     cliente_nacionalidad INTEGER NOT NULL,
+     cliente_id_nacionalidad INTEGER NOT NULL,
      cliente_fecha_nacimiento DATE NOT NULL,
      cliente_telefono VARCHAR(20) NOT NULL,
      cliente_correo VARCHAR(50) NOT NULL,
