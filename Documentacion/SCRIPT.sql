@@ -62,10 +62,11 @@ CREATE TABLE destino (
 );
 
 CREATE TABLE paquete (
-     paquete_id INTEGER NOT NULL PRIMARY KEY,
+     paquete_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
      paquete_nombre VARCHAR(200) NOT NULL UNIQUE,
      paquete_descripcion VARCHAR (300) NOT NULL,
      paquete_precio DECIMAL(15,2) NOT NULL,
+     paquete_ganancia DECIMAL(15,2) NOT NULL,
      paquete_duracion INTEGER NOT NULL,
      paquete_capacidad_maxima INTEGER NOT NULL,
      paquete_id_destino INTEGER NOT NULL,
@@ -74,7 +75,7 @@ CREATE TABLE paquete (
 );
 
 CREATE TABLE servicio_paquete (
-     servicio_paquete_id INTEGER NOT NULL PRIMARY KEY,
+     servicio_paquete_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
      servicio_paquete_descripcion VARCHAR (300) NOT NULL,
      servicio_paquete_costo DECIMAL(15,2) NOT NULL,
      servicio_paquete_id_paquete INTEGER NOT NULL,

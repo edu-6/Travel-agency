@@ -10,7 +10,7 @@ import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
  *
  * @author edu
  */
-public interface CrearReturnId <T> {
+public interface CreacionReturnId <T> {
     public int crear(T entidad) throws ExceptionGenerica;
     
 }
