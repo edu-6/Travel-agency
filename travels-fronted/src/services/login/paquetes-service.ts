@@ -43,6 +43,10 @@ export class PaquetesService {
     return this.httpCliente.delete<void>(`${this.constantesRest.getApiURL()}api/paquetes/${idServicio}`);
   }
 
+  public buscarPaquetesActivos(): Observable<PaqueteResponse[]>{
+   return this.httpCliente.get<PaqueteResponse[]>(`${this.constantesRest.getApiURL()}api/paquetes/todos`);
+  }
+
 
 
 }

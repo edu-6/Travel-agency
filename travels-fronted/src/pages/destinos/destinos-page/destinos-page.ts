@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { Header } from "../../../shared/header/header";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { DestinosService } from '../../../services/login/destinos-service copy';
+import { DestinosService } from '../../../services/login/destinos-service';
 import { DestinoResponse } from '../../../modelos/destinos/destino-reponse';
 import { ProveedorResponse } from '../../../modelos/proveedores/ProveedorResponse';
 import { ErrorBackend } from '../../../modelos/ErrorBackend';

@@ -3,7 +3,7 @@ import { Header } from "../../../shared/header/header";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
-import { DestinosService } from '../../../services/login/destinos-service copy';
+import { DestinosService } from '../../../services/login/destinos-service';
 import { DestinoResponse } from '../../../modelos/destinos/destino-reponse';
 import { PaqueteResponse } from '../../../modelos/paquetes/paquete-response';
 import { PaqueteServicio } from '../../../modelos/proveedor-servicio/paquete-servicio';

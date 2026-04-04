@@ -54,7 +54,6 @@ export class LoginForm implements OnInit {
         error: (errorHttp: any) => {
           
           const errorData: ErrorBackend = errorHttp.error;
-          alert(errorData?.detalles || "Error en el servidor");
           this.loginFallido = true;
           this.resetearFormulario();
         }

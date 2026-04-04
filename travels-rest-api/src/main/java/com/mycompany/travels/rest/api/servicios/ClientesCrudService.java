@@ -7,7 +7,6 @@ package com.mycompany.travels.rest.api.servicios;
 import com.mycompany.travels.rest.api.db.ClientesDB;
 import com.mycompany.travels.rest.api.exceptions.EntidadDuplicadaException;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
-import com.mycompany.travels.rest.api.interfaces.BusquedaUnitariaString;
 import com.mycompany.travels.rest.api.interfaces.CreacionEntidad;
 import com.mycompany.travels.rest.api.interfaces.EdicionEntidad;
 import com.mycompany.travels.rest.api.modelos.Cliente;
@@ -16,8 +15,8 @@ import com.mycompany.travels.rest.api.modelos.Cliente;
  *
  * @author edu
  */
-public class ClientesCrudService extends CrudService implements CreacionEntidad<Cliente>, EdicionEntidad<Cliente>,
-        BusquedaUnitariaString<Cliente> {
+public class ClientesCrudService extends CrudService implements CreacionEntidad<Cliente>, EdicionEntidad<Cliente>
+         {
     
     private final ClientesDB db = new ClientesDB();
 
@@ -46,7 +45,7 @@ public class ClientesCrudService extends CrudService implements CreacionEntidad<
         boolean telefonoRepetido = db.existeAtributoRepetido(entidad.getTelefono(), db.getEXISTE_TELEFONO());
         boolean correoRepetido = db.existeAtributoRepetido(entidad.getCorreo(), db.getEXISTE_CORREO());
         
-        Cliente cliente = db.buscar(entidad.getIdentificacion());
+        Cliente cliente = db.buscar(entidad.getIdentificacion(), db.getBUSCAR_POR_ID());
         
     
         // si el telefono es el mismo per el id no
@@ -61,12 +60,20 @@ public class ClientesCrudService extends CrudService implements CreacionEntidad<
         db.editar(entidad);
     }
 
-    @Override
-    public Cliente buscar(String nombre) throws ExceptionGenerica {
+    
+    public Cliente buscarPorID(String id) throws ExceptionGenerica {
+        if(id == null || id.isBlank()){
+            throw new   ExceptionGenerica("Busqueda vacia");
+        }
+        return db.buscar(id, db.getBUSCAR_POR_ID());
+    }
+    
+    public Cliente buscarPorNombre(String nombre) throws ExceptionGenerica {
         if(nombre == null || nombre.isBlank()){
             throw new   ExceptionGenerica("Busqueda vacia");
         }
-        return db.buscar(nombre);
+        return db.buscar(nombre, db.getBUSCAR_POR_NOMBRE());
     }
+    
 
 }

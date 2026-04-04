@@ -11,7 +11,6 @@ import java.time.LocalDate;
  * @author edu
  */
 public class Cliente extends Entidad {
-
     private String nombre;
     private String correo;
     private String telefono;

@@ -15,14 +15,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.mycompany.travels.rest.api.interfaces.BusquedaUnitariaString;
+import java.sql.Date;
 
 /**
  *
  * @author edu
  */
 public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Cliente>,
-        ExisteEntidad, BusquedaUnitariaString<Cliente>, ExtraerEntidad<Cliente>{
+        ExisteEntidad, ExtraerEntidad<Cliente>{
 
     private static final String CREAR = "INSERT INTO cliente"
             + " (cliente_id,"
@@ -32,13 +32,23 @@ public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Clie
             + "cliente_telefono,"
             + "cliente_correo)"
             + " VALUES (?,?,?,?,?,?)";
-    private static final String EDITAR = "UPDATE cliente SET cliente_nombre = ?, cliente_id_nacionalidad = ?,"
-            + "cliente_fecha_nacimiento = ?, cliente_telefono = ?, cliente_correo = ?  WHERE cliente_id = ?";
+    private static final String EDITAR = "UPDATE cliente"
+            + " SET cliente_nombre = ?,"
+            + " cliente_id_nacionalidad = ?,"
+            + "cliente_fecha_nacimiento = ?,"
+            + " cliente_telefono = ?,"
+            + " cliente_correo = ?"
+            + "  WHERE cliente_id = ?";
     
     private static final String EXISTE = "select cliente_id FROM cliente WHERE cliente_id= ?";
     
-    private static final String BUSCAR_UNO = "select cliente.*, nacionalidad_nombre FROM cliente"
+    private static final String BUSCAR_POR_ID = "select cliente.*, nacionalidad_nombre FROM cliente"
             + " JOIN nacionalidad ON cliente_id_nacionalidad  = nacionalidad_id WHERE  cliente_id = ?";
+    
+    
+    private static final String BUSCAR_POR_NOMBRE = "select cliente.*, nacionalidad_nombre FROM cliente"
+            + " JOIN nacionalidad ON cliente_id_nacionalidad  = nacionalidad_id WHERE  cliente_nombre = ?";
+    
     
     private final String EXISTE_TELEFONO = "select cliente_nombre from cliente where cliente_telefono = ?";
     private final String EXISTE_CORREO = "select cliente_nombre from cliente where cliente_correo = ?";
@@ -49,26 +59,27 @@ public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Clie
             ps.setString(1, entidad.getIdentificacion());
             ps.setString(2, entidad.getNombre());
             ps.setInt(3, entidad.getId_nacionalidad());
-            ps.setString(4, entidad.getTelefono());
-            ps.setString(5, entidad.getCorreo());
+            ps.setDate(4, Date.valueOf(entidad.getFechaNacimiento()));
+            ps.setString(5, entidad.getTelefono());
+            ps.setString(6, entidad.getCorreo());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new ExceptionGenerica("falló al registrar cliente");
+            throw new ExceptionGenerica("falló al registrar cliente"+e.getMessage());
         }
     }
 
     @Override
     public void editar(Cliente entidad) throws ExceptionGenerica {
         try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(EDITAR)){
-            ps.setString(1, entidad.getIdentificacion());
-            ps.setString(2, entidad.getNombre());
-            ps.setInt(3, entidad.getId_nacionalidad());
+            ps.setString(1, entidad.getNombre());
+            ps.setInt(2, entidad.getId_nacionalidad());
+            ps.setDate(3, Date.valueOf(entidad.getFechaNacimiento()));
             ps.setString(4, entidad.getTelefono());
             ps.setString(5, entidad.getCorreo());
             ps.setString(6, entidad.getIdentificacion());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new ExceptionGenerica("falló al actualizar cliente");
+            throw new ExceptionGenerica("falló al actualizar cliente" + e.getMessage());
         }
     }
 
@@ -79,14 +90,14 @@ public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Clie
             ResultSet rs =  ps.executeQuery();
             return rs.next();
         } catch (SQLException e) {
-            throw new ExceptionGenerica("Falló al buscar cliente");
+            throw new ExceptionGenerica("Falló al buscar cliente" +e.getMessage());
         }
     }
 
 
-    @Override
-    public Cliente buscar(String nombre) throws ExceptionGenerica {
-        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(BUSCAR_UNO)){
+    
+    public Cliente buscar(String nombre, String sql) throws ExceptionGenerica {
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setString(1, nombre);
             ResultSet rs =  ps.executeQuery();
             if(rs.next()){
@@ -94,7 +105,7 @@ public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Clie
             }
             throw new NotFoundException("no se encontró el cliente");
         } catch (SQLException e) {
-            throw new ExceptionGenerica("Falló al buscar cliente");
+            throw new ExceptionGenerica("Falló al buscar cliente" +e.getMessage());
         }
     }
 
@@ -106,7 +117,7 @@ public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Clie
                 rs.getString("cliente_correo"),
                 rs.getString("cliente_telefono"),
                 rs.getDate("cliente_fecha_nacimiento").toLocalDate(),
-                rs.getString("cliente_identificacion"),
+                rs.getString("cliente_id"),
                 rs.getString("nacionalidad_nombre"),
                 rs.getInt("cliente_id_nacionalidad")
         );
@@ -119,7 +130,7 @@ public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Clie
             ResultSet rs =  ps.executeQuery();
             return rs.next();
         } catch (SQLException e) {
-            throw new ExceptionGenerica("Falló al buscar atributo repetido");
+            throw new ExceptionGenerica("Falló al buscar atributo repetido" +e.getMessage());
         }
     }
 
@@ -130,6 +141,16 @@ public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Clie
     public  String getEXISTE_CORREO() {
         return EXISTE_CORREO;
     }
+
+    public  String getBUSCAR_POR_ID() {
+        return BUSCAR_POR_ID;
+    }
+
+    public  String getBUSCAR_POR_NOMBRE() {
+        return BUSCAR_POR_NOMBRE;
+    }
+    
+    
     
     
 }

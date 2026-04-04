@@ -6,7 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { DestinoRequest } from '../../../modelos/destinos/destino-request';
 import { Pais } from '../../../modelos/enums/pais-enum';
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
-import { DestinosService } from '../../../services/login/destinos-service copy';
+import { DestinosService } from '../../../services/login/destinos-service';
 import { DestinoResponse } from '../../../modelos/destinos/destino-reponse';
 import { PaqueteServicioForm } from "../paquetes-servicios/paquete-servicio-form/paquete-servicio-form";
 import { PaqueteRequest } from '../../../modelos/paquetes/paquete-request';

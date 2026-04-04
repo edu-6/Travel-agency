@@ -57,7 +57,7 @@ public class ReservacionesDB implements CreacionEntidad<ReservacionRequest>, Bus
             ps.setInt(2, (entidad.getPasajeros().size()));
             ps.setInt(3, entidad.getIdAgenteCreador());
             ps.setInt(4, 1);
-            ps.setDate(5, java.sql.Date.valueOf(entidad.getFechaCreacion()));
+            ps.setDate(5, java.sql.Date.valueOf(java.time.LocalDate.now()));
             ps.setDate(6, java.sql.Date.valueOf(entidad.getFechaViaje()));
             ps.setDouble(7, 0.0);
             ps.executeUpdate();

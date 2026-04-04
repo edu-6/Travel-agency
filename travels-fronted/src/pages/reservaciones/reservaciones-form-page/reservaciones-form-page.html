@@ -1,0 +1,39 @@
+<app-header></app-header>
+
+
+<div class="container text-center my-5">
+
+    <div class="d-flex flex-column align-items-center gap-3 w-100">
+
+        <div class="d-flex justify-content-center gap-2 w-50">
+            <input #inputBusqueda class="form-control flex-grow-1" type="search-primary"
+                placeholder="  identificacion del usuario">
+
+            <button class="btn btn-primary" (click)="buscarUsuario(inputBusqueda.value)">
+                Buscar
+            </button>
+        </div>
+
+
+        @if (hayError()) {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error! </strong> {{mensajeError}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        }
+    </div>
+</div>
+
+
+@if(clienteEncontrado()){
+<div class="container text-start my-30">
+    <div class="  align-items-start gap-3 w-50">
+        <app-cliente-card [cliente]="clienteEncontrado()!"></app-cliente-card>
+    </div>
+</div>
+}
+
+@if(clienteEncontrado()){
+    
+<app-reservacion-form></app-reservacion-form>
+}

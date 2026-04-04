@@ -14,30 +14,41 @@ import { authGuard } from '../guardias/guardia';
 import { EmpleadosPage } from '../pages/empleados/empleados-page/empleados-page';
 import { EmpleadosFormPage } from '../pages/empleados/empleados-form-page/empleados-form-page';
 import { EmpleadosEditarPage } from '../pages/empleados/empleados-editar-page/empleados-editar-page';
+import { ReservacionesPage } from '../pages/reservaciones/reservaciones-page/reservaciones-page';
+import { ReservacionesFormPage } from '../pages/reservaciones/reservaciones-form-page/reservaciones-form-page';
+import { ClientesFormPage } from '../pages/clientes/clientes-form-page/clientes-form-page';
 
 export const routes: Routes = [
 
     // ejemplo 
     //{path: "proveedores", component: ProveedoresPage, canActivate: [authGuard]},
 
-    {path:"", component: LoginForm},
-    {path:"home", component: Home, },
+    { path: "", component: LoginForm },
+    { path: "home", component: Home, },
 
-    {path: "proveedores", component: ProveedoresPage, canActivate: [authGuard]},
-    {path: "proveedores/form-page", component:  ProveedorFormPage, canActivate: [authGuard]},
-    {path: "proveedores/editar-page/:nombre", component:  ProveedorEditarPage, canActivate: [authGuard]},
-    
-    {path: "destinos", component:  DestinosPage,canActivate: [authGuard]},
-    {path: "destinos/form-page", component:  DestinosFormPage,canActivate: [authGuard]},
-    {path: "destinos/editar-page/:nombre", component:  DestinosEditarPage, canActivate: [authGuard]},
+    { path: "proveedores", component: ProveedoresPage, canActivate: [authGuard] },
+    { path: "proveedores/form-page", component: ProveedorFormPage, canActivate: [authGuard] },
+    { path: "proveedores/editar-page/:nombre", component: ProveedorEditarPage, canActivate: [authGuard] },
 
-
-    {path: "paquetes", component:  PaquetesPage,canActivate: [authGuard]},
-    {path: "paquetes/form-page", component: PaquetesFormPage, canActivate: [authGuard]},
-    {path: "paquetes/editar-page/:nombre", component:  PaquetesEditarPage, canActivate: [authGuard]},
+    { path: "destinos", component: DestinosPage, canActivate: [authGuard] },
+    { path: "destinos/form-page", component: DestinosFormPage, canActivate: [authGuard] },
+    { path: "destinos/editar-page/:nombre", component: DestinosEditarPage, canActivate: [authGuard] },
 
 
-    {path: "empleados", component:  EmpleadosPage},
-    {path: "empleados/form-page", component: EmpleadosFormPage,},
-    {path: "empleados/editar-page/:nombre", component:  EmpleadosEditarPage, canActivate: [authGuard]},
+    { path: "paquetes", component: PaquetesPage, canActivate: [authGuard] },
+    { path: "paquetes/form-page", component: PaquetesFormPage, canActivate: [authGuard] },
+    { path: "paquetes/editar-page/:nombre", component: PaquetesEditarPage, canActivate: [authGuard] },
+
+
+    { path: "empleados", component: EmpleadosPage },
+    { path: "empleados/form-page", component: EmpleadosFormPage, },
+    { path: "empleados/editar-page/:nombre", component: EmpleadosEditarPage, canActivate: [authGuard] },
+
+    { path: "reservaciones", component: ReservacionesPage },
+    { path: "reservaciones/form-page", component: ReservacionesFormPage },
+    { path: "reservaciones/form-page/:identificacion", component: ReservacionesFormPage },
+
+
+     { path: "clientes/form-page", component: ClientesFormPage},
+     { path: "clientes/form-page/:identificacion", component: ClientesFormPage},
 ];

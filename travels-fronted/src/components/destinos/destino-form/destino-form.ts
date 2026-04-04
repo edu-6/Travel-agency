@@ -5,7 +5,7 @@ import { EnumsService } from '../../../services/login/enums-service';
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
 import { NgFor } from '@angular/common';
 import { DestinoRequest } from '../../../modelos/destinos/destino-request';
-import { DestinosService } from '../../../services/login/destinos-service copy';
+import { DestinosService } from '../../../services/login/destinos-service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({

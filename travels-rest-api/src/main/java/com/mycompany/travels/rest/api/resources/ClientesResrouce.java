@@ -5,58 +5,44 @@
 package com.mycompany.travels.rest.api.resources;
 
 import com.google.gson.Gson;
-import com.mycompany.travels.rest.api.dtos.paquete.PaqueteGeneral;
+import com.google.gson.GsonBuilder;
 import com.mycompany.travels.rest.api.exceptions.CamposVaciosException;
 import com.mycompany.travels.rest.api.exceptions.DatosMuyLargosException;
 import com.mycompany.travels.rest.api.exceptions.EntidadDuplicadaException;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
-import com.mycompany.travels.rest.api.exceptions.SinGananciaException;
-import com.mycompany.travels.rest.api.modelos.Paquete;
-import com.mycompany.travels.rest.api.servicios.PaqueteServicioCService;
-import com.mycompany.travels.rest.api.servicios.PaquetesCrudService;
-import com.mycompany.travels.rest.api.servicios.PaquetesCrudServiceGlobal;
+import com.mycompany.travels.rest.api.modelos.Cliente;
+import com.mycompany.travels.rest.api.servicios.ClientesCrudService;
+import com.mycompany.travels.rest.api.utils.ConvertidorFechas;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.time.LocalDate;
 
 /**
  *
  * @author edu
  */
-@WebServlet(name = "PaquetesSource", urlPatterns = {"/api/paquetes/*"})
-public class PaquetesSource extends HttpServlet {
+@WebServlet(name = "ClientesResrouce", urlPatterns = {"/api/clientes/*"})
+public class ClientesResrouce extends HttpServlet {
 
+    private ClientesCrudService crudService = new ClientesCrudService();
     private EscritorJson escritor = new EscritorJson();
-    private Gson gson = new Gson();
-    private PaquetesCrudServiceGlobal crudService = new PaquetesCrudServiceGlobal();
-    private PaquetesCrudService paquetesCrudService = new PaquetesCrudService();
-    private PaqueteServicioCService paqueteServicioCS = new PaqueteServicioCService();
+    private Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new ConvertidorFechas()).create();
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = this.obtenerParametroRuta(req);
-
-        if (id != null && this.esNumero(id)) {
-            try {
-                paqueteServicioCS.eliminar(Integer.valueOf(id));
-            } catch (ExceptionGenerica ex) {
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                escritor.escribirError(ex.getMessage(), resp);
-            }
-        }
 
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PaqueteGeneral nuevo = gson.fromJson(req.getReader(), PaqueteGeneral.class);
+        Cliente cliente = gson.fromJson(req.getReader(), Cliente.class);
 
         try {
-            crudService.editar(nuevo);
+            crudService.editar(cliente);
             resp.setStatus(HttpServletResponse.SC_OK);
 
         } catch (CamposVaciosException | DatosMuyLargosException ex) {
@@ -69,23 +55,21 @@ public class PaquetesSource extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_CONFLICT);
             escritor.escribirError(ex.getMessage(), resp);
 
-        } catch (SinGananciaException ex) {
-
-            resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-            escritor.escribirError(ex.getMessage(), resp);
         } catch (ExceptionGenerica ex) {
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
         }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PaqueteGeneral nuevo = gson.fromJson(req.getReader(), PaqueteGeneral.class);
+
+        Cliente cliente = gson.fromJson(req.getReader(), Cliente.class);
 
         try {
-            crudService.crear(nuevo);
+            crudService.crear(cliente);
             resp.setStatus(HttpServletResponse.SC_CREATED);
 
         } catch (CamposVaciosException | DatosMuyLargosException ex) {
@@ -98,10 +82,6 @@ public class PaquetesSource extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_CONFLICT);
             escritor.escribirError(ex.getMessage(), resp);
 
-        } catch (SinGananciaException ex) {
-
-            resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-            escritor.escribirError(ex.getMessage(), resp);
         } catch (ExceptionGenerica ex) {
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -111,38 +91,30 @@ public class PaquetesSource extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String parametro = obtenerParametroRuta(req);
 
-        String ruta = obtenerParametroRuta(req);
-
-        if (esNumero(ruta)) {
+        if (esNumero(parametro)) {
             try {
-                ArrayList<Paquete> lista = paquetesCrudService.buscarVariosInt(Integer.valueOf(ruta));
+                Cliente cliente = crudService.buscarPorID(parametro);
                 resp.setStatus(HttpServletResponse.SC_OK);
-                escritor.escribirJson(resp, lista);
+                escritor.escribirJsonConFecha(resp, cliente);
             } catch (ExceptionGenerica ex) {
+                
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 escritor.escribirError(ex.getMessage(), resp);
             }
         } else {
-
-            Object objeto;
             try {
-                if (ruta.equals("todos")) {
-                    objeto = paquetesCrudService.buscarPaquetesActivos();
-                } else {
-                    objeto = crudService.buscar(ruta);
-                }
-                
+                Cliente cliente = crudService.buscarPorNombre(parametro);
                 resp.setStatus(HttpServletResponse.SC_OK);
-                escritor.escribirJson(resp, objeto);
+                escritor.escribirJsonConFecha(resp, cliente);
                 
-            } catch (ExceptionGenerica e) {
+            } catch (ExceptionGenerica ex) {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                escritor.escribirError(e.getMessage(), resp);
+                escritor.escribirError(ex.getMessage(), resp);
+
             }
-
         }
-
     }
 
     private String obtenerParametroRuta(HttpServletRequest req) {

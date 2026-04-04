@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Header } from "../../../shared/header/header";
-import { DestinosService } from '../../../services/login/destinos-service copy';
+import { DestinosService } from '../../../services/login/destinos-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DestinoResponse } from '../../../modelos/destinos/destino-reponse';
 import { DestinoRequest } from '../../../modelos/destinos/destino-request';
