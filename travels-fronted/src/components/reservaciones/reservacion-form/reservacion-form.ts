@@ -38,7 +38,7 @@ export class ReservacionForm implements OnInit {
 
   paquetes = signal<PaqueteResponse[]>([]);
 
- paqueteSeleccionado = signal<PaqueteResponse | null>(null);
+  paqueteSeleccionado = signal<PaqueteResponse | null>(null);
 
 
 
@@ -56,9 +56,10 @@ export class ReservacionForm implements OnInit {
 
   ngOnInit(): void {
     this.instanciarFormulario();
+    this.cargarPaquetes();
     this.enEdicion.set(this.paqueteFullParametro != null);
 
-    this.cargarPaquetes();
+    
 
   }
 
@@ -94,7 +95,7 @@ export class ReservacionForm implements OnInit {
   }
 
 
-   guardarPaqueteSeleccionado(event: any){
+  guardarPaqueteSeleccionado(event: any) {
     const idSeleccionado = event.target.value;
     const paquete = this.paquetes().find(p => p.id == idSeleccionado);
     this.paqueteSeleccionado.set(paquete || null);

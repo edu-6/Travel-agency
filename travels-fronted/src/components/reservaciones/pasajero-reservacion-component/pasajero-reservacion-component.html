@@ -16,7 +16,7 @@
 
 
                     <div class="d-grid mb-1">
-                        <div class="d-flex justify-content-center gap-2 w-100">
+                        <div class="d-flex justify-content-center gap-2 w-100" id="busquedaInput">
                             <input #inputBusqueda class="form-control flex-grow-1" type="search-primary"
                                 placeholder="  identificacion del usuario">
 
@@ -25,27 +25,11 @@
                             </button>
                         </div>
                     </div>
-                    
 
 
-                    
-
-                    <!--
-                    @if(!formularioActivo()){
-                         @for( p of nuevos(); track p){
-                            <br>
-                            <app-paquete-servicio-card [paqueteServicio] ="p"
-                             (editarSeleccinado)="abrirFormularioModoEdicion($event)"
-                             (eliminarSeleccionado)="eliminarSeleccionado($event)"></app-paquete-servicio-card>
-                         }
-
-                         @for( p of existenes(); track p){
-                            <br>
-                            <app-paquete-servicio-card [paqueteServicio] ="p"
-                             (editarSeleccinado)="abrirFormularioModoEdicion($event)"
-                             (eliminarSeleccionado)="eliminarSeleccionado($event)"></app-paquete-servicio-card>
-                         }
-                    }-->
+                    @for(pasajero of pasajeros(); track pasajero.id_nacionalidad){
+                        <app-pasajero-reservacion-card [pasajero] ="pasajero" (solicitoEliminacion)="eliminarSeleccionado($event)"></app-pasajero-reservacion-card>
+                    }
 
                 </div>
             </div>

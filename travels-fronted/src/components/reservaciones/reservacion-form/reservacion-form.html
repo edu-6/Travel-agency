@@ -1,4 +1,4 @@
-<form [formGroup]="formulario" (submit)="enviar()">
+<form  [formGroup]="formulario" (submit)="enviar()">
     <section class="vh-100 ">
         <div class="container py-5 h-100">
 
@@ -103,17 +103,7 @@
                     </div>
                 </div>
 
-                <!--
-                @if(enEdicion()){
-                <div class="col-12 col-lg-6">
-                    <app-paquete-servicio-form [existenesParametro]="paqueteFullParametro.servicios"></app-paquete-servicio-form>
-                </div>
-                }@else {
-                <div class="col-12 col-lg-6">
-                    <app-paquete-servicio-form></app-paquete-servicio-form>
-                </div>
-                }-->
-
+                
                 <div class="col-12 col-lg-6">
                     <app-pasajero-reservacion-component></app-pasajero-reservacion-component>
                 </div>

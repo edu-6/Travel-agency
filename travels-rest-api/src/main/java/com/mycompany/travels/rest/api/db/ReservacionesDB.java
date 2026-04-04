@@ -8,7 +8,7 @@ import com.mycompany.travels.rest.api.dtos.reservaciones.ReservacionRequest;
 import com.mycompany.travels.rest.api.dtos.reservaciones.ReservacionResponse;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.interfaces.BuscarVariosString;
-import com.mycompany.travels.rest.api.interfaces.CreacionEntidad;
+import com.mycompany.travels.rest.api.interfaces.CreacionReturnId;
 import com.mycompany.travels.rest.api.interfaces.ExtraerEntidad;
 import java.sql.Connection;
 import java.sql.Date;
@@ -22,14 +22,13 @@ import java.util.ArrayList;
  *
  * @author edu
  */
-public class ReservacionesDB implements CreacionEntidad<ReservacionRequest>, BuscarVariosString<ReservacionResponse>,
+public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, BuscarVariosString<ReservacionResponse>,
         ExtraerEntidad<ReservacionResponse> {
 
     private static final String CREAR = "INSERT INTO reservacion (rs_id_titular, rs_cantidad_pasajeros, rs_id_agente_creador, "
-                + "rs_id_estado, rs_fecha_creacion, rs_fecha_viaje, rs_total_pagado) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-    
-    
+            + "rs_id_estado, rs_fecha_creacion, rs_fecha_viaje, rs_total_pagado) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
     private static final String BUSCAR_SIMPLE = "select reservacion.*, cliente_nombre,"
             + "estado_reservacion_nombre, cliente_id, empleado_nombre, paquete_nombre"
             + " FROM reservacion"
@@ -37,24 +36,21 @@ public class ReservacionesDB implements CreacionEntidad<ReservacionRequest>, Bus
             + " join paquete ON rs_id_paquete = paquete_id"
             + " join empleado ON empleado_id = rs_id_agente_creador"
             + " join estado_reservacion ON rs_id_estado = estado_reservacion_id";
-    
+
     private static final String BUSCAR_POR_CLIENTE = BUSCAR_SIMPLE
             + " where rs_id_titular = ?";
-    
-    
-    private static final String BUSCAR_HOY = BUSCAR_SIMPLE +
-            " where rs_fecha_creacion = ? ";
-    
+
+    private static final String BUSCAR_HOY = BUSCAR_SIMPLE
+            + " where rs_fecha_creacion = ? ";
+
     private static final String EXISTE_VIAJE_EN_FECHA = "select rs_id_creador FROM reservacion where rs_fecha_viaje = ? and rs_id_titular = ?";
-    
-    
 
     @Override
-    public void crear(ReservacionRequest entidad) throws ExceptionGenerica {
-        try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(CREAR)) {
-            
+    public int crear(ReservacionRequest entidad) throws ExceptionGenerica {
+        try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(CREAR, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setString(1, entidad.getIdTitular());
-            ps.setInt(2, (entidad.getPasajeros().size()));
+            ps.setInt(2, (entidad.getPasajeros().length));
             ps.setInt(3, entidad.getIdAgenteCreador());
             ps.setInt(4, 1);
             ps.setDate(5, java.sql.Date.valueOf(java.time.LocalDate.now()));
@@ -62,20 +58,27 @@ public class ReservacionesDB implements CreacionEntidad<ReservacionRequest>, Bus
             ps.setDouble(7, 0.0);
             ps.executeUpdate();
 
+            ps.executeUpdate();
+            
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+                throw new ExceptionGenerica("No se pudo obtener el ID de la reservación.");
+            }
+
         } catch (SQLException e) {
-            throw new ExceptionGenerica("Error al crear  la reservación: " + e.getMessage());
+            throw new ExceptionGenerica("Error al crear la reservación: " + e.getMessage());
         }
     }
     
     
-    
-    
-    public boolean existeViajeEnEstaFecha(LocalDate fecha, String idTitular) throws ExceptionGenerica{
+    public boolean existeViajeEnEstaFecha(LocalDate fecha, String idTitular) throws ExceptionGenerica {
         try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(EXISTE_VIAJE_EN_FECHA)) {
             ps.setString(1, idTitular);
             ps.setDate(2, Date.valueOf(fecha));
-            try(ResultSet  rs = ps.executeQuery();) {
-               return rs.next();
+            try (ResultSet rs = ps.executeQuery();) {
+                return rs.next();
             }
         } catch (SQLException e) {
             throw new ExceptionGenerica("Error al buscar fecha disponible" + e.getMessage());
@@ -94,8 +97,8 @@ public class ReservacionesDB implements CreacionEntidad<ReservacionRequest>, Bus
         ArrayList<ReservacionResponse> lista = new ArrayList();
         try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(BUSCAR_POR_CLIENTE)) {
             ps.setString(1, parametro);
-            try(ResultSet  rs = ps.executeQuery();) {
-                while(rs.next()){
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
                     lista.add(extraer(rs));
                 }
                 return lista;
@@ -115,8 +118,8 @@ public class ReservacionesDB implements CreacionEntidad<ReservacionRequest>, Bus
         ArrayList<ReservacionResponse> lista = new ArrayList();
         try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(BUSCAR_HOY)) {
             ps.setDate(1, Date.valueOf(LocalDate.now()));
-            try(ResultSet  rs = ps.executeQuery();) {
-                while(rs.next()){
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
                     lista.add(extraer(rs));
                 }
                 return lista;
@@ -137,7 +140,5 @@ public class ReservacionesDB implements CreacionEntidad<ReservacionRequest>, Bus
                 rs.getDate("rs_fecha_viaje").toLocalDate()
         );
     }
-    
-    
 
 }

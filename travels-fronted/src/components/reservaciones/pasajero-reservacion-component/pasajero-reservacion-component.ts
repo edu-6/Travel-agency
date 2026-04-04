@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, Output, output, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PaqueteServicio } from '../../../modelos/proveedor-servicio/paquete-servicio';
 import { ProveedorResponse } from '../../../modelos/proveedores/ProveedorResponse';
@@ -7,10 +7,11 @@ import { ProveedoresService } from '../../../services/login/proveedores-service'
 import { ClienteResponse } from '../../../modelos/clientes/cliente-response';
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
 import { ClientesService } from '../../../services/login/clientes-service';
+import { PasajeroReservacionCard } from "../pasajero-reservacion-card/pasajero-reservacion-card";
 
 @Component({
   selector: 'app-pasajero-reservacion-component',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PasajeroReservacionCard],
   templateUrl: './pasajero-reservacion-component.html',
   styleUrl: './pasajero-reservacion-component.css',
 })
@@ -31,6 +32,8 @@ export class PasajeroReservacionComponent {
   existenesParametro !: PaqueteServicio[];
 
 
+
+
   constructor(private clientesService: ClientesService) {
 
   }
@@ -38,6 +41,7 @@ export class PasajeroReservacionComponent {
 
 
   agregarPasajero(id: string) {
+    
     this.hayError.set(false);
 
     if (this.usuarioRepetido(id)) {
@@ -71,17 +75,15 @@ export class PasajeroReservacionComponent {
 
 
 
-  eliminarSeleccionado(seleccionado: PaqueteServicio) {
-    /*
-    let id = seleccionado.id;
-    let existeEnDB = id > 0;
-    let indice;
-    if (existeEnDB) {
-      this.existenes.update(lista => lista.filter(p => p.id !== seleccionado.id));
-      
-      this.eliminarServicioEnPaquete(seleccionado.id.toString());
-    } else {
-      this.nuevos.update(lista => lista.filter(p => p.id !== seleccionado.id));
-    }*/
+  eliminarSeleccionado(id: string) {
+
+
+    this.pasajerosIds = this.pasajerosIds.filter(pasajeroId => pasajeroId !== id);
+
+    this.pasajeros.update(listaActual =>
+      listaActual.filter(cliente => cliente.identificacion !== id)
+    );
+
+    this.hayError.set(false);
   }
 }

@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.travels.rest.api.dtos.reservaciones;
-
-import com.mycompany.travels.rest.api.dtos.pasajeros.PasajeroRequest;
 import com.mycompany.travels.rest.api.dtos.pasajeros.PasajeroResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;

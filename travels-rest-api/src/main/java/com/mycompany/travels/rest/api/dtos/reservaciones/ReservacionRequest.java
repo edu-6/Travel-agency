@@ -19,7 +19,10 @@ public class ReservacionRequest {
     private int idAgenteCreador;
     private LocalDate fechaCreacion;
     private LocalDate fechaViaje;
-    private ArrayList<PasajeroRequest> pasajeros;
+    
+    private String [] pasajeros;
+    
+    private ArrayList<PasajeroRequest> pasajerosRequest;
 
     public ReservacionRequest() {
     }
@@ -39,10 +42,7 @@ public class ReservacionRequest {
     public LocalDate getFechaViaje() {
         return fechaViaje;
     }
-
-    public ArrayList<PasajeroRequest> getPasajeros() {
-        return pasajeros;
-    }
+    
 
     public void setIdPaquete(int idPaquete) {
         this.idPaquete = idPaquete;
@@ -60,13 +60,40 @@ public class ReservacionRequest {
         this.fechaViaje = fechaViaje;
     }
 
-    public void setPasajeros(ArrayList<PasajeroRequest> pasajeros) {
-        this.pasajeros = pasajeros;
+    public String[] getPasajeros() {
+        return pasajeros;
     }
+
+    public ArrayList<PasajeroRequest> getPasajerosRequest() {
+        return pasajerosRequest;
+    }
+    
+    
+    
+
+
 
     public String getIdTitular() {
         return idTitular;
     }
+    
+    public void generarPasajerosRequest(int idReservacion){
+        
+        this.pasajerosRequest = new ArrayList();
+        
+        // agregar al titular como pasajero
+        pasajerosRequest.add(new PasajeroRequest(idTitular, idReservacion));
+        
+        if(pasajeros != null){
+            for (String pasajero : pasajeros) {
+                pasajerosRequest.add(new PasajeroRequest(pasajero, idReservacion));
+            }
+        }
+    }
+    
+    
+    
+    
     
     
     

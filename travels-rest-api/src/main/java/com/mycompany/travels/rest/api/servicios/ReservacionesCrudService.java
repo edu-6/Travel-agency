@@ -30,11 +30,19 @@ public class ReservacionesCrudService extends CrudService implements CreacionEnt
             throw new EntidadDuplicadaException("ya existe una reservación para esta fecha ");
         }
         
-        db.crear(entidad);
-        pasajerosDB.agregarPasajeros(entidad.getPasajeros());
+        int id = db.crear(entidad);
+        entidad.generarPasajerosRequest(id);
+        pasajerosDB.agregarPasajeros(entidad.getPasajerosRequest());
         
     }
     
+    
+    /**
+     * Para buscar las reservaciones de un cliente
+     * @param parametro id cliente
+     * @return
+     * @throws ExceptionGenerica 
+     */
     @Override
     public ArrayList<ReservacionResponse> buscarPorString(String parametro) throws ExceptionGenerica {
         ArrayList<ReservacionResponse> lista =  db.buscarPorString(parametro);
@@ -42,7 +50,7 @@ public class ReservacionesCrudService extends CrudService implements CreacionEnt
         return lista;
     }
     
-    public ArrayList<ReservacionResponse> buscarReservacionesDelDia(String parametro) throws ExceptionGenerica {
+    public ArrayList<ReservacionResponse> buscarReservacionesDelDia() throws ExceptionGenerica {
         ArrayList<ReservacionResponse> lista =  db.buscarReservacionesHoy();
         recuperarPasajerosReservacion(lista);
         return lista;
