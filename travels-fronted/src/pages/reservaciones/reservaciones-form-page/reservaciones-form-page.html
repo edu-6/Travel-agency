@@ -31,9 +31,6 @@
         <app-cliente-card [cliente]="clienteEncontrado()!"></app-cliente-card>
     </div>
 </div>
-}
 
-@if(clienteEncontrado()){
-    
-<app-reservacion-form></app-reservacion-form>
+<app-reservacion-form [idTitular]="clienteEncontrado()!.identificacion"></app-reservacion-form>
 }

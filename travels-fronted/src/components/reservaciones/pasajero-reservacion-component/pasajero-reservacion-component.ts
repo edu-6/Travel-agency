@@ -28,8 +28,8 @@ export class PasajeroReservacionComponent {
 
   pasajerosIds: string[] = [];
 
-  @Input()
-  existenesParametro !: PaqueteServicio[];
+  @Input({required :true})
+  idTitular !:string;
 
 
 
@@ -43,6 +43,14 @@ export class PasajeroReservacionComponent {
   agregarPasajero(id: string) {
     
     this.hayError.set(false);
+
+    if(id === this.idTitular){
+      this.hayError.set(true);
+      this.mensajeError = "El titular será automaticamente añadido!";
+      return;
+    }
+
+
 
     if (this.usuarioRepetido(id)) {
       this.hayError.set(true);

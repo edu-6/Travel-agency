@@ -94,13 +94,15 @@ CREATE TABLE reservacion(
     rs_id_titular VARCHAR(20) NOT NULL,
     rs_cantidad_pasajeros INTEGER NOT NULL,
     rs_id_agente_creador  INTEGER NOT NULL,
-    rs_id_estado          INTEGER NOT NULL,
+    rs_id_estado          INTEGER NOT NULL,de
     rs_fecha_creacion     DATE NOT NULL,
     rs_fecha_viaje	  DATE NOT NULL,
     rs_total_pagado	  DECIMAL(15,2) NOT NULL,
+    rs_id_paquete 	  INTEGER NOT NULL,
     CONSTRAINT fk_reservacion_creador FOREIGN KEY  (rs_id_agente_creador) REFERENCES empleado(empleado_id) ON DELETE CASCADE,
     CONSTRAINT fk_reservacion_estado FOREIGN KEY  (rs_id_estado) REFERENCES estado_reservacion(estado_reservacion_id) ON DELETE CASCADE,
-    CONSTRAINT fk_reservacion_titular FOREIGN KEY  (rs_id_titular) REFERENCES cliente(cliente_id) ON DELETE CASCADE
+    CONSTRAINT fk_reservacion_titular FOREIGN KEY  (rs_id_titular) REFERENCES cliente(cliente_id) ON DELETE CASCADE,
+    CONSTRAINT fk_reservacion_paquete FOREIGN KEY  (rs_id_paquete) REFERENCES paquete(paquete_id) ON DELETE CASCADE
 );
 
 

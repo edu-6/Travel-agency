@@ -1,0 +1,42 @@
+<app-header></app-header>
+
+<div class="container my-5">
+    <div class="mx-auto w-50 d-flex flex-column align-items-center gap-4">
+
+        @if (hayError()) {
+        <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+            <strong>Error! </strong> {{mensajeError}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        }
+
+        @if(encontrado()){
+        <div class="w-100">
+            <app-reservacion-card [reservacion]="reservacion()!" [mostrarBtnDetalles]="false">
+            </app-reservacion-card>
+        </div>
+
+
+        <div class="d-flex justify-content-center gap-3 w-100">
+            <button class="btn btn-primary btn-md px-4" (click)="abrirFormularioPago()">
+                <i class="bi bi-credit-card me-2"></i>Realizar pago
+            </button>
+            <button class="btn btn-danger btn-md px-4" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <i class="bi bi-x-circle me-2"></i>Cancelar
+            </button>
+        </div>
+        }
+
+
+        @if(reservacion()  && formularioAbierto()){
+             <app-pago-form [idReservacion]="reservacion()!.id" 
+             (pagoCreado)="registrarPago($event)"
+             (formularioCerrado)="cerrarFormularioPago()"></app-pago-form>
+        }
+       
+
+    </div>
+</div>
+
+
+<app-modal-generico [mensaje]="mensajeCancelacion" (confirmationExecuter)="cancelarReservacion()" />

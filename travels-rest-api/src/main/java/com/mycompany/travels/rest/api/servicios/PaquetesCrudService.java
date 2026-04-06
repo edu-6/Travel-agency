@@ -68,6 +68,13 @@ public class PaquetesCrudService extends CrudService implements CreacionReturnId
         
         return db.buscar(nombre);
     }
+    
+    
+    public Paquete buscarPorId(int id) throws ExceptionGenerica {
+        return db.buscarPorId(id);
+    }
+    
+    
 
     @Override
     public ArrayList<Paquete> buscarTodos() throws ExceptionGenerica {

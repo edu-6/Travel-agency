@@ -19,15 +19,21 @@ public class ReservacionResponse {
     private String estado;
     private LocalDate fechaCreacion;
     private LocalDate fechaViaje;
+    private double totalPagado;
+    private double precioTotal;
+    
     private ArrayList<PasajeroResponse> pasajeros;
 
-    public ReservacionResponse(int id, String titular, String nombrePaquete, String estado, LocalDate fechaCreacion, LocalDate fechaViaje) {
+    public ReservacionResponse(int id, String titular, String nombrePaquete, String estado, LocalDate fechaCreacion,
+            LocalDate fechaViaje, double totalPagado, double precioTotal) {
         this.id = id;
         this.titular = titular;
         this.nombrePaquete = nombrePaquete;
         this.estado = estado;
         this.fechaCreacion = fechaCreacion;
         this.fechaViaje = fechaViaje;
+        this.totalPagado = totalPagado;
+        this.precioTotal = precioTotal;
     }
 
     public ReservacionResponse() {
@@ -92,6 +98,25 @@ public class ReservacionResponse {
     public void setPasajeros(ArrayList<PasajeroResponse> pasajeros) {
         this.pasajeros = pasajeros;
     }
+
+    public double getTotalPagado() {
+        return totalPagado;
+    }
+
+    public void setTotalPagado(double totalPagado) {
+        this.totalPagado = totalPagado;
+    }
+
+    public double getPrecioTotal() {
+        return precioTotal;
+    }
+
+    public void setPrecioTotal(double precioTotal) {
+        this.precioTotal = precioTotal;
+    }
+    
+    
+    
     
     
     

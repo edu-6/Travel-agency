@@ -13,8 +13,8 @@
                 </a>
             </div>
             <div class="col-auto">
-                <a routerLink="/cosas" class="btn btn-primary">
-                    <i class="bi bi-calendar-event-fill"></i> Hoy
+                <a class="btn btn-primary">
+                    <i class="bi bi-calendar-event-fill" (click)="buscarReservacionesHoy()"></i> Hoy
                 </a>
             </div>
         </div>
@@ -27,4 +27,13 @@
         </div>
         }
     </div>
+</div>
+
+
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @for(r of reservacionesHoy(); track r.id){
+    <app-reservacion-card [reservacion]="r" [mostrarBtnDetalles]="true"></app-reservacion-card>
+    }
 </div>

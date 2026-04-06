@@ -26,16 +26,19 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
         ExtraerEntidad<ReservacionResponse> {
 
     private static final String CREAR = "INSERT INTO reservacion (rs_id_titular, rs_cantidad_pasajeros, rs_id_agente_creador, "
-            + "rs_id_estado, rs_fecha_creacion, rs_fecha_viaje, rs_total_pagado) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            + "rs_id_estado, rs_fecha_creacion, rs_fecha_viaje, rs_total_pagado, rs_id_paquete) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
     private static final String BUSCAR_SIMPLE = "select reservacion.*, cliente_nombre,"
-            + "estado_reservacion_nombre, cliente_id, empleado_nombre, paquete_nombre"
+            + "estado_reservacion_nombre, cliente_id, empleado_nombre, paquete_nombre,paquete_precio"
             + " FROM reservacion"
             + " join cliente ON  cliente_id = rs_id_titular"
             + " join paquete ON rs_id_paquete = paquete_id"
             + " join empleado ON empleado_id = rs_id_agente_creador"
             + " join estado_reservacion ON rs_id_estado = estado_reservacion_id";
+    
+    
+    private static final String BUSCAR_POR_ID = BUSCAR_SIMPLE + " where rs_numero_reservacion = ?";
 
     private static final String BUSCAR_POR_CLIENTE = BUSCAR_SIMPLE
             + " where rs_id_titular = ?";
@@ -43,7 +46,7 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
     private static final String BUSCAR_HOY = BUSCAR_SIMPLE
             + " where rs_fecha_creacion = ? ";
 
-    private static final String EXISTE_VIAJE_EN_FECHA = "select rs_id_creador FROM reservacion where rs_fecha_viaje = ? and rs_id_titular = ?";
+    private static final String EXISTE_VIAJE_EN_FECHA = "select rs_id_agente_creador FROM reservacion where rs_fecha_viaje = ? and rs_id_titular = ?";
 
     @Override
     public int crear(ReservacionRequest entidad) throws ExceptionGenerica {
@@ -56,8 +59,7 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
             ps.setDate(5, java.sql.Date.valueOf(java.time.LocalDate.now()));
             ps.setDate(6, java.sql.Date.valueOf(entidad.getFechaViaje()));
             ps.setDouble(7, 0.0);
-            ps.executeUpdate();
-
+            ps.setInt(8, entidad.getIdPaquete());
             ps.executeUpdate();
             
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -75,13 +77,30 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
     
     public boolean existeViajeEnEstaFecha(LocalDate fecha, String idTitular) throws ExceptionGenerica {
         try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(EXISTE_VIAJE_EN_FECHA)) {
-            ps.setString(1, idTitular);
-            ps.setDate(2, Date.valueOf(fecha));
+            ps.setDate(1, Date.valueOf(fecha));
+            ps.setString(2, idTitular);
+            
             try (ResultSet rs = ps.executeQuery();) {
                 return rs.next();
             }
         } catch (SQLException e) {
             throw new ExceptionGenerica("Error al buscar fecha disponible" + e.getMessage());
+        }
+    }
+    
+    
+    
+    public ReservacionResponse buscarUnaPorID(int parametro) throws ExceptionGenerica {
+        try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(BUSCAR_POR_ID)) {
+            ps.setInt(1, parametro);
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    return extraer(rs);
+                }
+                throw new ExceptionGenerica(" no se encontró la reservación");
+            }
+        } catch (SQLException e) {
+            throw new ExceptionGenerica("Error al buscar la reservación " + e.getMessage());
         }
     }
 
@@ -132,13 +151,19 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
     @Override
     public ReservacionResponse extraer(ResultSet rs) throws SQLException {
         return new ReservacionResponse(
-                rs.getInt("rs_id"),
+                rs.getInt("rs_numero_reservacion"),
                 rs.getString("cliente_nombre"),
                 rs.getString("paquete_nombre"),
                 rs.getString("estado_reservacion_nombre"),
                 rs.getDate("rs_fecha_creacion").toLocalDate(),
-                rs.getDate("rs_fecha_viaje").toLocalDate()
+                rs.getDate("rs_fecha_viaje").toLocalDate(),
+                rs.getDouble("rs_total_pagado"),
+                rs.getDouble("paquete_precio")
         );
     }
+    
+    
+    
+    
 
 }

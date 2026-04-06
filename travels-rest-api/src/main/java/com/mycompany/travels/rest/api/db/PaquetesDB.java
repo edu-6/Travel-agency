@@ -57,6 +57,10 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
     private static final String BUSCAR_UNO = "select paquete.*, destino_nombre FROM paquete"
             + " JOIN  destino ON paquete_id_destino = destino_id"
             + " WHERE paquete_nombre = ?";
+    
+    private static final String BUSCAR_UNO_POR_ID = "select paquete.*, destino_nombre FROM paquete"
+            + " JOIN  destino ON paquete_id_destino = destino_id"
+            + " WHERE paquete_id = ?";
 
     private static final String BUSCAR_TODOS = "select paquete.*, destino_nombre FROM paquete"
             + " JOIN  destino ON paquete_id_destino = destino_id";
@@ -143,6 +147,22 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
             throw new ExceptionGenerica("Falló al buscar paquete");
         }
     }
+    
+    
+    public Paquete buscarPorId(int id) throws ExceptionGenerica {
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(BUSCAR_UNO_POR_ID)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return extraer(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new ExceptionGenerica("Falló al buscar paquete");
+        }
+    }
+    
+    
 
     @Override
     public Paquete extraer(ResultSet rs) throws SQLException {

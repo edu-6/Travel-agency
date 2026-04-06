@@ -65,4 +65,30 @@ public class PagoReservacion extends Entidad {
     public boolean datosTamañoCorrecto() {
         return true;
     }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
+    public void setCantidad(double cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setIdReservacion(int idReservacion) {
+        this.idReservacion = idReservacion;
+    }
+
+    public void setId_metodo_pago(int id_metodo_pago) {
+        this.id_metodo_pago = id_metodo_pago;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFechaPago(LocalDate fechaPago) {
+        this.fechaPago = fechaPago;
+    }
+    
+    
 }

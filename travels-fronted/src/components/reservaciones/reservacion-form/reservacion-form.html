@@ -1,4 +1,4 @@
-<form  [formGroup]="formulario" (submit)="enviar()">
+<form [formGroup]="formulario" (ngSubmit)="enviar()">
     <section class="vh-100 ">
         <div class="container py-5 h-100">
 
@@ -32,11 +32,13 @@
 
                                 </div>
 
+
+
                                 <div class="col-md-6">
                                     <label for="eventType" class="form-label">Paquete</label>
                                     <select id="eventType" name="eventType" class="form-control"
-                                        (change)="guardarPaqueteSeleccionado($event)" formControlName="id_paquete"
-                                        [class.is-invalid]="formulario.controls['id_paquete'].invalid && intentoEnviarlo()">
+                                        (change)="guardarPaqueteSeleccionado($event)" formControlName="idPaquete"
+                                        [class.is-invalid]="formulario.controls['idPaquete'].invalid && intentoEnviarlo()">
 
                                         @for (d of paquetes(); track d.id) {
                                         <option [value]="d.id">
@@ -103,9 +105,9 @@
                     </div>
                 </div>
 
-                
+
                 <div class="col-12 col-lg-6">
-                    <app-pasajero-reservacion-component></app-pasajero-reservacion-component>
+                    <app-pasajero-reservacion-component [idTitular]="idTitular"></app-pasajero-reservacion-component>
                 </div>
 
 

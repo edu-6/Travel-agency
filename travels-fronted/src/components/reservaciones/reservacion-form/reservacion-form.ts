@@ -1,17 +1,16 @@
 import { Component, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { PaqueteGeneral } from '../../../modelos/paquetes/paquete-full';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { DestinoResponse } from '../../../modelos/destinos/destino-reponse';
-import { Pais } from '../../../modelos/enums/pais-enum';
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
 import { PaqueteRequest } from '../../../modelos/paquetes/paquete-request';
-import { DestinosService } from '../../../services/login/destinos-service';
-import { EnumsService } from '../../../services/login/enums-service';
 import { PaquetesService } from '../../../services/login/paquetes-service';
 import { PaqueteServicioForm } from '../../paquetes/paquetes-servicios/paquete-servicio-form/paquete-servicio-form';
 import { PasajeroReservacionComponent } from "../pasajero-reservacion-component/pasajero-reservacion-component";
 import { PaqueteResponse } from '../../../modelos/paquetes/paquete-response';
+import { ReservacionRequest } from '../../../modelos/reservaciones/reservacionRequest';
+import { ReservacionesService } from '../../../services/login/reservaciones-service';
+import { IdReservacion } from '../../../modelos/reservaciones/idReservacion';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reservacion-form',
@@ -22,13 +21,17 @@ import { PaqueteResponse } from '../../../modelos/paquetes/paquete-response';
 export class ReservacionForm implements OnInit {
 
 
+  @Input({ required: true })
+  idTitular !: string;
+
+
 
   @Input()
   paqueteFullParametro !: PaqueteGeneral;
 
   paqueteFull = signal<PaqueteGeneral>({} as PaqueteGeneral);
 
-  @ViewChild(PaqueteServicioForm) componenteHijo!: PaqueteServicioForm;
+  @ViewChild(PasajeroReservacionComponent) componenteHijo!: PasajeroReservacionComponent;
 
 
 
@@ -42,35 +45,40 @@ export class ReservacionForm implements OnInit {
 
 
 
-  enEdicion = signal<boolean>(false);
   hayError = signal<boolean>(false);
   intentoEnviarlo = signal<boolean>(false);
 
   constructor(private formBuilder: FormBuilder,
-    private enumsService: EnumsService,
-    private destinosService: DestinosService,
-    private paquetesService: PaquetesService,
-    private router: Router) {
+     private paquetesService: PaquetesService,
+      private reservacionesService: ReservacionesService, private router: Router) {
+
   }
 
 
   ngOnInit(): void {
     this.instanciarFormulario();
     this.cargarPaquetes();
-    this.enEdicion.set(this.paqueteFullParametro != null);
 
-    
 
   }
 
 
   private instanciarFormulario() {
     this.formulario = this.formBuilder.group({
-      id_titular: [],
+      idTitular: [null, Validators.required],
       fechaViaje: [new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0], Validators.required],
-      id_paquete: [null, Validators.required]
+      idPaquete: [null, Validators.required],
+      idAgenteCreador: [null, Validators.required]
     });
+
+    this.formulario.patchValue({
+      idTitular: this.idTitular,
+      idAgenteCreador: localStorage.getItem('id'),
+    }
+    );
   }
+
+
 
 
   public enviar() {
@@ -80,17 +88,22 @@ export class ReservacionForm implements OnInit {
 
     if (!this.formulario.valid) return;
 
-    const nuevo = this.instanciarPaqueteFull();
-
-    this.guardarReservacion();
+    const nuevo = this.instanciarReservacion();
+    this.guardarReservacion(nuevo);
   }
 
-  private instanciarPaqueteFull(): PaqueteGeneral {
-    const nuevo: PaqueteGeneral = {
-      paquete: this.formulario.value as PaqueteRequest,
-      servicios: this.componenteHijo.existenes(),
-      nuevosServicios: this.componenteHijo.nuevos()
+  private instanciarReservacion(): ReservacionRequest {
+    const formValues = this.formulario.value;
+    const fechaLimpia = formValues.fechaViaje.split('T')[0];
+
+    const nuevo: ReservacionRequest = {
+      idTitular: formValues.idTitular,
+      fechaViaje: fechaLimpia,
+      idPaquete: Number(formValues.idPaquete),
+      idAgenteCreador: formValues.idAgenteCreador,
+      pasajeros: this.componenteHijo.pasajerosIds
     };
+
     return nuevo;
   }
 
@@ -102,17 +115,18 @@ export class ReservacionForm implements OnInit {
   }
 
 
-  private guardarReservacion() {
-    /*
-    this.paquetesService.crear(nuevo).subscribe({
-      next: () => {
-        this.router.navigate([`/paquetes`]);
+  private guardarReservacion(nuevo: ReservacionRequest) {
+    this.reservacionesService.crear(nuevo).subscribe({
+      next:(id: IdReservacion)=>{
+        console.log(" se creóoooooo");
+        this.router.navigate(['/reservaciones']);
       },
-      error: (httpError: any) => {
+      error: (httpError: any) =>{
         this.registrarError(httpError);
       }
 
-    });*/
+    });
+
   }
 
 
@@ -129,7 +143,7 @@ export class ReservacionForm implements OnInit {
         this.paquetes.set(todos);
 
         this.formulario.patchValue({
-          id_paquete: todos[0].id,
+          idPaquete: todos[0].id,
         });
 
       },

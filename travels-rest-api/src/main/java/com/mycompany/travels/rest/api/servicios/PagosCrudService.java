@@ -29,19 +29,42 @@ public class PagosCrudService extends CrudService implements CreacionEntidad<Pag
         
         if(entidad.getCantidad() <= 0){
             throw new ExceptionGenerica("La cantidad debe ser mayor a 0  ");
-            
         }
         
-        double costoReservacion = db.obtenerCostoTotalPaquete(entidad.getIdReservacion());
-        if(entidad.getCantidad() > costoReservacion){
+        double cantidadPago = entidad.getCantidad();
+        double totalPagado = db.obtenerTotalPagado(entidad.getIdReservacion());
+        double costoReservacion = db.obtenerCostoTotalReservacion(entidad.getIdReservacion());
+        double pagoRestante = costoReservacion-totalPagado;
+        
+        if(cantidadPago > costoReservacion){
             throw new ExceptionGenerica("la cantidad es mayor al precio total ");
-        }else if(entidad.getCantidad() == costoReservacion){
-            db.marcarComoPagada(entidad.getIdReservacion());
         }
         
+        if(cantidadPago > pagoRestante){
+            throw new ExceptionGenerica("la cantidad es mayor a lo que queda por pagar restante:  "+ pagoRestante);
+        }
+        
+        // realizar pago
         db.crear(entidad);
         
-         
+       
+        pagoRestante = pagoRestante -cantidadPago;
+        
+        
+        //cambios de estado
+        int estado = 1;
+        if(pagoRestante > 0 && pagoRestante < costoReservacion){ // ya emepzó a pagar
+            estado = 2;
+        }else if(pagoRestante == 0){
+            estado = 4;
+        }
+        
+        db.cambiarEstadoReservacion(estado, entidad.getIdReservacion());
+        
+        totalPagado+=cantidadPago;
+        db.actualizarTotalPagado(totalPagado, entidad.getIdReservacion());
+
+        
     }
 
     @Override

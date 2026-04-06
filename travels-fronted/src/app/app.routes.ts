@@ -17,6 +17,7 @@ import { EmpleadosEditarPage } from '../pages/empleados/empleados-editar-page/em
 import { ReservacionesPage } from '../pages/reservaciones/reservaciones-page/reservaciones-page';
 import { ReservacionesFormPage } from '../pages/reservaciones/reservaciones-form-page/reservaciones-form-page';
 import { ClientesFormPage } from '../pages/clientes/clientes-form-page/clientes-form-page';
+import { ReservacionesDetallePage } from '../pages/reservaciones/reservaciones-detalle-page/reservaciones-detalle-page';
 
 export const routes: Routes = [
 
@@ -47,8 +48,12 @@ export const routes: Routes = [
     { path: "reservaciones", component: ReservacionesPage },
     { path: "reservaciones/form-page", component: ReservacionesFormPage },
     { path: "reservaciones/form-page/:identificacion", component: ReservacionesFormPage },
+    { path: "reservaciones/detalle-page/:id", component: ReservacionesDetallePage},
 
 
      { path: "clientes/form-page", component: ClientesFormPage},
      { path: "clientes/form-page/:identificacion", component: ClientesFormPage},
+
+
+     
 ];

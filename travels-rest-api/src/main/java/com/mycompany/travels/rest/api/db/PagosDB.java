@@ -33,11 +33,20 @@ public class PagosDB implements CreacionEntidad<PagoReservacion>, BuscarVariosIn
             + "WHERE p.pago_id_reservacion = ?";
 
     private static final String OBTENER_COSTO_POR_RESERVACION
-            = "SELECT rs_costo_total FROM reservacion WHERE rs_numero_reservacion = ?";
+            = "SELECT paquete_precio FROM reservacion"
+            + " JOIN paquete ON paquete_id = rs_id_paquete WHERE rs_numero_reservacion = ?";
 
-    private static final String MARCAR_PAGADA = "UPDATE reservacion SET rs_id_estado = 1 WHERE rs_numero_reservacion = ?";
+    private static final String MARCAR_PAGADA = "UPDATE reservacion SET rs_id_estado = 4 WHERE rs_numero_reservacion = ?";
 
-    private static final String ES_PAGADA = "SELECT  FROM reservacion WHERE rs_numero_reservacion = ? AND rs_id_estado = 1";
+    private static final String ES_PAGADA = "SELECT *FROM reservacion WHERE rs_numero_reservacion = ? AND rs_id_estado = 4";
+    
+    
+    private static final String OBTENER_TOTAL_PAGADO = "select rs_total_pagado from reservacion where rs_numero_reservacion = ?";
+    
+    private static final String CAMBIAR_ESTADO_RESERVACION = "UPDATE reservacion set rs_id_estado = ? where rs_numero_reservacion = ?";
+    
+    
+    private static final String ACTUALIZAR_TOTAL_PAGADO = "UPDATE reservacion set rs_total_pagado = ? where rs_numero_reservacion = ?";
 
     @Override
 
@@ -85,17 +94,17 @@ public class PagosDB implements CreacionEntidad<PagoReservacion>, BuscarVariosIn
         );
     }
 
-    public double obtenerCostoTotalPaquete(int idPaquete) throws ExceptionGenerica {
+    public double obtenerCostoTotalReservacion(int idReservacion) throws ExceptionGenerica {
 
         try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(OBTENER_COSTO_POR_RESERVACION)) {
 
-            ps.setInt(1, idPaquete);
+            ps.setInt(1, idReservacion);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getDouble("paquete_precio");
                 }
-                throw new ExceptionGenerica("No se encontró el paquete con ID: " + idPaquete);
+                throw new ExceptionGenerica("No se encontró  el costo del paquete ");
             }
         } catch (SQLException e) {
             throw new ExceptionGenerica("Error al obtener el costo del paquete: " + e.getMessage());
@@ -123,6 +132,51 @@ public class PagosDB implements CreacionEntidad<PagoReservacion>, BuscarVariosIn
         } catch (SQLException e) {
             throw new ExceptionGenerica("Error al verificar el estado de la reservación: " + e.getMessage());
         }
+    }
+    
+    public void cambiarEstadoReservacion(int idEstado, int idReservacion) throws ExceptionGenerica {
+
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(CAMBIAR_ESTADO_RESERVACION)) {
+            ps.setInt(1, idEstado);
+            ps.setInt(2, idReservacion);
+            
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new ExceptionGenerica("Error al cambiar estado de la reservación: " + e.getMessage());
+        }
+    }
+    
+    
+    public double obtenerTotalPagado( int idReservacion) throws ExceptionGenerica {
+
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(OBTENER_TOTAL_PAGADO)) {
+    
+            ps.setInt(1, idReservacion);
+            
+            ResultSet rs  =ps.executeQuery();
+            if(rs.next()){
+                return rs.getDouble("rs_total_pagado");
+            }
+            
+             throw new ExceptionGenerica("No se encontró el total pagado de la reservación");
+
+        } catch (SQLException e) {
+            throw new ExceptionGenerica("Error al cambiar estado de la reservación: " + e.getMessage());
+        }
+    }
+    
+    
+    public void actualizarTotalPagado(double totalPagado, int idReservacion) throws ExceptionGenerica{
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(ACTUALIZAR_TOTAL_PAGADO)) {
+            ps.setDouble(1, totalPagado);
+            ps.setInt(2, idReservacion);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new ExceptionGenerica("Error al cambiar estado de la reservación: " + e.getMessage());
+        }
+        
     }
 
 }
