@@ -9,6 +9,8 @@ import { DestinoResponse } from "../../modelos/destinos/destino-reponse";
 import { ClienteRequest } from "../../modelos/clientes/cliente-request";
 import { ClienteResponse } from "../../modelos/clientes/cliente-response";
 import { PagoRequest } from "../../modelos/pagos/pago-request";
+import { PagoResponse } from "../../modelos/pagos/pago-response";
+import { IdReservacion } from "../../modelos/reservaciones/idReservacion";
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +26,13 @@ export class PagosService {
   public crear(nuevo: PagoRequest): Observable<void> {
     return this.httpCliente.post<void>(this.constantesRest.getApiURL() + 'api/pagos', nuevo);
   }
+
+  public obtenerPagosReservacion(id: string): Observable<PagoResponse[]> {
+    return this.httpCliente.get<PagoResponse []>( `${this.constantesRest.getApiURL()}api/pagos/${id}`);
+  }
+
+
+  
 
 
   /*

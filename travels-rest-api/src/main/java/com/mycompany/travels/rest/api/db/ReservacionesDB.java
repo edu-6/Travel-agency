@@ -158,7 +158,8 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
                 rs.getDate("rs_fecha_creacion").toLocalDate(),
                 rs.getDate("rs_fecha_viaje").toLocalDate(),
                 rs.getDouble("rs_total_pagado"),
-                rs.getDouble("paquete_precio")
+                rs.getDouble("paquete_precio"),
+                rs.getInt("rs_id_estado")
         );
     }
     

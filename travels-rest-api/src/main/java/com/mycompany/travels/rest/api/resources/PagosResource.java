@@ -6,6 +6,7 @@ package com.mycompany.travels.rest.api.resources;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mycompany.travels.rest.api.dtos.reservaciones.IdReservacion;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.modelos.PagoReservacion;
 import com.mycompany.travels.rest.api.servicios.PagosCrudService;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  *
@@ -47,7 +49,31 @@ public class PagosResource extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String ruta = obtenerParametroRuta(req);
+        int idReservacion = 0;
+        if(ruta != null){
+            idReservacion = Integer.valueOf(ruta);
+        }
         
+         try {
+              ArrayList<PagoReservacion> lista = crudService.buscarVariosInt(idReservacion);
+             resp.setStatus(HttpServletResponse.SC_OK);
+             
+             escritor.escribirJsonConFecha(resp,lista );
+         } catch (ExceptionGenerica ex) {
+             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            escritor.escribirError(ex.getMessage(), resp);
+         }
+    }
+    
+    private String obtenerParametroRuta(HttpServletRequest req) {
+        String ruta = req.getPathInfo();
+
+        if (ruta == null || ruta.equals("/")) {
+            return null;
+        } else {
+            return ruta.substring(1);
+        }
     }
     
     

@@ -94,7 +94,7 @@ CREATE TABLE reservacion(
     rs_id_titular VARCHAR(20) NOT NULL,
     rs_cantidad_pasajeros INTEGER NOT NULL,
     rs_id_agente_creador  INTEGER NOT NULL,
-    rs_id_estado          INTEGER NOT NULL,de
+    rs_id_estado          INTEGER NOT NULL,
     rs_fecha_creacion     DATE NOT NULL,
     rs_fecha_viaje	  DATE NOT NULL,
     rs_total_pagado	  DECIMAL(15,2) NOT NULL,

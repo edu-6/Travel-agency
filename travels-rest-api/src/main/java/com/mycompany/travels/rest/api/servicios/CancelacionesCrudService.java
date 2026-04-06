@@ -39,7 +39,7 @@ public class CancelacionesCrudService {
     
     private void verificarQuenoEsteCancelada(int idReservacion) throws ExceptionGenerica{
         int estadoReservacion = db.buscarEstadoReservacion(idReservacion);
-        if(!(estadoReservacion > 1 && estadoReservacion < 4)){ // si no se encuentra en el rango
+        if(estadoReservacion ==3){ // si no se encuentra en el rango
             throw new ExceptionGenerica("la reservación ya está cancelada");
         }
     }

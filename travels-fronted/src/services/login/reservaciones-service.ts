@@ -38,6 +38,18 @@ export class ReservacionesService {
     return this.httpCliente.get<ReservacionResponse[]>(this.constantesRest.getApiURL() + 'api/reservaciones/hoy');
   }
 
+
+  public cancelarReservacion( edicion: IdReservacion): Observable<void>{
+    return this.httpCliente.put<void>(this.constantesRest.getApiURL()+'api/reservaciones',edicion);
+  }
+
+
+
+  
+
+
+
+
   /*
 
 

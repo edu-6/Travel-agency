@@ -10,6 +10,8 @@ import { ModalGenerico } from "../../../shared/modal/modal-generico/modal-generi
 import { PagoForm } from "../../../components/reservaciones/pago-form/pago-form";
 import { PagoRequest } from '../../../modelos/pagos/pago-request';
 import { PagosService } from '../../../services/login/pagos-service';
+import { IdReservacion } from '../../../modelos/reservaciones/idReservacion';
+import { PagoResponse } from '../../../modelos/pagos/pago-response';
 
 @Component({
   selector: 'app-reservaciones-detalle-page',
@@ -29,6 +31,9 @@ export class ReservacionesDetallePage implements OnInit {
   encontrado = signal<boolean>(false);
   formularioAbierto = signal<boolean>(false);
 
+  pagos = signal<PagoResponse[]>([]);
+  
+
 
   constructor(private router: ActivatedRoute, private reservacionesService: ReservacionesService, private pagosService: PagosService) {
 
@@ -42,6 +47,7 @@ export class ReservacionesDetallePage implements OnInit {
 
 
   registrarPago(pago: PagoRequest) {
+    this.hayError.set(false);
     console.log(pago);
     this.pagosService.crear(pago).subscribe({
       next: () => {
@@ -54,12 +60,51 @@ export class ReservacionesDetallePage implements OnInit {
     });
   }
 
+
+  cancelarReservacion() {
+     let idRs = this.reservacion()!.id;
+    const cancelacion: IdReservacion = {
+      idReservacion: idRs
+    };
+
+    this.reservacionesService.cancelarReservacion(cancelacion).subscribe({
+      next: () =>{
+        this.buscarReservacionPorId();
+      },
+      error: (httpError: any) =>{
+        this.registrarError(httpError);
+      }
+
+    });
+
+  }
+
+
+
+
+
   cerrarFormularioPago() {
     this.formularioAbierto.set(false);
   }
 
   abrirFormularioPago() {
     this.formularioAbierto.set(true);
+  }
+
+
+
+  buscarPagosDeReservacion(id: string){
+    
+    this.pagosService.obtenerPagosReservacion(id).subscribe({
+      next:(pagos: PagoResponse[])=>{
+        this.pagos.set(pagos);
+      },
+      error: (error: any)=>{
+        this.registrarError(error);
+      }
+
+    });
+
   }
 
 
@@ -72,6 +117,7 @@ export class ReservacionesDetallePage implements OnInit {
       next: (r: ReservacionResponse) => {
         this.reservacion.set(r);
         this.encontrado.set(true);
+        this.buscarPagosDeReservacion(r.id.toString());
       },
       error: (error: any) => {
         this.registrarError(error);
@@ -85,11 +131,6 @@ export class ReservacionesDetallePage implements OnInit {
     this.hayError.set(true);
     const errorData: ErrorBackend = httpError.error;
     this.mensajeError = errorData.detalles;
-  }
-
-
-  cancelarReservacion() {
-    alert("se va a cancelar");
   }
 }
 

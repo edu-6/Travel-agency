@@ -65,26 +65,33 @@ public class ReservacionesCrudService extends CrudService implements CreacionRet
     @Override
     public ArrayList<ReservacionResponse> buscarPorString(String parametro) throws ExceptionGenerica {
         ArrayList<ReservacionResponse> lista = db.buscarPorString(parametro);
-        recuperarPasajerosReservacion(lista);
+        recuperarPasajerosReservacionLista(lista);
         return lista;
     }
     
     
     public ReservacionResponse buscarUnaPorID(int parametro) throws ExceptionGenerica{
-        return db.buscarUnaPorID(parametro);
+        ReservacionResponse reservacion =db.buscarUnaPorID(parametro);
+        recuperarPasajerosReseracion(reservacion);
+        return reservacion;
     }
 
     public ArrayList<ReservacionResponse> buscarReservacionesDelDia() throws ExceptionGenerica {
         ArrayList<ReservacionResponse> lista = db.buscarReservacionesHoy();
-        recuperarPasajerosReservacion(lista);
+        recuperarPasajerosReservacionLista(lista);
         return lista;
     }
 
-    private void recuperarPasajerosReservacion(ArrayList<ReservacionResponse> lista) throws ExceptionGenerica {
+    private void recuperarPasajerosReservacionLista(ArrayList<ReservacionResponse> lista) throws ExceptionGenerica {
         for (ReservacionResponse reservacion : lista) {
-            int idReservacion = reservacion.getId();
+           this.recuperarPasajerosReseracion(reservacion);
+        }
+    }
+    
+    private void recuperarPasajerosReseracion(ReservacionResponse reservacion) throws ExceptionGenerica{
+         int idReservacion = reservacion.getId();
             ArrayList<PasajeroResponse> pasajeros = pasajerosDB.buscarVariosInt(idReservacion);
             reservacion.setPasajeros(pasajeros);
-        }
+        
     }
 }

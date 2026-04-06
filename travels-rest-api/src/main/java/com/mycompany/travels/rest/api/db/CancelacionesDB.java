@@ -19,17 +19,18 @@ import java.time.LocalDate;
  */
 public class CancelacionesDB {
 
-    private static final String CANCELACION = "UPDATE reservacion  SET rs_id_estado = 4 where rs_id = ?";
+    private static final String CANCELACION = "UPDATE reservacion  SET rs_id_estado = 3 where rs_numero_reservacion = ?";
+    
     private static final String CREAR_CANCELACION = "INSERT INTO cancelacion"
             + " (cancelacion_fecha, cancelacion_id_reservacion, cancelacion_cantidad_rembolso)"
             + "VALUES (?, ?, ?)";
 
-    private static final String BUSCAR_ESTADO_RESERVACION = "select rs_id_estado from reservacion where reservacion_id = ?";
+    private static final String BUSCAR_ESTADO_RESERVACION = "select rs_id_estado from reservacion where rs_numero_reservacion = ?";
 
     private static final String BUSCAR_FECHA_VIAJE = "SELECT rs_fecha_viaje from reservacion where rs_numero_reservacion = ?";
     
     
-    private static final String BUSCAR_MONTO_PAGADO = "select rs_total_pagado from reservacion where rs_numero_resercacion = ?";
+    private static final String BUSCAR_MONTO_PAGADO = "select rs_total_pagado from reservacion where rs_numero_reservacion = ?";
 
     public void registrarCancelacion(Cancelacion cancelacion) throws ExceptionGenerica {
         try (Connection conexion = ConexionDB.getConnection(); 

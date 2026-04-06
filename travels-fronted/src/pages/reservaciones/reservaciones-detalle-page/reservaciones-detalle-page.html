@@ -17,6 +17,8 @@
         </div>
 
 
+        @if(!reservacion()!.cancelada){
+
         <div class="d-flex justify-content-center gap-3 w-100">
             <button class="btn btn-primary btn-md px-4" (click)="abrirFormularioPago()">
                 <i class="bi bi-credit-card me-2"></i>Realizar pago
@@ -25,15 +27,66 @@
                 <i class="bi bi-x-circle me-2"></i>Cancelar
             </button>
         </div>
+
+        @if(reservacion() && formularioAbierto()){
+        <app-pago-form [idReservacion]="reservacion()!.id" (pagoCreado)="registrarPago($event)"
+            (formularioCerrado)="cerrarFormularioPago()"></app-pago-form>
+        }
+
+        }
         }
 
 
-        @if(reservacion()  && formularioAbierto()){
-             <app-pago-form [idReservacion]="reservacion()!.id" 
-             (pagoCreado)="registrarPago($event)"
-             (formularioCerrado)="cerrarFormularioPago()"></app-pago-form>
+        <h5>Pasajeros: </h5>
+        <table class="table shadow bi">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Nacionalidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(p of reservacion()!.pasajeros; track p.identificacion){
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{p.identificacion}}</td>
+                    <td>{{p.nombre}}</td>
+                    <td>{{p.nacionalidad}}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+
+        @if(pagos()){
+        <h5>Historial de pagos</h5>
+        <table class="table shadow bi">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Metodo de pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(p of pagos(); track p.cantidad){
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{p.cantidad}}</td>
+                    <td>{{p.fechaPago}}</td>
+                    <td>{{p.metodoPago}}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        }@else {
+        <h4>Aun no hay pagos</h4>
         }
-       
+
 
     </div>
 </div>

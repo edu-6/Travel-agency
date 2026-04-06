@@ -36,7 +36,7 @@ export class ReservacionForm implements OnInit {
 
 
   formulario !: FormGroup;
-  mensajeError !: string;
+  mensajeError = signal<string | null>(null); 
 
 
   paquetes = signal<PaqueteResponse[]>([]);
@@ -133,7 +133,7 @@ export class ReservacionForm implements OnInit {
   private registrarError(httpError: any) {
     this.hayError.set(true);
     const errorData: ErrorBackend = httpError.error;
-    this.mensajeError = errorData.detalles;
+    this.mensajeError.set(errorData.detalles);
   }
 
 
@@ -154,6 +154,7 @@ export class ReservacionForm implements OnInit {
   }
 
   private reiniciarBooleanos() {
+    this.mensajeError.set(null);
     this.hayError.set(false);
     this.intentoEnviarlo.set(false);
   }

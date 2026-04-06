@@ -21,11 +21,13 @@ public class ReservacionResponse {
     private LocalDate fechaViaje;
     private double totalPagado;
     private double precioTotal;
+    private int idEstado;
+    private boolean cancelada;
     
     private ArrayList<PasajeroResponse> pasajeros;
 
     public ReservacionResponse(int id, String titular, String nombrePaquete, String estado, LocalDate fechaCreacion,
-            LocalDate fechaViaje, double totalPagado, double precioTotal) {
+            LocalDate fechaViaje, double totalPagado, double precioTotal, int rs_id_estado) {
         this.id = id;
         this.titular = titular;
         this.nombrePaquete = nombrePaquete;
@@ -34,6 +36,9 @@ public class ReservacionResponse {
         this.fechaViaje = fechaViaje;
         this.totalPagado = totalPagado;
         this.precioTotal = precioTotal;
+        this.idEstado = rs_id_estado;
+        
+        this.cancelada = (idEstado == 3);
     }
 
     public ReservacionResponse() {
