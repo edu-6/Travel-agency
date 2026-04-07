@@ -44,6 +44,11 @@ export class ReservacionesService {
   }
 
 
+  public buscarHistorialDeReservaciones(id: string): Observable<ReservacionResponse []> {
+    return this.httpCliente.get<ReservacionResponse []>(this.constantesRest.getApiURL() + 'api/historial-reservaciones'+ "/"+id);
+  }
+
+
 
   
 

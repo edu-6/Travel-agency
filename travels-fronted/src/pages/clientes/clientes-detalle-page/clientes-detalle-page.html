@@ -1,1 +1,34 @@
-<p>clientes-detalle-page works!</p>
+<app-header></app-header>
+
+<div class="container my-5">
+    <div class="mx-auto w-50 d-flex flex-column align-items-center gap-4">
+
+        <button class="btn btn-primary w-100 py-2" (click)="regresar()">Regresar</button>
+
+        @if (hayError()) {
+        <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+            <strong>Error! </strong> {{mensajeError}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        }
+
+        @if(clienteEncontrado()){
+        <div class="w-100">
+            <app-cliente-card [cliente]="clienteEncontrado()!" [puedeEliminar]="false"
+                [origen]="origen"></app-cliente-card>
+        </div>
+        }
+
+
+
+        <h5>Historial de reservaciones</h5>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            @for(r of reservaciones(); track r.id){
+            <app-reservacion-card [reservacion]="r" [mostrarBtnDetalles]="true"></app-reservacion-card>
+            }
+        </div>
+
+
+
+    </div>
+</div>

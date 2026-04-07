@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { Header } from "../../../shared/header/header";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalGenerico } from "../../../shared/modal/modal-generico/modal-generico";
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClientesService } from '../../../services/login/clientes-service';
 import { ClienteResponse } from '../../../modelos/clientes/cliente-response';
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
@@ -26,13 +26,24 @@ export class ClientesPage implements OnInit {
   clienteEncontrado = signal<ClienteResponse | null>(null);
   clienteSeleccionado  !: ClienteResponse;
 
-  constructor(private formBuiler: FormBuilder, private router: Router, private clientesService: ClientesService) {
+  constructor(private formBuiler: FormBuilder,
+     private router: Router, private clientesService: ClientesService
+  ,private routerParam: ActivatedRoute) {
 
   }
 
 
   ngOnInit(): void {
     this.instanciarFormulario();
+
+     const idIdentificacion =this.routerParam.snapshot.params['identificacion'];
+     if(idIdentificacion != null){
+      this.barraBusqueda.patchValue({
+        busqueda: [idIdentificacion]
+      });
+      this.buscarCliente();
+     }
+    
   }
 
 

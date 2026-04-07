@@ -41,7 +41,7 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
     private static final String BUSCAR_POR_ID = BUSCAR_SIMPLE + " where rs_numero_reservacion = ?";
 
     private static final String BUSCAR_POR_CLIENTE = BUSCAR_SIMPLE
-            + " where rs_id_titular = ?";
+            + " where rs_id_titular = ? ORDER BY rs_fecha_creacion DESC";
 
     private static final String BUSCAR_HOY = BUSCAR_SIMPLE
             + " where rs_fecha_creacion = ? ";

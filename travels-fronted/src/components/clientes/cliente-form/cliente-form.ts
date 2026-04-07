@@ -151,6 +151,11 @@ export class ClienteForm implements OnInit {
     }else if(this.origen ==='clientes-page'){
 
       this.router.navigate(['/clientes']);
+    }else if(this.origen === 'perfil-usuario'){
+      this.router.navigate(['clientes/detalles-page', this.edicion.identificacion]);
+    }
+    else{
+        this.router.navigate(['/reservaciones']);
     }
   }
 

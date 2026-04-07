@@ -14,8 +14,8 @@
         </div>
 
         <div class="d-flex justify-content-center gap-2">
-            <a  class="btn btn-primary" (click)="redirigirAClienteForm()">
-                <i class="bi bi-file-earmark-plus" ></i> Nuevo cliente
+            <a class="btn btn-primary" (click)="redirigirAClienteForm()">
+                <i class="bi bi-file-earmark-plus"></i> Nuevo cliente
             </a>
         </div>
 
@@ -27,13 +27,15 @@
         </div>
         }
 
-        
+
     </div>
 </div>
 
-
 @if(clienteEncontrado()){
-    <app-cliente-card [puedeEliminar]="true"  [origen]="origen" [cliente]="clienteEncontrado()!" (clienteSeleccionado)="guardarSeleccinado($event)"></app-cliente-card>
+<div class="align-items-center">
+    <app-cliente-card [puedeEliminar]="true" [origen]="origen" [cliente]="clienteEncontrado()!"
+        (clienteSeleccionado)="guardarSeleccinado($event)"></app-cliente-card>
+</div>
 }
 
 

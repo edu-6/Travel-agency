@@ -20,6 +20,7 @@ import { ClientesFormPage } from '../pages/clientes/clientes-form-page/clientes-
 import { ReservacionesDetallePage } from '../pages/reservaciones/reservaciones-detalle-page/reservaciones-detalle-page';
 import { ClientesPage } from '../pages/clientes/clientes-page/clientes-page';
 import { ClientesEditarPage } from '../pages/clientes/clientes-editar-page/clientes-editar-page';
+import { ClientesDetallePage } from '../pages/clientes/clientes-detalle-page/clientes-detalle-page';
 
 export const routes: Routes = [
 
@@ -55,6 +56,8 @@ export const routes: Routes = [
 
 
     { path: "clientes", component: ClientesPage },
+    { path: "clientes/:identificacion", component: ClientesPage },
+    { path: "clientes/detalles-page/:identificacion", component: ClientesDetallePage },
     { path: "clientes/editar-page/:identificacion", component: ClientesEditarPage },
     { path: "clientes/form-page", component: ClientesFormPage },
     { path: "clientes/form-page/:identificacion", component: ClientesFormPage },
