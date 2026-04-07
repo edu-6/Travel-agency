@@ -12,6 +12,7 @@ import { PagoRequest } from '../../../modelos/pagos/pago-request';
 import { PagosService } from '../../../services/login/pagos-service';
 import { IdReservacion } from '../../../modelos/reservaciones/idReservacion';
 import { PagoResponse } from '../../../modelos/pagos/pago-response';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-reservaciones-detalle-page',
@@ -32,15 +33,31 @@ export class ReservacionesDetallePage implements OnInit {
   formularioAbierto = signal<boolean>(false);
 
   pagos = signal<PagoResponse[]>([]);
-  
+
+  origen !: string;
 
 
-  constructor(private router: ActivatedRoute, private reservacionesService: ReservacionesService, private pagosService: PagosService) {
+
+  constructor(private routerParam: ActivatedRoute,
+    private reservacionesService: ReservacionesService,
+    private pagosService: PagosService, private router: Router,
+    private  location: Location) {
+
+    this.origen = history.state?.origin || 'default';
 
   }
 
   ngOnInit(): void {
     this.buscarReservacionPorId();
+  }
+
+
+  regresar(){
+    if (this.origen === 'reservacion-form' ) {
+      this.router.navigate(['/reservaciones']); 
+    } else {
+     this.location.back();
+    }
   }
 
 
@@ -62,16 +79,16 @@ export class ReservacionesDetallePage implements OnInit {
 
 
   cancelarReservacion() {
-     let idRs = this.reservacion()!.id;
+    let idRs = this.reservacion()!.id;
     const cancelacion: IdReservacion = {
       idReservacion: idRs
     };
 
     this.reservacionesService.cancelarReservacion(cancelacion).subscribe({
-      next: () =>{
+      next: () => {
         this.buscarReservacionPorId();
       },
-      error: (httpError: any) =>{
+      error: (httpError: any) => {
         this.registrarError(httpError);
       }
 
@@ -93,13 +110,13 @@ export class ReservacionesDetallePage implements OnInit {
 
 
 
-  buscarPagosDeReservacion(id: string){
-    
+  buscarPagosDeReservacion(id: string) {
+
     this.pagosService.obtenerPagosReservacion(id).subscribe({
-      next:(pagos: PagoResponse[])=>{
+      next: (pagos: PagoResponse[]) => {
         this.pagos.set(pagos);
       },
-      error: (error: any)=>{
+      error: (error: any) => {
         this.registrarError(error);
       }
 
@@ -111,7 +128,7 @@ export class ReservacionesDetallePage implements OnInit {
 
 
   buscarReservacionPorId() {
-    this.idReservacion = this.router.snapshot.params['id'];
+    this.idReservacion = this.routerParam.snapshot.params['id'];
 
     this.reservacionesService.obtenerReservacionId(this.idReservacion).subscribe({
       next: (r: ReservacionResponse) => {

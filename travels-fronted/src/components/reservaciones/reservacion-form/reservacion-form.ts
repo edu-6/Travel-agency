@@ -118,8 +118,7 @@ export class ReservacionForm implements OnInit {
   private guardarReservacion(nuevo: ReservacionRequest) {
     this.reservacionesService.crear(nuevo).subscribe({
       next:(id: IdReservacion)=>{
-        console.log(" se creóoooooo");
-        this.router.navigate(['/reservaciones']);
+        this.router.navigate(['/reservaciones/detalle-page', id.idReservacion], { state: { origin: 'reservacion-form' } });
       },
       error: (httpError: any) =>{
         this.registrarError(httpError);

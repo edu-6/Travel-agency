@@ -6,7 +6,6 @@ package com.mycompany.travels.rest.api.resources;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mycompany.travels.rest.api.dtos.reservaciones.IdReservacion;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.modelos.PagoReservacion;
 import com.mycompany.travels.rest.api.servicios.PagosCrudService;
