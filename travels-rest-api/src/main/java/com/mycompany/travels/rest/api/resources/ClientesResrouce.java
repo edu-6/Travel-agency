@@ -34,6 +34,16 @@ public class ClientesResrouce extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String parametro = this.obtenerParametroRuta(req);
+        if (parametro != null) {
+            try {
+                crudService.eliminar(parametro);
+                resp.setStatus(HttpServletResponse.SC_OK);
+            } catch (ExceptionGenerica ex) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                escritor.escribirError(ex.getMessage(), resp);
+            }
+        }
 
     }
 

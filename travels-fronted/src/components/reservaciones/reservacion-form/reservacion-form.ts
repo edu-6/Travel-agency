@@ -10,11 +10,11 @@ import { PaqueteResponse } from '../../../modelos/paquetes/paquete-response';
 import { ReservacionRequest } from '../../../modelos/reservaciones/reservacionRequest';
 import { ReservacionesService } from '../../../services/login/reservaciones-service';
 import { IdReservacion } from '../../../modelos/reservaciones/idReservacion';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-reservacion-form',
-  imports: [ReactiveFormsModule, PasajeroReservacionComponent],
+  imports: [ReactiveFormsModule, PasajeroReservacionComponent, RouterLink],
   templateUrl: './reservacion-form.html',
   styleUrl: './reservacion-form.css',
 })

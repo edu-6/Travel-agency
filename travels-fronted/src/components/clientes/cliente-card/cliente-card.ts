@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClienteResponse } from '../../../modelos/clientes/cliente-response';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cliente-card',
@@ -10,15 +10,38 @@ import { RouterLink } from '@angular/router';
 })
 export class ClienteCard {
 
-  espacio : string = "    ";
+  espacio: string = "    ";
 
   @Input()
   cliente !: ClienteResponse;
 
 
-  public eliminarAccion(){
+  @Input({ required: true })
+  puedeEliminar !: boolean;
 
-    
+
+  @Input({ required: true })
+  origen !: string;
+
+
+  @Output()
+  clienteSeleccionado = new EventEmitter<ClienteResponse>();
+
+  constructor(private router: Router) {
+
+  }
+
+
+  public eliminarAccion() {
+    this.clienteSeleccionado.emit(this.cliente);
+    console.log("fnciona el boton");
+  }
+
+
+
+
+  redirigirAEditarPage() {
+    this.router.navigate(['/clientes/editar-page', this.cliente.identificacion.toString()], { queryParams: { origin: this.origen } });
   }
 
 }

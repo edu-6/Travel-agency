@@ -28,7 +28,7 @@
 @if(clienteEncontrado()){
 <div class="container text-start my-30">
     <div class="  align-items-start gap-3 w-50">
-        <app-cliente-card [cliente]="clienteEncontrado()!"></app-cliente-card>
+        <app-cliente-card [puedeEliminar]="false" [origen]="origen" [cliente]="clienteEncontrado()!"></app-cliente-card>
     </div>
 </div>
 

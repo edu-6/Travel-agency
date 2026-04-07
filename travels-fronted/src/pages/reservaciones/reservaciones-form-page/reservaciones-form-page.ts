@@ -20,6 +20,8 @@ export class ReservacionesFormPage implements OnInit {
   hayError = signal<boolean>(false);
   mensajeError !: string;
 
+  origen : string = "reservaciones-form";
+
   clienteEncontrado = signal<ClienteResponse | undefined>(undefined);
 
   identificacionRecibida !: string;

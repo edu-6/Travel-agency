@@ -1,0 +1,40 @@
+<app-header></app-header>
+
+<div class="container text-center my-5">
+
+    <div class="d-flex flex-column align-items-center gap-3 w-100">
+
+        <div [formGroup]="barraBusqueda" class="d-flex justify-content-center gap-2 w-50">
+            <input class="form-control flex-grow-1" type="search-primary" placeholder="busqueda por identificacion"
+                formControlName="busqueda">
+
+            <button class="btn btn-primary" (click)="buscarCliente()">
+                Search
+            </button>
+        </div>
+
+        <div class="d-flex justify-content-center gap-2">
+            <a  class="btn btn-primary" (click)="redirigirAClienteForm()">
+                <i class="bi bi-file-earmark-plus" ></i> Nuevo cliente
+            </a>
+        </div>
+
+
+        @if (hayError()) {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error! </strong> {{mensajeError}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        }
+
+        
+    </div>
+</div>
+
+
+@if(clienteEncontrado()){
+    <app-cliente-card [puedeEliminar]="true"  [origen]="origen" [cliente]="clienteEncontrado()!" (clienteSeleccionado)="guardarSeleccinado($event)"></app-cliente-card>
+}
+
+
+<app-modal-generico [mensaje]="mensajeEliminacion" (confirmationExecuter)="eliminarRegistro()" />

@@ -38,13 +38,13 @@ export class ClientesService {
     return this.httpCliente.get<ClienteResponse>( `${this.constantesRest.getApiURL()}api/clientes/${id}`);
   }
 
-  public editarProvedor( edicion: DestinoRequest): Observable<void>{
-    return this.httpCliente.put<void>(this.constantesRest.getApiURL()+'api/destinos',edicion);
+  public editarCliente( edicion: ClienteRequest): Observable<void>{
+    return this.httpCliente.put<void>(this.constantesRest.getApiURL()+'api/clientes',edicion);
   }
 
 
-    public eliminar(nombre: string): Observable<void>{
-    return this.httpCliente.delete<void>(`${this.constantesRest.getApiURL()}api/destinos/${nombre}`);
+    public eliminar(id: string): Observable<void>{
+    return this.httpCliente.delete<void>(`${this.constantesRest.getApiURL()}api/clientes/${id}`);
   }
 
 

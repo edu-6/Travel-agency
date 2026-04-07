@@ -23,6 +23,9 @@ import java.sql.Date;
  */
 public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Cliente>,
         ExisteEntidad, ExtraerEntidad<Cliente>{
+    
+    
+    private static final String ELIMINAR = "delete from cliente where cliente_id = ?";
 
     private static final String CREAR = "INSERT INTO cliente"
             + " (cliente_id,"
@@ -80,6 +83,17 @@ public class ClientesDB implements CreacionEntidad<Cliente>, EdicionEntidad<Clie
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new ExceptionGenerica("falló al actualizar cliente" + e.getMessage());
+        }
+    }
+    
+    
+    
+    public void eliminar(String id) throws ExceptionGenerica {
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(ELIMINAR)){
+            ps.setString(1,id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new ExceptionGenerica("falló al eliminar cliente" + e.getMessage());
         }
     }
 

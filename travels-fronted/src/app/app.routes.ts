@@ -18,6 +18,8 @@ import { ReservacionesPage } from '../pages/reservaciones/reservaciones-page/res
 import { ReservacionesFormPage } from '../pages/reservaciones/reservaciones-form-page/reservaciones-form-page';
 import { ClientesFormPage } from '../pages/clientes/clientes-form-page/clientes-form-page';
 import { ReservacionesDetallePage } from '../pages/reservaciones/reservaciones-detalle-page/reservaciones-detalle-page';
+import { ClientesPage } from '../pages/clientes/clientes-page/clientes-page';
+import { ClientesEditarPage } from '../pages/clientes/clientes-editar-page/clientes-editar-page';
 
 export const routes: Routes = [
 
@@ -48,12 +50,15 @@ export const routes: Routes = [
     { path: "reservaciones", component: ReservacionesPage },
     { path: "reservaciones/form-page", component: ReservacionesFormPage },
     { path: "reservaciones/form-page/:identificacion", component: ReservacionesFormPage },
-    { path: "reservaciones/detalle-page/:id", component: ReservacionesDetallePage},
+    { path: "reservaciones/detalle-page/:id", component: ReservacionesDetallePage },
 
 
-     { path: "clientes/form-page", component: ClientesFormPage},
-     { path: "clientes/form-page/:identificacion", component: ClientesFormPage},
+
+    { path: "clientes", component: ClientesPage },
+    { path: "clientes/editar-page/:identificacion", component: ClientesEditarPage },
+    { path: "clientes/form-page", component: ClientesFormPage },
+    { path: "clientes/form-page/:identificacion", component: ClientesFormPage },
 
 
-     
+
 ];

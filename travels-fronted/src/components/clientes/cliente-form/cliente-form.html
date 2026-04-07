@@ -25,13 +25,19 @@
 
                                     <label class="form-label">identificacion: </label>
 
-                                    <input type="text" class="form-control" name="name" formControlName="identificacion"
+
+                                    @if(!enEdicion()){
+                                        <input type="text" class="form-control" name="name" formControlName="identificacion"
                                         [class.is-invalid]="formulario.controls['identificacion'].invalid && intentoEnviarlo()">
                                     <div class="invalid-feedback">
                                         <div>
                                             identificacion
                                         </div>
                                     </div>
+                                    }@else {
+                                        <h6>{{edicion.identificacion}}</h6>
+                                    }
+                                    
                                 </div>
 
 
@@ -122,7 +128,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <button type="button" class="btn btn-secondary py-2 w-100">Cancelar</button>
+                                <button type="button" class="btn btn-secondary py-2 w-100" (click)="cancelar()">Cancelar</button>
                             </div>
                         </div>
                     </div>

@@ -7,6 +7,8 @@ import { EnumsService } from '../../../services/login/enums-service';
 import { ClienteRequest } from '../../../modelos/clientes/cliente-request';
 import { ClientesService } from '../../../services/login/clientes-service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-cliente-form',
@@ -30,10 +32,17 @@ export class ClienteForm implements OnInit {
 
   identificacionRecibida  !: string;
 
-  vieneDeReservacionForm : boolean = false;
+  vieneDeReservacionForm: boolean = false;
+
+  origen !: string;
 
   @Input()
   identificacionNuevo !: string;
+
+
+  @Input()
+
+  edicion !: ClienteRequest;
 
 
   constructor(
@@ -41,27 +50,37 @@ export class ClienteForm implements OnInit {
     private enumsService: EnumsService,
     private clientesService: ClientesService,
     private router: Router,
-    private routerParams: ActivatedRoute) {
+    private routerParams: ActivatedRoute,
+    private location: Location) {
   }
 
 
   ngOnInit(): void {
 
+    if (this.edicion) {
+      this.enEdicion.set(true);
+    }
+
+
+    this.origen = this.routerParams.snapshot.queryParamMap.get('origin') || history.state?.origin || 'default';
+
+
     this.cargarNacionalidades();
     this.instanciarFormulario();
 
 
-
-    
     // recibir el parametro
     this.identificacionRecibida = this.routerParams.snapshot.params['identificacion'];
     if (this.identificacionRecibida) {
-
-        this.vieneDeReservacionForm = true;
-
+      this.vieneDeReservacionForm = true;
       this.formulario.patchValue({
         identificacion: this.identificacionRecibida
       });
+    }
+
+
+    if (this.edicion) {
+      this.formulario.reset(this.edicion);
     }
   }
 
@@ -81,12 +100,12 @@ export class ClienteForm implements OnInit {
 
 
   enviar() {
+    this.hayError.set(false);
     this.intentoEnviarlo.set(true);
     if (!this.formulario.valid) return;
 
     let nuevo = this.formulario.value as ClienteRequest;
     console.log(nuevo);
-
     if (this.enEdicion()) {
       this.editar(nuevo);
     } else {
@@ -97,24 +116,42 @@ export class ClienteForm implements OnInit {
 
 
   private editar(nuevo: ClienteRequest) {
-
+    this.clientesService.editarCliente(nuevo).subscribe({
+      next: () => {
+        this.redirigirAPagina();
+      },
+      error: (error: any) => {
+        this.registrarError(error);
+      }
+    });
   }
 
   private guardarNuevo(nuevo: ClienteRequest) {
     this.clientesService.crear(nuevo).subscribe({
 
       next: () => {
-        if(this.vieneDeReservacionForm){
-          this.router.navigate(['/reservaciones/form-page', this.formulario.value.identificacion]);
-        }else{
-          // dirigir a otro lado (pagina de clientes)
-        }
+        this.redirigirAPagina();
       },
       error: (error: any) => {
         this.registrarError(error);
       }
     });
+  }
 
+
+  cancelar() {
+    this.redirigirAPagina();
+  }
+
+  redirigirAPagina() {
+    if(this.origen === 'reservaciones-form'){
+
+      this.router.navigate(['/reservaciones/form-page', this.formulario.value.identificacion]);
+
+    }else if(this.origen ==='clientes-page'){
+
+      this.router.navigate(['/clientes']);
+    }
   }
 
 

@@ -1,0 +1,7 @@
+<app-header></app-header>
+
+@if(fueEncontrado()){
+<app-cliente-form [edicion]="clienteEncontrado"></app-cliente-form>
+}
+@else { <h1>No se encontró el usuario </h1>
+}

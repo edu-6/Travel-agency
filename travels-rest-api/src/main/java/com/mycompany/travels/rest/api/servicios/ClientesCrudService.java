@@ -19,6 +19,14 @@ public class ClientesCrudService extends CrudService implements CreacionEntidad<
          {
     
     private final ClientesDB db = new ClientesDB();
+    
+    
+    
+        
+    public void eliminar(String identificacion) throws ExceptionGenerica{
+        db.eliminar(identificacion);
+    }
+
 
     @Override
     public void crear(Cliente entidad) throws ExceptionGenerica {
