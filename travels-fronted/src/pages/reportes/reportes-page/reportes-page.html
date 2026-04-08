@@ -1,0 +1,48 @@
+<app-header></app-header>
+
+<div class="container text-center my-5">
+    <div class="d-flex flex-column align-items-center gap-3 w-100">
+
+
+
+        <div class="d-flex justify-content-center gap-2 w-100" style="max-width: 1000px;">
+
+            <div [formGroup]="formulario" class="d-flex justify-content-center gap-2 w-100" style="max-width: 1000px;">
+
+
+                <select id="eventType" #comboDestino name="eventType" class="form-select" formControlName="tipoReporte">
+                    @for (reporte of listaReportes; track reporte) {
+                    <option [value]="reporte">
+                        {{ reporte}}
+                    </option>
+                    }
+                </select>
+
+
+                <input type="date" class="form-control" formControlName="fechaInicio">
+                <input type="date" class="form-control" formControlName="fechaFinal">
+
+
+                <button class="btn btn-outline-primary" style="white-space: nowrap;"
+                    (click)="generarReporte(comboDestino.value)">
+                    Generar
+                </button>
+            </div>
+
+        </div>
+        
+        <div class="d-flex justify-content-center">
+            <a routerLink="/exportar" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Exportar
+            </a>
+        </div>
+
+
+        @if (hayError()) {
+        <div class="alert alert-danger alert-dismissible fade show w-100" role="alert" style="max-width: 600px;">
+            <strong>Error! </strong> {{mensajeError}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        }
+    </div>
+</div>

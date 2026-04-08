@@ -21,6 +21,7 @@ import { ReservacionesDetallePage } from '../pages/reservaciones/reservaciones-d
 import { ClientesPage } from '../pages/clientes/clientes-page/clientes-page';
 import { ClientesEditarPage } from '../pages/clientes/clientes-editar-page/clientes-editar-page';
 import { ClientesDetallePage } from '../pages/clientes/clientes-detalle-page/clientes-detalle-page';
+import { ReportesPage } from '../pages/reportes/reportes-page/reportes-page';
 
 export const routes: Routes = [
 
@@ -61,6 +62,8 @@ export const routes: Routes = [
     { path: "clientes/editar-page/:identificacion", component: ClientesEditarPage },
     { path: "clientes/form-page", component: ClientesFormPage },
     { path: "clientes/form-page/:identificacion", component: ClientesFormPage },
+
+    {path: "reportes", component: ReportesPage}
 
 
 
