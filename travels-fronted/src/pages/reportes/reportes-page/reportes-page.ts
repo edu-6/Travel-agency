@@ -2,6 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { Header } from "../../../shared/header/header";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReporteRequest } from '../../../modelos/reportes/reporte-request';
+import { ReportesSerivice } from '../../../services/login/reprotes-service';
+import { ReporteGanancias } from '../../../modelos/reportes/reporte-ganancia';
 
 @Component({
   selector: 'app-reportes-page',
@@ -31,13 +33,26 @@ export class ReportesPage  implements OnInit{
   formulario !: FormGroup;
 
 
-  constructor(private formBuiler: FormBuilder){
+  constructor(private formBuiler: FormBuilder, private reportesService: ReportesSerivice){
 
   }
 
   generarReporte(tipoReporte: string) {
      const reporteRequest =this.formulario.value as ReporteRequest;
      console.log(reporteRequest);
+
+    this.reportesService.obtenerReporteGanancias(reporteRequest).subscribe({
+
+      next:(rep: ReporteGanancias)=>{
+        console.log(rep);
+      },
+      error:()=>{
+
+      }
+
+    });     
+
+
   }
 
   ngOnInit(): void {
@@ -52,4 +67,7 @@ export class ReportesPage  implements OnInit{
       fechaFinal: [null]
     });
   }
+
+
+
 }

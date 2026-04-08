@@ -7,6 +7,7 @@ import { Injectable } from "@angular/core";
 import { ProveedorRequest } from "../../modelos/proveedores/ProveedorRequest";
 import { ProveedorResponse } from "../../modelos/proveedores/ProveedorResponse";
 import { ReporteGanancias } from "../../modelos/reportes/reporte-ganancia";
+import { ReporteRequest } from "../../modelos/reportes/reporte-request";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class ReportesSerivice {
 
   }
 
-  public obtenerReporteGanancias(): Observable<ReporteGanancias>{
-    return this.httpCliente.get<ReporteGanancias>(this.constantesRest.getApiURL()+ 'api/reportes');
+  public obtenerReporteGanancias(rep: ReporteRequest): Observable<ReporteGanancias>{
+    return this.httpCliente.post<ReporteGanancias>(this.constantesRest.getApiURL()+ 'api/reportes', rep );
   }
 
 

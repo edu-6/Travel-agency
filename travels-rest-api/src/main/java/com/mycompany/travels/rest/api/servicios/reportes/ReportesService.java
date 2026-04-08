@@ -8,6 +8,7 @@ import com.mycompany.travels.rest.api.db.reportes.GananciasDB;
 import com.mycompany.travels.rest.api.dtos.reportes.ReporteGanancia;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.modelos.ReporteRequest;
+import com.mycompany.travels.rest.api.modelos.enums.ReportesEnum;
 
 /**
  *
@@ -17,7 +18,7 @@ public class ReportesService {
 
     private GananciasDB gananciasDB = new GananciasDB();
 
-    public ReporteGanancia generarReproteGanacias(ReporteRequest request) throws ExceptionGenerica {
+    private ReporteGanancia generarReproteGanacias(ReporteRequest request) throws ExceptionGenerica {
 
         if (request == null) {
             throw new ExceptionGenerica("Erorr al recibir la peticion");
@@ -39,8 +40,20 @@ public class ReportesService {
         }
 
         ganancia = ingresos - engresos;
-        
-        return new ReporteGanancia(ingresos, engresos,ganancia);
+
+        return new ReporteGanancia(ingresos, engresos, ganancia);
+    }
+
+    public Object generarReporte(ReporteRequest request) throws ExceptionGenerica {
+
+        String tipoReporte = request.getTipoReporte();
+
+        if (tipoReporte.equals(ReportesEnum.REPORTE_GANANCIAS.getValor())) {
+            return this.generarReproteGanacias(request);
+        }
+
+        return null;
+
     }
 
 }

@@ -46,6 +46,8 @@ public class ReporteRequest {
     public void setTipoReporte(String tipoReporte) {
         this.tipoReporte = tipoReporte;
     }
+    
+    
 
     public void validarPeriodos () throws ExceptionGenerica {
 
