@@ -1,0 +1,44 @@
+<h4 class="text-center">Reporte del Agente con más Ventas</h4>
+<br>
+
+<table class="table ">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">ID Agente</th>
+            <th scope="col">Nombre del Empleado</th>
+            <th scope="col">Total Reservaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">{{reporte.idAgente}}</th>
+            <td>{{reporte.nombreAgente}}</td>
+            <td>{{reporte.reservaciones.length}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<h5 class="text-center">Detalle de Reservaciones</h5>
+
+
+<table class="table table-striped">
+    <thead class="thead-light">
+        <tr>
+
+            <th scope="col">No. Reservación</th>
+            <th scope="col">Fecha de Creación</th>
+            <th scope="col">Precio reservacion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (item of reporte.reservaciones; track item.idReservacion; let i = $index) {
+        <tr>
+
+            <td>{{ item.idReservacion }}</td>
+            <td>{{ item.fechaCreacion }}</td>
+            <td>{{ item.totalAPagar}}</td>
+        </tr>
+        }
+    </tbody>
+</table>

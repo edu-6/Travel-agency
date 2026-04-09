@@ -18,7 +18,7 @@ import java.time.LocalDate;
  *
  * @author edu
  */
-public class GananciasDB {
+public class ReporteGanaciasDB {
 
        private static final String INGRESOS = "select  SUM(pago_cantidad)"
             + " as ingresos from pago_reservacion";

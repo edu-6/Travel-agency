@@ -39,8 +39,8 @@ public class CancelacionesDB {
             ps.setDate(1, Date.valueOf(cancelacion.getFechaCancelacion()));
             ps.setInt(2, cancelacion.getIdReservacion());
             ps.setDouble(3, cancelacion.getCantidadReembolsada());
-
             this.marcarComoCancelada(cancelacion.getIdReservacion());
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new ExceptionGenerica("Error al registrar cancelación: " + e.getMessage());
         }

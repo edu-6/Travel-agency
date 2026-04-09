@@ -24,13 +24,18 @@
 
 
                 <button class="btn btn-outline-primary" style="white-space: nowrap;"
+                    (click)="resetearFormulario(comboDestino.value)">
+                    Borrar
+                </button>
+
+                <button class="btn btn-outline-primary" style="white-space: nowrap;"
                     (click)="generarReporte(comboDestino.value)">
                     Generar
                 </button>
             </div>
 
         </div>
-        
+
         <div class="d-flex justify-content-center">
             <a routerLink="/exportar" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> Exportar
@@ -44,5 +49,33 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         }
+
     </div>
 </div>
+
+
+
+<!---
+  public listaReportes: string[] = [
+    "Reporte de ganancias",
+    "Reporte del agente con mas ventas",
+    "Reporte de ganancias en un intervalo de tiempo",
+    "Reporte del agente con más ventas",
+    "Reporte del agente con más ganancias",
+    "Reporte del paquete más vendido",
+    "Reporte del paquete menos vendido",
+    "Reporte de ocupación por destino"
+  ];
+
+-->
+
+@if(reporteActivo("Reporte de ganancias")){
+<app-reporte-ganancias [reporte]="reporteGanancias()!"></app-reporte-ganancias>
+
+}
+
+
+@if(reporteActivo("Reporte del agente con mas ventas") && reporteAgenteMasVentas()){
+<app-reporte-agente-ventas [reporte]="reporteAgenteMasVentas()!"></app-reporte-agente-ventas>
+
+}

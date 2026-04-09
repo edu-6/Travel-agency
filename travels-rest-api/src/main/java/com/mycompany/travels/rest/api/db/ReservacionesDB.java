@@ -26,8 +26,8 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
         ExtraerEntidad<ReservacionResponse> {
 
     private static final String CREAR = "INSERT INTO reservacion (rs_id_titular, rs_cantidad_pasajeros, rs_id_agente_creador, "
-            + "rs_id_estado, rs_fecha_creacion, rs_fecha_viaje, rs_total_pagado, rs_id_paquete) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+            + "rs_id_estado, rs_fecha_creacion, rs_fecha_viaje, rs_total_pagado, rs_id_paquete, rs_total_a_pagar) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?,?, ?)";
 
     private static final String BUSCAR_SIMPLE = "select reservacion.*, cliente_nombre,"
             + "estado_reservacion_nombre, cliente_id, empleado_nombre, paquete_nombre,paquete_precio"
@@ -36,8 +36,9 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
             + " join paquete ON rs_id_paquete = paquete_id"
             + " join empleado ON empleado_id = rs_id_agente_creador"
             + " join estado_reservacion ON rs_id_estado = estado_reservacion_id";
-    
-    
+
+    private static final String BUSCAR_PRECIO_PAQUETE = "select paquete_precio from paquete where paquete_id = ?";
+
     private static final String BUSCAR_POR_ID = BUSCAR_SIMPLE + " where rs_numero_reservacion = ?";
 
     private static final String BUSCAR_POR_CLIENTE = BUSCAR_SIMPLE
@@ -60,8 +61,9 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
             ps.setDate(6, java.sql.Date.valueOf(entidad.getFechaViaje()));
             ps.setDouble(7, 0.0);
             ps.setInt(8, entidad.getIdPaquete());
+            ps.setDouble(9, entidad.getTotalAPagar());
             ps.executeUpdate();
-            
+
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     return rs.getInt(1);
@@ -73,13 +75,12 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
             throw new ExceptionGenerica("Error al crear la reservación: " + e.getMessage());
         }
     }
-    
-    
+
     public boolean existeViajeEnEstaFecha(LocalDate fecha, String idTitular) throws ExceptionGenerica {
         try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(EXISTE_VIAJE_EN_FECHA)) {
             ps.setDate(1, Date.valueOf(fecha));
             ps.setString(2, idTitular);
-            
+
             try (ResultSet rs = ps.executeQuery();) {
                 return rs.next();
             }
@@ -87,9 +88,7 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
             throw new ExceptionGenerica("Error al buscar fecha disponible" + e.getMessage());
         }
     }
-    
-    
-    
+
     public ReservacionResponse buscarUnaPorID(int parametro) throws ExceptionGenerica {
         try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(BUSCAR_POR_ID)) {
             ps.setInt(1, parametro);
@@ -158,13 +157,24 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
                 rs.getDate("rs_fecha_creacion").toLocalDate(),
                 rs.getDate("rs_fecha_viaje").toLocalDate(),
                 rs.getDouble("rs_total_pagado"),
-                rs.getDouble("paquete_precio"),
+                rs.getDouble("rs_total_a_pagar"),
                 rs.getInt("rs_id_estado")
         );
     }
-    
-    
-    
-    
+
+    public double obtenerPrecioPaquete(int idPaquete) throws ExceptionGenerica {
+        try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(BUSCAR_PRECIO_PAQUETE)) {
+            ps.setInt(1, idPaquete);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("paquete_precio");
+            }
+            
+            throw new ExceptionGenerica(" no se encontró el paquete ");
+
+        } catch (SQLException e) {
+            throw new ExceptionGenerica("Error al buscar reservaciones del día : " + e.getMessage());
+        }
+    }
 
 }

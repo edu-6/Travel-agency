@@ -19,6 +19,7 @@ public class ReservacionRequest {
     private int idAgenteCreador;
     private LocalDate fechaCreacion;
     private LocalDate fechaViaje;
+    private double totalAPagar;
     
     private String [] pasajeros;
     
@@ -90,6 +91,19 @@ public class ReservacionRequest {
             }
         }
     }
+
+    public double getTotalAPagar() {
+        return totalAPagar;
+    }
+
+    public void setTotalAPagar(double totalAPagar) {
+        this.totalAPagar = totalAPagar;
+    }
+    
+    
+    
+    
+    
     
     
     

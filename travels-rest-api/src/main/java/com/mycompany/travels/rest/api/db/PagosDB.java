@@ -33,8 +33,8 @@ public class PagosDB implements CreacionEntidad<PagoReservacion>, BuscarVariosIn
             + "WHERE p.pago_id_reservacion = ?";
 
     private static final String OBTENER_COSTO_POR_RESERVACION
-            = "SELECT paquete_precio FROM reservacion"
-            + " JOIN paquete ON paquete_id = rs_id_paquete WHERE rs_numero_reservacion = ?";
+            = "SELECT reservacion.* FROM reservacion"
+            + " WHERE rs_numero_reservacion = ?";
 
     private static final String MARCAR_PAGADA = "UPDATE reservacion SET rs_id_estado = 4 WHERE rs_numero_reservacion = ?";
 
@@ -102,7 +102,7 @@ public class PagosDB implements CreacionEntidad<PagoReservacion>, BuscarVariosIn
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getDouble("paquete_precio");
+                    return rs.getDouble("rs_total_a_pagar");
                 }
                 throw new ExceptionGenerica("No se encontró  el costo del paquete ");
             }

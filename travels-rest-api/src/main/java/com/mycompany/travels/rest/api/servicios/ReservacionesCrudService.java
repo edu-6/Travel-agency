@@ -48,6 +48,12 @@ public class ReservacionesCrudService extends CrudService implements CreacionRet
                 throw new EntidadDuplicadaException("Los pasajeros sobrepasan el paquete max: "+paquete.getCapacidadMaxima());
         }
         
+        
+        double precioPaquete = db.obtenerPrecioPaquete(entidad.getIdPaquete());
+        entidad.setTotalAPagar(precioPaquete);
+        
+        
+        
 
         int id = db.crear(entidad);
         entidad.generarPasajerosRequest(id);

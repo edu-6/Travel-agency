@@ -31,7 +31,6 @@ public class CancelacionesCrudService {
         
         Cancelacion canc = new Cancelacion(cancelacion.getFechaCancelacion(),
         reembolso, cancelacion.getIdReservacion());
-        
         db.registrarCancelacion(canc);
     }
     

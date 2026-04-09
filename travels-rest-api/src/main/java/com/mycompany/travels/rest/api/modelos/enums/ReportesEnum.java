@@ -9,9 +9,9 @@ package com.mycompany.travels.rest.api.modelos.enums;
  * @author edu
  */
 public enum ReportesEnum {
-    REPORTE_GANANCIAS("Reporte de ventas en un intervalo de tiempo"),
-    EGRESO("Egreso"),
-    CANCELACION("Cancelacion"),
+    REPORTE_GANANCIAS("Reporte de ganancias"),
+    REPORTE_AGENTE_MAS_VENTAS("Reporte del agente con mas ventas"),
+    REPORTE_AGENTE_MAS_GANANCIAS("Reporte del agente con mas ganancias"),
     RESERVACION("Reservacion"),
     PAGO("Pago"),
     REEMBOLSO("Reembolso"),

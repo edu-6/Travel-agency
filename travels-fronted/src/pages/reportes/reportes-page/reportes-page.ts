@@ -4,24 +4,34 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ReporteRequest } from '../../../modelos/reportes/reporte-request';
 import { ReportesSerivice } from '../../../services/login/reprotes-service';
 import { ReporteGanancias } from '../../../modelos/reportes/reporte-ganancia';
+import { ReporteGananciasComponent } from "../../../components/reportes/reporte-ganancias/reporte-ganancias";
+import { ReporteAgenteMasVentas } from '../../../modelos/reportes/reporte-agente-mas-ventas/reporte-agente-mas-ventas';
+import { ReporteAgenteVentas } from "../../../components/reportes/reporte-agente-ventas/reporte-agente-ventas";
+import { ErrorBackend } from '../../../modelos/ErrorBackend';
+import { SignalFormControl } from '@angular/forms/signals/compat';
 
 @Component({
   selector: 'app-reportes-page',
-  imports: [Header, ReactiveFormsModule],
+  imports: [Header, ReactiveFormsModule, ReporteGananciasComponent, ReporteAgenteVentas],
   templateUrl: './reportes-page.html',
   styleUrl: './reportes-page.css',
 })
-export class ReportesPage  implements OnInit{
+export class ReportesPage implements OnInit {
 
+  formulario !: FormGroup;
 
   hayError = signal<boolean>(false);
+  reporteEncontrado = signal<boolean>(false);
+  reporteActual = signal<string | null>(null);
 
+  reporteGanancias = signal<ReporteGanancias | null>(null);
+  reporteAgenteMasVentas = signal<ReporteAgenteMasVentas | null>(null);
   mensajeError !: string;
 
   public listaReportes: string[] = [
-    "Reporte de ventas en un intervalo de tiempo",
-    "Reporte de cancelaciones en un intervalo de tiempo",
-    "Reporte de ganancias en un intervalo de tiempo",
+    "Reporte de ganancias",
+    "Reporte del agente con mas ventas",
+    "Reporte del agente con mas ganancias",
     "Reporte del agente con más ventas",
     "Reporte del agente con más ganancias",
     "Reporte del paquete más vendido",
@@ -29,29 +39,7 @@ export class ReportesPage  implements OnInit{
     "Reporte de ocupación por destino"
   ];
 
-
-  formulario !: FormGroup;
-
-
-  constructor(private formBuiler: FormBuilder, private reportesService: ReportesSerivice){
-
-  }
-
-  generarReporte(tipoReporte: string) {
-     const reporteRequest =this.formulario.value as ReporteRequest;
-     console.log(reporteRequest);
-
-    this.reportesService.obtenerReporteGanancias(reporteRequest).subscribe({
-
-      next:(rep: ReporteGanancias)=>{
-        console.log(rep);
-      },
-      error:()=>{
-
-      }
-
-    });     
-
+  constructor(private formBuiler: FormBuilder, private reportesService: ReportesSerivice) {
 
   }
 
@@ -59,14 +47,79 @@ export class ReportesPage  implements OnInit{
     this.instanciarFormulario();
   }
 
-
-  instanciarFormulario(){
+  instanciarFormulario() {
     this.formulario = this.formBuiler.group({
       tipoReporte: [this.listaReportes[0], Validators.required],
-      fechaInicio:[null],
+      fechaInicio: [null],
       fechaFinal: [null]
     });
   }
+
+
+  resetearFormulario(tipoReporte: string){
+    this.formulario = this.formBuiler.group({
+      tipoReporte: [tipoReporte, Validators.required],
+      fechaInicio: [null],
+      fechaFinal: [null]
+    });
+  }
+
+
+  public reporteActivo(tipo: string): boolean {
+    return tipo === this.reporteActual();
+  }
+
+  private registrarError(httpError: any) {
+    this.hayError.set(true);
+    const errorData: ErrorBackend = httpError.error;
+    this.mensajeError = errorData.detalles;
+  }
+
+
+  generarReporte(tipoReporte: string) {
+    this.hayError.set(false);
+    this.reporteEncontrado.set(false);
+    this.reporteActual.set(tipoReporte);
+    const reporteRequest = this.formulario.value as ReporteRequest;
+
+    switch (tipoReporte) {
+      case "Reporte de ganancias":
+        this.generarReporteGanancias(reporteRequest);
+        this.reporteGanancias.set(null);
+        break;
+
+      case "Reporte del agente con mas ventas":
+        this.reporteAgenteMasVentas.set(null);
+        this.generarAgenteMasVentas(reporteRequest);
+        break;
+    }
+  }
+
+  generarReporteGanancias(request: ReporteRequest) {
+    this.reportesService.obtenerReporteGanancias(request).subscribe({
+      next: (rep: ReporteGanancias) => {
+        console.log(rep);
+        this.reporteGanancias.set(rep);
+      },
+      error: (error: any) => {
+        this.registrarError(error);
+      }
+    });
+  }
+
+
+  generarAgenteMasVentas(request: ReporteRequest) {
+    this.reportesService.obtenerReporteAgenteMasVentas(request).subscribe({
+      next: (rep: ReporteAgenteMasVentas) => {
+        this.reporteAgenteMasVentas.set(rep);
+        console.log(rep);
+      },
+      error: (error: any) => {
+        this.registrarError(error);
+      }
+    });
+  }
+
 
 
 

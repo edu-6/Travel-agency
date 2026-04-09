@@ -99,6 +99,7 @@ CREATE TABLE reservacion(
     rs_fecha_viaje	  DATE NOT NULL,
     rs_total_pagado	  DECIMAL(15,2) NOT NULL,
     rs_id_paquete 	  INTEGER NOT NULL,
+    rs_total_a_pagar 	  DECIMAL(15,2) NOT NULL,
     CONSTRAINT fk_reservacion_creador FOREIGN KEY  (rs_id_agente_creador) REFERENCES empleado(empleado_id) ON DELETE CASCADE,
     CONSTRAINT fk_reservacion_estado FOREIGN KEY  (rs_id_estado) REFERENCES estado_reservacion(estado_reservacion_id) ON DELETE CASCADE,
     CONSTRAINT fk_reservacion_titular FOREIGN KEY  (rs_id_titular) REFERENCES cliente(cliente_id) ON DELETE CASCADE,
@@ -110,6 +111,7 @@ CREATE TABLE metodo_pago(
    metodo_pago_id INTEGER NOT NULL PRIMARY KEY,
    metodo_pago_nombre VARCHAR(15) NOT NULL
 );
+
 
 CREATE TABLE pago_reservacion(
    pago_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
