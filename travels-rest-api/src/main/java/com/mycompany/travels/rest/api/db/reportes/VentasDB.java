@@ -29,7 +29,7 @@ public class VentasDB {
             + " JOIN cliente ON cliente_id = rs_id_titular"
             + " where rs_id_estado = 2";
 
-    private static final String FILTRO_FECHA = " AND rs_fecha_reservacion >= ? && rs_fecha_reservacion <= ?";
+    private static final String FILTRO_FECHA = " AND rs_fecha_creacion >= ? && rs_fecha_creacion <= ?";
 
     private static final String RESERVACIONES_CONFIRMADAS_PERIODO = RESERVACIONES_COMFIRMADAS + FILTRO_FECHA;
 

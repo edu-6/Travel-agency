@@ -13,6 +13,7 @@ import { ReporteAgenteMasGanancias } from "../../modelos/reportes/reporte-agente
 import { ReportePaqueteMasVendido } from "../../modelos/reportes/paquete-mas-vendido-reporte/paquete-mas-vendido";
 import { ReporteOcupacion } from "../../modelos/reportes/reporte-ocupacion";
 import { ReporteVenta } from "../../modelos/reportes/reporte-ventas/reporte-venta";
+import { ReporteCancelacion } from "../../modelos/reportes/reporte-cancelacion";
 
 @Injectable({
   providedIn: 'root'
@@ -40,21 +41,26 @@ export class ReportesSerivice {
   }
 
   public obtenerReportePaqueteMasVendido(rep: ReporteRequest): Observable<ReportePaqueteMasVendido> {
-    return this.httpCliente.post<ReportePaqueteMasVendido>(this.constantesRest.getApiURL() + 'api/reportes',rep);
+    return this.httpCliente.post<ReportePaqueteMasVendido>(this.constantesRest.getApiURL() + 'api/reportes', rep);
   }
 
   public obtenerReportePaqueteMenosVendido(rep: ReporteRequest): Observable<ReportePaqueteMasVendido> {
-    return this.httpCliente.post<ReportePaqueteMasVendido>(this.constantesRest.getApiURL() + 'api/reportes',rep);
+    return this.httpCliente.post<ReportePaqueteMasVendido>(this.constantesRest.getApiURL() + 'api/reportes', rep);
   }
 
 
-  public obtenerReporteOcupacion(rep: ReporteRequest): Observable<ReporteOcupacion []> {
-    return this.httpCliente.post<ReporteOcupacion []>(this.constantesRest.getApiURL() + 'api/reportes',rep);
+  public obtenerReporteOcupacion(rep: ReporteRequest): Observable<ReporteOcupacion[]> {
+    return this.httpCliente.post<ReporteOcupacion[]>(this.constantesRest.getApiURL() + 'api/reportes', rep);
   }
 
 
-    public obtenerReporteVentas(rep: ReporteRequest): Observable<ReporteVenta []> {
-    return this.httpCliente.post<ReporteVenta []>(this.constantesRest.getApiURL() + 'api/reportes',rep);
+  public obtenerReporteVentas(rep: ReporteRequest): Observable<ReporteVenta[]> {
+    return this.httpCliente.post<ReporteVenta[]>(this.constantesRest.getApiURL() + 'api/reportes', rep);
+  }
+
+
+  public obtenerReporteCancelaciones(rep: ReporteRequest): Observable<ReporteCancelacion[]> {
+    return this.httpCliente.post<ReporteCancelacion[]>(this.constantesRest.getApiURL() + 'api/reportes', rep);
   }
 
 }

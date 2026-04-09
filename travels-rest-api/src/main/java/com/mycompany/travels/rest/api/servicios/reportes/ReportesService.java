@@ -10,7 +10,9 @@ import com.mycompany.travels.rest.api.db.reportes.PaqueteMasVendidoDB;
 import com.mycompany.travels.rest.api.db.reportes.PaqueteMenosVendidoDB;
 import com.mycompany.travels.rest.api.db.reportes.ReporteGanaciasDB;
 import com.mycompany.travels.rest.api.db.reportes.ReporteOcupacionDB;
+import com.mycompany.travels.rest.api.db.reportes.ReproteCancelacionesDB;
 import com.mycompany.travels.rest.api.db.reportes.VentasDB;
+import com.mycompany.travels.rest.api.dtos.reportes.ReporteCancelacion;
 import com.mycompany.travels.rest.api.dtos.reportes.ReporteGanancia;
 import com.mycompany.travels.rest.api.dtos.reportes.ReporteOcupacion;
 import com.mycompany.travels.rest.api.dtos.reportes.ReproteAgenteMasGanancias;
@@ -36,6 +38,9 @@ public class ReportesService {
     private PaqueteMenosVendidoDB paqueteMenosVendidoDB = new PaqueteMenosVendidoDB();
     private ReporteOcupacionDB reporteOcupacionDb = new ReporteOcupacionDB();
     private VentasDB ventasDB = new VentasDB();
+    private ReproteCancelacionesDB cancelacionesDB = new ReproteCancelacionesDB();
+    
+    
 
     public Object generarReporte(ReporteRequest request) throws ExceptionGenerica {
 
@@ -43,6 +48,9 @@ public class ReportesService {
         
         if (tipoReporte.equals(ReportesEnum.REPORTE_VENTAS.getValor())) {
             return this.generarReproteVentas(request);
+        }
+        if (tipoReporte.equals(ReportesEnum.REPORTE_CANCELACIONES.getValor())) {
+            return this.generarReporteCancelaciones(request);
         }
 
         if (tipoReporte.equals(ReportesEnum.REPORTE_GANANCIAS.getValor())) {
@@ -90,6 +98,18 @@ public class ReportesService {
             
         } else {
             return this.ventasDB.obtenerReservacionesConfirmadas();
+        }
+    }
+    
+    
+    private ArrayList<ReporteCancelacion> generarReporteCancelaciones(ReporteRequest request) throws ExceptionGenerica{
+        this.validarRequest(request);
+
+        if (request.reporteConRango()) {
+            return this.cancelacionesDB.obtenerCancelacionesPeriodo(request);
+            
+        } else {
+            return this.cancelacionesDB.obtenerCancelaciones();
         }
     }
 

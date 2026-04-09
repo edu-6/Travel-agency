@@ -1,0 +1,33 @@
+@if (reporteCancelaciones.length > 0) {
+  <div class="card mb-4">
+    <div class="card-body">
+      <h3>Reporte de Cancelaciones</h3>
+      <p>Análisis de reembolsos y pérdidas financieras por cancelaciones.</p>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID Reservacion</th>
+        <th>Fecha Cancelación</th>
+        <th class="text-end">Monto Reembolsado</th>
+        <th class="text-end">Pérdida</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (c of reporteCancelaciones; track c.idReservacion) {
+        <tr>
+          <td>{{ c.idReservacion }}</td>
+          <td>{{ c.fechaCancelacion}}</td>
+          <td class="text-end text-warning">{{ c.montoReembolsado }}</td>
+          <td class="text-end text-danger"><strong>{{ c.perdida}}</strong></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <div class=" text-center">
+    No hay registros de cancelaciones en el periodo
+  </div>
+}

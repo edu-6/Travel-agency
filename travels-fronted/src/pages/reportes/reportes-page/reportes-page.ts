@@ -17,10 +17,12 @@ import { ReporteOcupacion } from '../../../modelos/reportes/reporte-ocupacion';
 import { ReporteOcupacionDestinoComponent } from "../../../components/reportes/reporte-ocupacion-destino-component/reporte-ocupacion-destino-component";
 import { ReporteVenta } from '../../../modelos/reportes/reporte-ventas/reporte-venta';
 import { ReporteVentasComponent } from "../../../components/reportes/reporte-ventas-component/reporte-ventas-component";
+import { ReporteCancelacion } from '../../../modelos/reportes/reporte-cancelacion';
+import { ReporteCancelacionesComponent } from "../../../components/reportes/reporte-cancelaciones-component/reporte-cancelaciones-component";
 
 @Component({
   selector: 'app-reportes-page',
-  imports: [Header, ReactiveFormsModule, ReporteGananciasComponent, ReporteAgenteVentas, ReporteAgenteGanancias, ReportePaqueteMasVendidoComponent, ReporteOcupacionDestinoComponent, ReporteVentasComponent],
+  imports: [Header, ReactiveFormsModule, ReporteGananciasComponent, ReporteAgenteVentas, ReporteAgenteGanancias, ReportePaqueteMasVendidoComponent, ReporteOcupacionDestinoComponent, ReporteVentasComponent, ReporteCancelacionesComponent],
   templateUrl: './reportes-page.html',
   styleUrl: './reportes-page.css',
 })
@@ -39,6 +41,8 @@ export class ReportesPage implements OnInit {
   reportePaqueteMenosVendido = signal<ReportePaqueteMasVendido | null>(null);
   reporteOcupacionDestino = signal<ReporteOcupacion[] | null>(null);
   reporteVentas = signal<ReporteVenta[] | null>(null);
+  reporteCancelaciones = signal<ReporteCancelacion[]>([]);
+
 
 
   mensajeError !: string;
@@ -105,9 +109,8 @@ export class ReportesPage implements OnInit {
         break;
 
       case "Reporte de cancelaciones":
-        /*
-        this.generarReporteVentas(reporteRequest);
-        this.reporteVentas.set(null);*/
+        this.reporteCancelaciones.set([]);
+        this.generarReporteCancelaciones(reporteRequest);
         break;
 
       case "Reporte de ganancias":
@@ -227,6 +230,18 @@ export class ReportesPage implements OnInit {
       error: (error: any) => {
         this.registrarError(error);
       }
+    });
+  }
+
+
+  generarReporteCancelaciones(request: ReporteRequest) {
+    this.reportesService.obtenerReporteCancelaciones(request).subscribe({
+      next: (data: ReporteCancelacion[]) =>{
+        this.reporteCancelaciones.set(data);
+      },
+      error: (err: any) =>{
+        this.registrarError(err)
+      } 
     });
   }
 
