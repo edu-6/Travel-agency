@@ -9,6 +9,9 @@ import { ProveedorResponse } from "../../modelos/proveedores/ProveedorResponse";
 import { ReporteGanancias } from "../../modelos/reportes/reporte-ganancia";
 import { ReporteRequest } from "../../modelos/reportes/reporte-request";
 import { ReporteAgenteMasVentas } from "../../modelos/reportes/reporte-agente-mas-ventas/reporte-agente-mas-ventas";
+import { ReporteAgenteMasGanancias } from "../../modelos/reportes/reporte-agente-ganancia";
+import { ReportePaqueteMasVendido } from "../../modelos/reportes/paquete-mas-vendido-reporte/paquete-mas-vendido";
+import { ReporteOcupacion } from "../../modelos/reportes/reporte-ocupacion";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +30,25 @@ export class ReportesSerivice {
   }
 
   public obtenerReporteAgenteMasVentas(rep: ReporteRequest): Observable<ReporteAgenteMasVentas> {
-    return this.httpCliente.post<ReporteAgenteMasVentas>(this.constantesRest.getApiURL() + 'api/reportes',rep);
+    return this.httpCliente.post<ReporteAgenteMasVentas>(this.constantesRest.getApiURL() + 'api/reportes', rep);
+  }
+
+
+  public obtenerAgenteMasGanancias(rep: ReporteRequest): Observable<ReporteAgenteMasGanancias> {
+    return this.httpCliente.post<ReporteAgenteMasGanancias>(this.constantesRest.getApiURL() + 'api/reportes', rep);
+  }
+
+  public obtenerReportePaqueteMasVendido(rep: ReporteRequest): Observable<ReportePaqueteMasVendido> {
+    return this.httpCliente.post<ReportePaqueteMasVendido>(this.constantesRest.getApiURL() + 'api/reportes',rep);
+  }
+
+  public obtenerReportePaqueteMenosVendido(rep: ReporteRequest): Observable<ReportePaqueteMasVendido> {
+    return this.httpCliente.post<ReportePaqueteMasVendido>(this.constantesRest.getApiURL() + 'api/reportes',rep);
+  }
+
+
+  public obtenerReporteOcupacion(rep: ReporteRequest): Observable<ReporteOcupacion []> {
+    return this.httpCliente.post<ReporteOcupacion []>(this.constantesRest.getApiURL() + 'api/reportes',rep);
   }
 
 }

@@ -9,10 +9,16 @@ import { ReporteAgenteMasVentas } from '../../../modelos/reportes/reporte-agente
 import { ReporteAgenteVentas } from "../../../components/reportes/reporte-agente-ventas/reporte-agente-ventas";
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
 import { SignalFormControl } from '@angular/forms/signals/compat';
+import { ReporteAgenteMasGanancias } from '../../../modelos/reportes/reporte-agente-ganancia';
+import { ReporteAgenteGanancias } from "../../../components/reportes/reporte-agente-ganancias/reporte-agente-ganancias";
+import { ReportePaqueteMasVendido } from '../../../modelos/reportes/paquete-mas-vendido-reporte/paquete-mas-vendido';
+import { ReportePaqueteMasVendidoComponent } from "../../../components/reportes/reporte-paquete-mas-vendido-component/reporte-paquete-mas-vendido-component";
+import { ReporteOcupacion } from '../../../modelos/reportes/reporte-ocupacion';
+import { ReporteOcupacionDestinoComponent } from "../../../components/reportes/reporte-ocupacion-destino-component/reporte-ocupacion-destino-component";
 
 @Component({
   selector: 'app-reportes-page',
-  imports: [Header, ReactiveFormsModule, ReporteGananciasComponent, ReporteAgenteVentas],
+  imports: [Header, ReactiveFormsModule, ReporteGananciasComponent, ReporteAgenteVentas, ReporteAgenteGanancias, ReportePaqueteMasVendidoComponent, ReporteOcupacionDestinoComponent],
   templateUrl: './reportes-page.html',
   styleUrl: './reportes-page.css',
 })
@@ -26,15 +32,20 @@ export class ReportesPage implements OnInit {
 
   reporteGanancias = signal<ReporteGanancias | null>(null);
   reporteAgenteMasVentas = signal<ReporteAgenteMasVentas | null>(null);
+  reproteAgenteMasGanancias = signal<ReporteAgenteMasGanancias | null>(null);
+  reportePaqueteMasVendido = signal<ReportePaqueteMasVendido | null>(null);
+  reportePaqueteMenosVendido = signal<ReportePaqueteMasVendido | null>(null);
+  reporteOcupacionDestino = signal<ReporteOcupacion[] | null>(null);
+
   mensajeError !: string;
 
   public listaReportes: string[] = [
     "Reporte de ganancias",
     "Reporte del agente con mas ventas",
     "Reporte del agente con mas ganancias",
-    "Reporte del agente con más ventas",
-    "Reporte del agente con más ganancias",
-    "Reporte del paquete más vendido",
+    "Reporte del paquete mas vendido",
+    "Reporte del paquete menos vendido",
+    "Reporte de ocupación por destino",
     "Reporte del paquete menos vendido",
     "Reporte de ocupación por destino"
   ];
@@ -56,7 +67,7 @@ export class ReportesPage implements OnInit {
   }
 
 
-  resetearFormulario(tipoReporte: string){
+  resetearFormulario(tipoReporte: string) {
     this.formulario = this.formBuiler.group({
       tipoReporte: [tipoReporte, Validators.required],
       fechaInicio: [null],
@@ -92,6 +103,25 @@ export class ReportesPage implements OnInit {
         this.reporteAgenteMasVentas.set(null);
         this.generarAgenteMasVentas(reporteRequest);
         break;
+      case "Reporte del agente con mas ganancias":
+        this.reproteAgenteMasGanancias.set(null);
+        this.generarAgenteMasGanancias(reporteRequest);
+        break;
+
+      case "Reporte del paquete mas vendido":
+        this.reportePaqueteMasVendido.set(null);
+        this.generarPaqueteMasVendido(reporteRequest);
+        break;
+
+      case "Reporte del paquete menos vendido":
+        this.reportePaqueteMenosVendido.set(null);
+        this.generarPaquetMenosVendido(reporteRequest);
+        break;
+
+      case "Reporte de ocupación por destino":
+        this.reporteOcupacionDestino.set(null);
+        this.generarReporteOcupacion(reporteRequest);
+        break;
     }
   }
 
@@ -120,7 +150,60 @@ export class ReportesPage implements OnInit {
     });
   }
 
+  generarAgenteMasGanancias(request: ReporteRequest) {
+    this.reportesService.obtenerAgenteMasGanancias(request).subscribe({
+      next: (rep: ReporteAgenteMasGanancias) => {
+        this.reproteAgenteMasGanancias.set(rep);
+        console.log(rep);
+      },
+      error: (error: any) => {
+        this.registrarError(error);
+      }
+    });
+  }
 
+  generarPaqueteMasVendido(request: ReporteRequest) {
+    this.reportesService.obtenerReportePaqueteMasVendido(request).subscribe({
+      next: (rep: ReportePaqueteMasVendido) => {
+        if (rep) {
+          this.reportePaqueteMasVendido.set(rep);
+        }
+      },
+      error: (error: any) => {
+        this.registrarError(error);
+      }
+    });
+  }
+
+
+  generarPaquetMenosVendido(request: ReporteRequest) {
+    this.reportesService.obtenerReportePaqueteMenosVendido(request).subscribe({
+      next: (rep: ReportePaqueteMasVendido) => {
+        if (rep) {
+          this.reportePaqueteMenosVendido.set(rep);
+          console.log(rep);
+        }
+      },
+      error: (error: any) => {
+        this.registrarError(error);
+      }
+    });
+  }
+
+  generarReporteOcupacion(request: ReporteRequest) {
+    this.reportesService.obtenerReporteOcupacion(request).subscribe({
+      next: (res: ReporteOcupacion[]) => {
+        this.reporteOcupacionDestino.set(res);
+        console.log(res);
+      },
+      error: (error: any) => {
+        this.registrarError(error);
+      }
+    });
+  }
 
 
 }
+
+
+

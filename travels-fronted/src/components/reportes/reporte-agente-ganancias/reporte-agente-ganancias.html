@@ -1,0 +1,18 @@
+@if (reporte) {
+  <h4 class="text-center">Agente con más Ganancias</h4>
+  <br>
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Nombre del Agente</th>
+        <th scope="col">Ganancia Neta Generada</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ reporte.nombre }}</td>
+        <td>{{ reporte.ganancia }}</td>
+      </tr>
+    </tbody>
+  </table>
+}

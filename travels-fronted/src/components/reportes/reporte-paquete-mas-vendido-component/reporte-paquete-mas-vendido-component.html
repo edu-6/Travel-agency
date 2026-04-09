@@ -1,0 +1,41 @@
+@if (reporte) {
+  <div class="card mb-4">
+    <div class="card-body">
+
+      @if(masVendido){
+        <h3>Paquete mas vendido: {{ reporte.nombre }}</h3>
+      }@else {
+        <h3>Paquete menos vendido: {{ reporte.nombre }}</h3>
+      }
+      
+      <p> Descricion: {{ reporte.descripcion }}</p>
+      <small><b>Mejor época para viajar:</b> {{ reporte.mejorEpoca }}</small>
+    </div>
+  </div>
+
+  <h4>Detalle de Reservaciones</h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Titular</th>
+        <th>Fecha</th>
+        <th>Total</th>
+        <th>Pagado</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (res of reporte.reservaciones; track res.idReservacion) {
+        <tr>
+          <td>{{ res.idReservacion }}</td>
+          <td>{{ res.nombreTitular }}</td>
+          <td>{{ res.fechaCreacion }}</td>
+          <td>{{ res.totalAPagar}} </td>
+          <td>{{ res.totalPagado }}</td>
+          <td>{{ res.estado }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

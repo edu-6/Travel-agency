@@ -12,9 +12,9 @@ public enum ReportesEnum {
     REPORTE_GANANCIAS("Reporte de ganancias"),
     REPORTE_AGENTE_MAS_VENTAS("Reporte del agente con mas ventas"),
     REPORTE_AGENTE_MAS_GANANCIAS("Reporte del agente con mas ganancias"),
-    RESERVACION("Reservacion"),
-    PAGO("Pago"),
-    REEMBOLSO("Reembolso"),
+    PAQUETE_MAS_VENDIDO("Reporte del paquete mas vendido"),
+    PAQUETE_MENOS_VENDIDO("Reporte del paquete menos vendido"),
+    REPORTE_OCUPACION_POR_DESTINO("Reporte de ocupación por destino"),
     PENDIENTE("Pendiente"),
     COMPLETADO("Completado"),
     ERROR("Error");

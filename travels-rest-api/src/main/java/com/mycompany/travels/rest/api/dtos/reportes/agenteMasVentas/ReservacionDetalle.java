@@ -13,10 +13,10 @@ import java.time.LocalDate;
 public class ReservacionDetalle {
     
     private int idReservacion;
-    private int totalAPagar;
+    private double totalAPagar;
     private LocalDate fechaCreacion;
 
-    public ReservacionDetalle(int idReservacion, int totalAPagar, LocalDate fechaCreacion) {
+    public ReservacionDetalle(int idReservacion, double totalAPagar, LocalDate fechaCreacion) {
         this.idReservacion = idReservacion;
         this.totalAPagar = totalAPagar;
         this.fechaCreacion = fechaCreacion;

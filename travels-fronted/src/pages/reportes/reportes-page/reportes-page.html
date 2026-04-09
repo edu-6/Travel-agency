@@ -54,21 +54,6 @@
 </div>
 
 
-
-<!---
-  public listaReportes: string[] = [
-    "Reporte de ganancias",
-    "Reporte del agente con mas ventas",
-    "Reporte de ganancias en un intervalo de tiempo",
-    "Reporte del agente con más ventas",
-    "Reporte del agente con más ganancias",
-    "Reporte del paquete más vendido",
-    "Reporte del paquete menos vendido",
-    "Reporte de ocupación por destino"
-  ];
-
--->
-
 @if(reporteActivo("Reporte de ganancias")){
 <app-reporte-ganancias [reporte]="reporteGanancias()!"></app-reporte-ganancias>
 
@@ -78,4 +63,22 @@
 @if(reporteActivo("Reporte del agente con mas ventas") && reporteAgenteMasVentas()){
 <app-reporte-agente-ventas [reporte]="reporteAgenteMasVentas()!"></app-reporte-agente-ventas>
 
+}
+
+
+@if(reporteActivo("Reporte del agente con mas ganancias") && reproteAgenteMasGanancias()){
+<app-reporte-agente-ganancias [reporte]="reproteAgenteMasGanancias()!"></app-reporte-agente-ganancias>
+}
+
+@if(reporteActivo("Reporte del paquete mas vendido") && reportePaqueteMasVendido()){
+    <app-reporte-paquete-mas-vendido-component [masVendido]="true" [reporte]="reportePaqueteMasVendido()!"></app-reporte-paquete-mas-vendido-component>
+}
+
+
+@if(reporteActivo("Reporte del paquete menos vendido") && reportePaqueteMenosVendido()){
+    <app-reporte-paquete-mas-vendido-component [masVendido]="false" [reporte]="reportePaqueteMenosVendido()!"></app-reporte-paquete-mas-vendido-component>
+}
+
+@if(reporteActivo("Reporte de ocupación por destino") && reporteOcupacionDestino()){
+    <app-reporte-ocupacion-destino-component [reporte]="reporteOcupacionDestino()!"></app-reporte-ocupacion-destino-component>
 }

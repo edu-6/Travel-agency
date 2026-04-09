@@ -1,0 +1,24 @@
+@if (reporte) {
+
+  <h4 lass="text-center">Detalle de Ocupación</h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre del Destino</th>
+        <th class="text-center">Cantidad de Reservaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of reporte; track item.nombreDestino) {
+        <tr>
+          <td>{{ item.nombreDestino }}</td>
+          <td class="text-center">{{ item.cantidadReservaciones }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <div class="alert alert-info text-center">
+    No se encontró información para este reporte.
+  </div>
+}

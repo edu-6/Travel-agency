@@ -113,7 +113,7 @@ private static final String AGENTE_TOP_PERIODO =
     private ReservacionDetalle extraerDetalle(ResultSet rs) throws SQLException {
         return new ReservacionDetalle(
             rs.getInt("rs_numero_reservacion"),
-            rs.getInt("rs_total_a_pagar"),
+            rs.getDouble("rs_total_a_pagar"),
             rs.getDate("rs_fecha_creacion").toLocalDate()
         );
     }
