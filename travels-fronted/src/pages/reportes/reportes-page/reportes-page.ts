@@ -15,10 +15,12 @@ import { ReportePaqueteMasVendido } from '../../../modelos/reportes/paquete-mas-
 import { ReportePaqueteMasVendidoComponent } from "../../../components/reportes/reporte-paquete-mas-vendido-component/reporte-paquete-mas-vendido-component";
 import { ReporteOcupacion } from '../../../modelos/reportes/reporte-ocupacion';
 import { ReporteOcupacionDestinoComponent } from "../../../components/reportes/reporte-ocupacion-destino-component/reporte-ocupacion-destino-component";
+import { ReporteVenta } from '../../../modelos/reportes/reporte-ventas/reporte-venta';
+import { ReporteVentasComponent } from "../../../components/reportes/reporte-ventas-component/reporte-ventas-component";
 
 @Component({
   selector: 'app-reportes-page',
-  imports: [Header, ReactiveFormsModule, ReporteGananciasComponent, ReporteAgenteVentas, ReporteAgenteGanancias, ReportePaqueteMasVendidoComponent, ReporteOcupacionDestinoComponent],
+  imports: [Header, ReactiveFormsModule, ReporteGananciasComponent, ReporteAgenteVentas, ReporteAgenteGanancias, ReportePaqueteMasVendidoComponent, ReporteOcupacionDestinoComponent, ReporteVentasComponent],
   templateUrl: './reportes-page.html',
   styleUrl: './reportes-page.css',
 })
@@ -36,18 +38,20 @@ export class ReportesPage implements OnInit {
   reportePaqueteMasVendido = signal<ReportePaqueteMasVendido | null>(null);
   reportePaqueteMenosVendido = signal<ReportePaqueteMasVendido | null>(null);
   reporteOcupacionDestino = signal<ReporteOcupacion[] | null>(null);
+  reporteVentas = signal<ReporteVenta[] | null>(null);
+
 
   mensajeError !: string;
 
   public listaReportes: string[] = [
+    "Reporte de ventas",
+    "Reporte de cancelaciones",
     "Reporte de ganancias",
     "Reporte del agente con mas ventas",
     "Reporte del agente con mas ganancias",
     "Reporte del paquete mas vendido",
     "Reporte del paquete menos vendido",
     "Reporte de ocupación por destino",
-    "Reporte del paquete menos vendido",
-    "Reporte de ocupación por destino"
   ];
 
   constructor(private formBuiler: FormBuilder, private reportesService: ReportesSerivice) {
@@ -94,6 +98,18 @@ export class ReportesPage implements OnInit {
     const reporteRequest = this.formulario.value as ReporteRequest;
 
     switch (tipoReporte) {
+
+      case "Reporte de ventas":
+        this.generarReporteVentas(reporteRequest);
+        this.reporteVentas.set(null);
+        break;
+
+      case "Reporte de cancelaciones":
+        /*
+        this.generarReporteVentas(reporteRequest);
+        this.reporteVentas.set(null);*/
+        break;
+
       case "Reporte de ganancias":
         this.generarReporteGanancias(reporteRequest);
         this.reporteGanancias.set(null);
@@ -194,6 +210,18 @@ export class ReportesPage implements OnInit {
     this.reportesService.obtenerReporteOcupacion(request).subscribe({
       next: (res: ReporteOcupacion[]) => {
         this.reporteOcupacionDestino.set(res);
+        console.log(res);
+      },
+      error: (error: any) => {
+        this.registrarError(error);
+      }
+    });
+  }
+
+  generarReporteVentas(request: ReporteRequest) {
+    this.reportesService.obtenerReporteVentas(request).subscribe({
+      next: (res: ReporteVenta[]) => {
+        this.reporteVentas.set(res);
         console.log(res);
       },
       error: (error: any) => {

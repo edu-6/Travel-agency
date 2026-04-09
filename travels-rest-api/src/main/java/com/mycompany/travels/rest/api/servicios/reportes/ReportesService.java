@@ -10,14 +10,17 @@ import com.mycompany.travels.rest.api.db.reportes.PaqueteMasVendidoDB;
 import com.mycompany.travels.rest.api.db.reportes.PaqueteMenosVendidoDB;
 import com.mycompany.travels.rest.api.db.reportes.ReporteGanaciasDB;
 import com.mycompany.travels.rest.api.db.reportes.ReporteOcupacionDB;
+import com.mycompany.travels.rest.api.db.reportes.VentasDB;
 import com.mycompany.travels.rest.api.dtos.reportes.ReporteGanancia;
 import com.mycompany.travels.rest.api.dtos.reportes.ReporteOcupacion;
 import com.mycompany.travels.rest.api.dtos.reportes.ReproteAgenteMasGanancias;
 import com.mycompany.travels.rest.api.dtos.reportes.agenteMasVentas.ReporteAgenteMasVentas;
 import com.mycompany.travels.rest.api.dtos.reportes.ReportePaqueteMaxOMenosVendido;
+import com.mycompany.travels.rest.api.dtos.reportes.ReporteVenta;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.modelos.ReporteRequest;
 import com.mycompany.travels.rest.api.modelos.enums.ReportesEnum;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,10 +35,15 @@ public class ReportesService {
     private PaqueteMasVendidoDB paqueteMasVendidoDB = new PaqueteMasVendidoDB();
     private PaqueteMenosVendidoDB paqueteMenosVendidoDB = new PaqueteMenosVendidoDB();
     private ReporteOcupacionDB reporteOcupacionDb = new ReporteOcupacionDB();
+    private VentasDB ventasDB = new VentasDB();
 
     public Object generarReporte(ReporteRequest request) throws ExceptionGenerica {
 
         String tipoReporte = request.getTipoReporte();
+        
+        if (tipoReporte.equals(ReportesEnum.REPORTE_VENTAS.getValor())) {
+            return this.generarReproteVentas(request);
+        }
 
         if (tipoReporte.equals(ReportesEnum.REPORTE_GANANCIAS.getValor())) {
             return this.generarReproteGanacias(request);
@@ -70,6 +78,19 @@ public class ReportesService {
         }
 
         request.validarPeriodos();
+    }
+    
+    
+    
+    private ArrayList<ReporteVenta> generarReproteVentas(ReporteRequest request) throws ExceptionGenerica{
+        this.validarRequest(request);
+
+        if (request.reporteConRango()) {
+            return this.ventasDB.obtenerReservacionesConfirmadasPeriodo(request);
+            
+        } else {
+            return this.ventasDB.obtenerReservacionesConfirmadas();
+        }
     }
 
     private ReporteGanancia generarReproteGanacias(ReporteRequest request) throws ExceptionGenerica {

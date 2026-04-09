@@ -15,8 +15,8 @@ public enum ReportesEnum {
     PAQUETE_MAS_VENDIDO("Reporte del paquete mas vendido"),
     PAQUETE_MENOS_VENDIDO("Reporte del paquete menos vendido"),
     REPORTE_OCUPACION_POR_DESTINO("Reporte de ocupación por destino"),
-    PENDIENTE("Pendiente"),
-    COMPLETADO("Completado"),
+    REPORTE_VENTAS("Reporte de ventas"),
+    REPORTE_CANCELACIONES("Reporte de cancelaciones"),
     ERROR("Error");
 
     private final String valor;

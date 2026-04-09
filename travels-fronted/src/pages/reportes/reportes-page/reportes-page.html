@@ -82,3 +82,8 @@
 @if(reporteActivo("Reporte de ocupación por destino") && reporteOcupacionDestino()){
     <app-reporte-ocupacion-destino-component [reporte]="reporteOcupacionDestino()!"></app-reporte-ocupacion-destino-component>
 }
+
+
+@if(reporteActivo("Reporte de ventas")  && reporteVentas()){
+    <app-reporte-ventas-component [reporteVentas]="reporteVentas()!"></app-reporte-ventas-component>
+}

@@ -1,0 +1,37 @@
+@if (reporteVentas) {
+  <div class="card mb-4">
+    <div class="card-body">
+      <h3>Reporte de Ventas Confirmadas</h3>
+      <p>Listado de reservaciones y pasajeros.</p>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID reservacion</th>
+        <th>Titular</th>
+        <th>Agente</th>
+        <th>Pasajeros (ID)</th>
+        <th>Costo reservacion</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (venta of reporteVentas; track venta.idReservacion) {
+        <tr>
+          <td>{{ venta.idReservacion }}</td>
+          <td>{{ venta.nombreTitular }} ({{ venta.idTitular }})</td>
+          <td>{{ venta.nombreAgente }}</td>
+          <td>
+            <ul class="list-unstyled small">
+              @for (p of venta.pasajeros; track p.identificacion) {
+                <li> {{ p.nombre }}    ({{ p.identificacion }})</li>
+              }
+            </ul>
+          </td>
+          <td>{{ venta.totalAPagar}}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
