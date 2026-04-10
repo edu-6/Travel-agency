@@ -98,6 +98,10 @@ public class ReservacionesCrudService extends CrudService implements CreacionRet
          int idReservacion = reservacion.getId();
             ArrayList<PasajeroResponse> pasajeros = pasajerosDB.buscarVariosInt(idReservacion);
             reservacion.setPasajeros(pasajeros);
-        
+    
+    }
+    
+    public void marcarReservacionesComoTeminadas() throws ExceptionGenerica{
+        this.db.marcarReservacionesComoTeminadas();
     }
 }

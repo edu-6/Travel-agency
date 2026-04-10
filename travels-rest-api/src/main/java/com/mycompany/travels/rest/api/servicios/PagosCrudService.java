@@ -55,8 +55,6 @@ public class PagosCrudService extends CrudService implements CreacionEntidad<Pag
         int estado = 1;
         if(pagoRestante > 0 && pagoRestante < costoReservacion){ // ya emepzó a pagar
             estado = 2;
-        }else if(pagoRestante == 0){
-            estado = 4;
         }
         
         db.cambiarEstadoReservacion(estado, entidad.getIdReservacion());

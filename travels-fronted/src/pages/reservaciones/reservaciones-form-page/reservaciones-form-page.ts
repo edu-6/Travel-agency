@@ -62,7 +62,7 @@ export class ReservacionesFormPage implements OnInit {
       },
       error: (error: any) => {
         this.registrarError(error);
-        this.router.navigate(['/clientes/form-page', id]);
+        this.router.navigate(['/clientes/form-page', id], { state: { origin: this.origen } });
       }
     });
   }

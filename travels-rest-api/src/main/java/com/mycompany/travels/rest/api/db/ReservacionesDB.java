@@ -49,6 +49,22 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
 
     private static final String EXISTE_VIAJE_EN_FECHA = "select rs_id_agente_creador FROM reservacion where rs_fecha_viaje = ? and rs_id_titular = ?";
 
+    private static final String ACTUALIZAR_ESTADOS_RESERVACIONES
+            = "UPDATE reservacion "
+            + "SET rs_id_estado = 4 "
+            + "WHERE rs_fecha_viaje = CURRENT_DATE "
+            + "AND (rs_total_a_pagar - rs_total_pagado) = 0";
+    
+    
+    
+    public void marcarReservacionesComoTeminadas() throws ExceptionGenerica{
+        try(Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(ACTUALIZAR_ESTADOS_RESERVACIONES)){
+            ps.executeUpdate();
+        }catch(SQLException ex){
+            throw new ExceptionGenerica("error al marcar como terminada varias reservaciones"+ ex.getMessage());
+        }
+    }
+
     @Override
     public int crear(ReservacionRequest entidad) throws ExceptionGenerica {
         try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(CREAR, java.sql.Statement.RETURN_GENERATED_KEYS)) {
@@ -169,7 +185,7 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
             if (rs.next()) {
                 return rs.getDouble("paquete_precio");
             }
-            
+
             throw new ExceptionGenerica(" no se encontró el paquete ");
 
         } catch (SQLException e) {
