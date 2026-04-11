@@ -9,7 +9,6 @@ package com.mycompany.travels.rest.api.modelos;
  * @author edu
  */
 public class Empleado extends Entidad {
-    
     private String nombre;
     private String contraseña;
     private String nombreRol;

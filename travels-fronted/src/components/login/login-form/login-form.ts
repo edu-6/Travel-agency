@@ -8,7 +8,7 @@ import { AutenticacionServicio } from '../../../services/login/autenficacion-ser
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
 @Component({
   selector: 'app-login-form',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login-form.html',
   styleUrl: './login-form.css',
 })

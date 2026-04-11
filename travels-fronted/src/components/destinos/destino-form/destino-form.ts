@@ -61,8 +61,8 @@ export class DestinoForm implements OnInit {
       id_pais: [1, Validators.required],
       nombre: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(40)]],
       descripcion: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(300)]],
-      mejorEpoca: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
-      urlImagen: ["", [Validators.required, Validators.maxLength(400)]],
+      mejorEpoca: ["", [ Validators.minLength(1), Validators.maxLength(100)]],
+      urlImagen: ["", [Validators.maxLength(400)]],
     });
   }
 

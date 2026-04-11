@@ -9,14 +9,16 @@ package com.mycompany.travels.rest.api.modelos;
  * @author edu
  */
 public class Destino extends Entidad {
+
     private String nombre;
     private String descripcion;
     private String pais;
     private String mejorEpoca;
     private String urlImagen;
-    
+
     private int id_pais;
     private int id;
+    private String nombrePais;
 
     //para crear 
     public Destino(String nombre, String descripcion, String mejorEpoca, String urlImgen, int id_pais) {
@@ -26,7 +28,18 @@ public class Destino extends Entidad {
         this.urlImagen = urlImgen;
         this.id_pais = id_pais;
     }
+
+    // archivo texto
+    public Destino(String nombre, String descripcion, String nombrePais) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.nombrePais = nombrePais;
+    }
+
+   
     
+    
+
     // para mostrar y editar
     public Destino(String nombre, String descripcion, String pais, String mejorEpoca, String urlImgen, int id_pais, int id) {
         this.nombre = nombre;
@@ -38,22 +51,32 @@ public class Destino extends Entidad {
         this.id = id;
     }
 
-    
     @Override
     public boolean datosCompletos() {
         return nombre != null && !nombre.isBlank()
-                && descripcion != null && !descripcion.isBlank()
-                && urlImagen != null && !urlImagen.isBlank()
-                && mejorEpoca != null && !mejorEpoca.isBlank();
+                && descripcion != null && !descripcion.isBlank();
     }
 
     @Override
     public boolean datosTamañoCorrecto() {
-        return
-        nombre.length()<=40 &&
-        descripcion.length()<= 300 &&
-        mejorEpoca.length()<= 100 &&
-        urlImagen.length()<= 400 ;
+        boolean validoMejorEpoca = true;
+        boolean validoUrlImagen = true;
+        
+        boolean validoObligatorios
+                = nombre.length() <= 40
+                && descripcion.length() <= 300;
+        
+        
+        if (mejorEpoca != null) {
+            validoMejorEpoca = mejorEpoca.length() <= 100;
+        }
+        
+        if(urlImagen != null){
+            validoUrlImagen = urlImagen.length() <=400;
+        }
+        
+        return validoObligatorios && validoMejorEpoca && validoUrlImagen;
+
     }
 
     public String getNombre() {
@@ -82,6 +105,18 @@ public class Destino extends Entidad {
 
     public int getId() {
         return id;
+    }
+
+    public String getNombrePais() {
+        return nombrePais;
+    }
+
+    public void setNombrePais(String nombrePais) {
+        this.nombrePais = nombrePais;
+    }
+
+    public void setId_pais(int id_pais) {
+        this.id_pais = id_pais;
     }
     
     

@@ -22,6 +22,7 @@ import { ClientesPage } from '../pages/clientes/clientes-page/clientes-page';
 import { ClientesEditarPage } from '../pages/clientes/clientes-editar-page/clientes-editar-page';
 import { ClientesDetallePage } from '../pages/clientes/clientes-detalle-page/clientes-detalle-page';
 import { ReportesPage } from '../pages/reportes/reportes-page/reportes-page';
+import { ArchivoTextoPage } from '../pages/archivo-texto/archivo-texto-page/archivo-texto-page';
 
 export const routes: Routes = [
 
@@ -64,7 +65,10 @@ export const routes: Routes = [
     
     { path: "clientes/form-page/:identificacion", component: ClientesFormPage },
 
-    {path: "reportes", component: ReportesPage}
+    {path: "reportes", component: ReportesPage},
+
+
+    {path: "archivo-texto", component: ArchivoTextoPage}
 
 
 

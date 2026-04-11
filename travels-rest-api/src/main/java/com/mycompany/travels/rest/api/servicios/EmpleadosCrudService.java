@@ -27,6 +27,10 @@ public class EmpleadosCrudService extends CrudService implements CreacionEntidad
     @Override
     public void crear(Empleado entidad) throws ExceptionGenerica {
         
+        if(entidad == null) throw new ExceptionGenerica("Error, se recibió un empleado vacio");
+        
+        if(entidad.getIdRol() <= 0 && entidad.getIdRol() >=4) throw new ExceptionGenerica("error, el rol"+ entidad.getId()+ " no existe");
+        
         revisarDatosCorrectos(entidad);
         
         if(entidad.getContraseña().length() < 6){
