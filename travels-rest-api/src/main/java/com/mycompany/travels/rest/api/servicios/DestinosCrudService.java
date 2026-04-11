@@ -32,6 +32,13 @@ public class DestinosCrudService extends CrudService implements CreacionEntidad<
         if(db.existeEntidad(entidad.getNombre())){
             throw new EntidadDuplicadaException("ya existe el destino: "+ entidad.getNombre());
         }
+        
+        
+        if (entidad.getId_pais() <= 0) {
+            throw new ExceptionGenerica("no existe el pais " + entidad.getId_pais());
+        }
+        
+        
         db.crear(entidad);
     }
 

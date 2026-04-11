@@ -19,31 +19,36 @@ import java.util.ArrayList;
  * @author edu
  */
 public class ProveedorCrudService extends CrudService implements CreacionEntidad<Proveedor>, EdicionEntidad<Proveedor>,
-        BuscarTodos<Proveedor>, BusquedaUnitariaString<Proveedor>{
-    
+        BuscarTodos<Proveedor>, BusquedaUnitariaString<Proveedor> {
+
     private final ProveedorDB db = new ProveedorDB();
 
     @Override
     public void crear(Proveedor entidad) throws ExceptionGenerica {
         this.revisarDatosCorrectos(entidad);
-        
-        if(db.existeEntidad(entidad.getNombre())){
-            throw new EntidadDuplicadaException("ya existe "+ entidad.getNombre());
+
+        if (db.existeEntidad(entidad.getNombre())) {
+            throw new EntidadDuplicadaException("ya existe " + entidad.getNombre());
         }
-        
+
+        int tipoServicio = entidad.getId_tipo_servicio();
+
+        if (!(tipoServicio >= 1 && tipoServicio <= 5)) {
+            throw new ExceptionGenerica("no existe el tipo de servicio con id " + tipoServicio);
+        }
+
         db.crear(entidad);
     }
-   
 
     @Override
     public void editar(Proveedor entidad) throws ExceptionGenerica {
         this.revisarDatosCorrectos(entidad);
-        
+
         Proveedor prov = db.buscar(entidad.getNombre());
-        if(prov != null && prov.getId() != entidad.getId()){
-            throw new EntidadDuplicadaException("ya existe "+ entidad.getNombre());
+        if (prov != null && prov.getId() != entidad.getId()) {
+            throw new EntidadDuplicadaException("ya existe " + entidad.getNombre());
         }
-        
+
         db.editar(entidad);
     }
 
@@ -54,14 +59,14 @@ public class ProveedorCrudService extends CrudService implements CreacionEntidad
 
     @Override
     public Proveedor buscar(String nombre) throws ExceptionGenerica {
-       if(nombre == null || nombre.isBlank()){
+        if (nombre == null || nombre.isBlank()) {
             throw new ExceptionGenerica("Busqueda vacia");
         }
-        
-       Proveedor proveedor = db.buscar(nombre);
-       if(proveedor == null){
-           throw new ExceptionGenerica("no se encontró el proveedor");
-       }
+
+        Proveedor proveedor = db.buscar(nombre);
+        if (proveedor == null) {
+            throw new ExceptionGenerica("no se encontró el proveedor");
+        }
         return proveedor;
     }
 }

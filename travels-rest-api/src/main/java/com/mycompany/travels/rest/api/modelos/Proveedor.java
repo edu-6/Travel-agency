@@ -26,6 +26,16 @@ public class Proveedor extends Entidad {
         this.id_tipo_servicio = id_tipo_servicio;
     }
 
+    // para archivo texto
+    public Proveedor(String nombre, String pais, int id_tipo_servicio) {
+        this.nombre = nombre;
+        this.pais = pais;
+        this.id_tipo_servicio = id_tipo_servicio;
+    }
+    
+    
+    
+
     //para editar y mostrar
     public Proveedor(String nombre, String tipoServicio, String pais, String contactos, int id, int id_pais, int id_tipo_servicio) {
         this.nombre = nombre;
@@ -36,7 +46,28 @@ public class Proveedor extends Entidad {
         this.id_pais = id_pais;
         this.id_tipo_servicio = id_tipo_servicio;
     }
+    
+    
+    @Override
+    public boolean datosCompletos() {
+        return nombre != null && !nombre.isBlank();
+    }
 
+    @Override
+    public boolean datosTamañoCorrecto() {
+        boolean contactoValido = true;
+        boolean nombreValido = nombre.length() <=30;
+        
+        if(contactos != null){
+            contactoValido = contactos.length() <= 40;
+        }
+        return nombreValido && contactoValido;
+    }
+
+    public void setId_pais(int id_pais) {
+        this.id_pais = id_pais;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -65,16 +96,9 @@ public class Proveedor extends Entidad {
         return id_tipo_servicio;
     }
 
-    @Override
-    public boolean datosCompletos() {
-        return nombre != null && !nombre.isBlank()
-                && contactos != null && !contactos.isBlank();
-    }
-
-    @Override
-    public boolean datosTamañoCorrecto() {
-        return nombre.length() <= 30
-                && contactos.length() <= 40;
-    }
+    
+    
+    
+    
 
 }

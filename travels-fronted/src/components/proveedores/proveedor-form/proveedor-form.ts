@@ -63,7 +63,7 @@ export class ProveedorForm implements OnInit {
         id: [0],
         nombre: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
         id_tipo_servicio: [0, Validators.required],
-        contactos: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(40)]],
+        contactos: ["", [ Validators.minLength(1), Validators.maxLength(40)]],
         id_pais: [0, Validators.required]
       }
     );

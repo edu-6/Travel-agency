@@ -17,16 +17,15 @@ import java.util.ArrayList;
  * @author edu
  */
 public class LectorDeArchivoTexto {
-    
-    private ProcesadorDeInstrucciones procesador = new ProcesadorDeInstrucciones();
+
+    private ElecutadorDeInstrucciones procesador = new ElecutadorDeInstrucciones();
     private ConversorAObjetos conversor = new ConversorAObjetos();
 
     public ArrayList<String> procesarArchivo(InputStream inputStream) {
         ArrayList<String> listaLogs = new ArrayList();
-        
+
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-            
             String linea;
             int numeroLinea = 0;
             while ((linea = reader.readLine()) != null) {
@@ -35,7 +34,7 @@ public class LectorDeArchivoTexto {
                         numeroLinea++;
                         reconocerInstruccion(linea, numeroLinea, listaLogs);
                     } catch (ExceptionGenerica e) {
-                        listaLogs.add("Error linea "+numeroLinea+ " "+ e.getMessage());
+                        listaLogs.add("Error linea " + numeroLinea + " " + e.getMessage());
                     }
                 }
             }
@@ -54,15 +53,20 @@ public class LectorDeArchivoTexto {
             case "USUARIO":
                 lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
                 procesador.registrarEmpleado(conversor.convertirAUsuario(lineaLimpia));
-                listaLogs.add("Linea No."+ numeroLinea +" Se registró nuevo usuario");
+                listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo usuario");
                 break;
-            case  "DESTINO":
+            case "DESTINO":
                 lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
                 procesador.registrarDestino(conversor.convertirADestino(lineaLimpia));
-                listaLogs.add("Linea No."+ numeroLinea +" Se registró nuevo destino");
+                listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo destino");
+                break;
+            case "PROVEEDOR":
+                lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
+                procesador.registrarProveedor(conversor.convertirAProveedor(lineaLimpia));
+                listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo proveedor");
                 break;
             default:
-                listaLogs.add("Linea No."+numeroLinea+ " no se reconoció la instrucción "+ linea);
+                listaLogs.add("Linea No." + numeroLinea + " no se reconoció la instrucción " + linea);
         }
     }
 
@@ -81,9 +85,9 @@ public class LectorDeArchivoTexto {
 
     private String dejarUnicamenteParametros(String lineaSucia, String nombreInstruccion) {
         String lineaLimpia = "";
-        int inicioIteracion = nombreInstruccion.length()+1;
+        int inicioIteracion = nombreInstruccion.length() + 1;
 
-        for (int i = inicioIteracion; i < lineaSucia.length()-1; i++) {
+        for (int i = inicioIteracion; i < lineaSucia.length() - 1; i++) {
             lineaLimpia += lineaSucia.charAt(i);
         }
         return lineaLimpia;

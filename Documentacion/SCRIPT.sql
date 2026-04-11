@@ -46,7 +46,7 @@ CREATE TABLE proveedor(
     proveedor_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     proveedor_nombre VARCHAR(30) NOT NULL,
     proveedor_id_tipo INTEGER NOT NULL,
-    proveedor_contactos VARCHAR(40) NOT NULL,
+    proveedor_contactos VARCHAR(40),
     proveedor_id_pais INTEGER NOT NULL,
     CONSTRAINT fk_proveedor_pais FOREIGN KEY (proveedor_id_pais) REFERENCES pais(pais_id) ON DELETE CASCADE
 );
@@ -55,8 +55,8 @@ CREATE TABLE destino (
      destino_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
      destino_nombre VARCHAR(40) NOT NULL,
      destino_descripcion VARCHAR(300) NOT NULL,
-     destino_mejor_epoca VARCHAR(100) NOT NULL, 
-     destino_url_imagen	 VARCHAR(500) NOT NULL,
+     destino_mejor_epoca VARCHAR(100), 
+     destino_url_imagen	 VARCHAR(500),
      destino_id_pais	 INTEGER NOT NULL,
      CONSTRAINT fk_destino_pais FOREIGN KEY (destino_id_pais) REFERENCES pais(pais_id) ON DELETE CASCADE
 );
