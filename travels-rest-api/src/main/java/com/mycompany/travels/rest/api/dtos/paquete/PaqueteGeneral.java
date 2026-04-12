@@ -24,6 +24,9 @@ public class PaqueteGeneral {
     }
     
     
+    
+    
+    
 
     public PaqueteGeneral() {
     }

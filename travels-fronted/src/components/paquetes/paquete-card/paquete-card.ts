@@ -15,6 +15,7 @@ export class PaqueteCard implements OnInit {
   paquete !: PaqueteRequest;
 
   ngOnInit(): void {
+    console.log(this.paquete);
   }
 
 

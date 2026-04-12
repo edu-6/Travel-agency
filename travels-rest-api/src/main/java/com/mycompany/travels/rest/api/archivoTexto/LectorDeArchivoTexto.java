@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class LectorDeArchivoTexto {
 
-    private ElecutadorDeInstrucciones procesador = new ElecutadorDeInstrucciones();
+    private EjecutadorDeInstrucciones procesador = new EjecutadorDeInstrucciones();
     private ConversorAObjetos conversor = new ConversorAObjetos();
 
     public ArrayList<String> procesarArchivo(InputStream inputStream) {

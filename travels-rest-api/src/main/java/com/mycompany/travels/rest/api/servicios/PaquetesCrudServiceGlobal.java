@@ -73,6 +73,11 @@ public class PaquetesCrudServiceGlobal implements CreacionEntidad<PaqueteGeneral
         if(paquete == null){
             throw new NotFoundException("no se encontró el paquete con nombre: "+ nombre);
         }
+        
+        boolean altaDemanda = paquetesService.tieneAltaDemanda(paquete);
+        paquete.setTopadoEnProximasSalidas(altaDemanda);
+        
+        
         ArrayList<Paquete_servicio> lista = serviciosService.buscarVariosInt(paquete.getId());
 
         return new PaqueteGeneral(paquete, lista);
@@ -155,7 +160,7 @@ public class PaquetesCrudServiceGlobal implements CreacionEntidad<PaqueteGeneral
         for (Paquete_servicio paquete_servicio : lista) {
             serviciosService.revisarDatosCorrectos(paquete_servicio);
             if(paquete_servicio.getPrecio() <= 0){
-                throw new SinGananciaException("El precio de uno o varios servicios es negativo");
+                throw new SinGananciaException("El precio de un servicio-paquete o varios servicios es negativo");
             }
         }
     }

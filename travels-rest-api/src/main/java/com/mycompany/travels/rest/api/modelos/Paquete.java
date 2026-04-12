@@ -20,6 +20,7 @@ public class Paquete extends Entidad {
     private int id;
     private int id_destino;
     private boolean activo;
+    private boolean topadoEnProximasSalidas;
     
     public Paquete(){
         
@@ -130,6 +131,16 @@ public class Paquete extends Entidad {
     public void setId_destino(int id_destino) {
         this.id_destino = id_destino;
     }
+
+    public boolean isTopadoEnProximasSalidas() {
+        return topadoEnProximasSalidas;
+    }
+
+    public void setTopadoEnProximasSalidas(boolean topadoEnProximasSalidas) {
+        this.topadoEnProximasSalidas = topadoEnProximasSalidas;
+    }
+    
+    
     
     
     

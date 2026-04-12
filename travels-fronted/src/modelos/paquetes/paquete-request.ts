@@ -8,4 +8,6 @@ export interface PaqueteRequest {
   id_destino: number;
   activo: boolean;
   destino  ?: string;
+  topadoEnProximasSalidas: boolean;
+
 }

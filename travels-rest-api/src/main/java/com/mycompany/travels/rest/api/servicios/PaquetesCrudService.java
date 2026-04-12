@@ -91,6 +91,11 @@ public class PaquetesCrudService extends CrudService implements CreacionReturnId
     }
     
     
+    public boolean tieneAltaDemanda(Paquete paquete)  throws ExceptionGenerica{
+        return db.paqueteTieneAltaDemanda(paquete);
+    }
+    
+    
     
     
     

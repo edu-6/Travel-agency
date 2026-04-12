@@ -70,7 +70,7 @@ public class ReservacionesDB implements CreacionReturnId<ReservacionRequest>, Bu
         try (Connection con = ConexionDB.getConnection(); PreparedStatement ps = con.prepareStatement(CREAR, java.sql.Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, entidad.getIdTitular());
-            ps.setInt(2, (entidad.getPasajeros().length));
+            ps.setInt(2, (entidad.getPasajeros().length+1));
             ps.setInt(3, entidad.getIdAgenteCreador());
             ps.setInt(4, 1);
             ps.setDate(5, java.sql.Date.valueOf(java.time.LocalDate.now()));

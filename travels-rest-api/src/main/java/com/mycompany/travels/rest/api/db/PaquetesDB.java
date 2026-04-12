@@ -5,7 +5,6 @@
 package com.mycompany.travels.rest.api.db;
 
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
-import com.mycompany.travels.rest.api.exceptions.NotFoundException;
 import com.mycompany.travels.rest.api.interfaces.BuscarTodos;
 import com.mycompany.travels.rest.api.interfaces.BuscarVariosInt;
 import com.mycompany.travels.rest.api.interfaces.BusquedaUnitariaString;
@@ -15,10 +14,12 @@ import com.mycompany.travels.rest.api.interfaces.ExisteEntidad;
 import com.mycompany.travels.rest.api.interfaces.ExtraerEntidad;
 import com.mycompany.travels.rest.api.modelos.Paquete;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paquete>,
         ExisteEntidad, BusquedaUnitariaString<Paquete>,
         ExtraerEntidad<Paquete>, BuscarTodos<Paquete>,
-        BuscarVariosInt<Paquete>{
+        BuscarVariosInt<Paquete> {
 
     private static final String CREAR = "INSERT INTO paquete "
             + "(paquete_nombre,"
@@ -57,17 +58,17 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
     private static final String BUSCAR_UNO = "select paquete.*, destino_nombre FROM paquete"
             + " JOIN  destino ON paquete_id_destino = destino_id"
             + " WHERE paquete_nombre = ?";
-    
+
     private static final String BUSCAR_UNO_POR_ID = "select paquete.*, destino_nombre FROM paquete"
             + " JOIN  destino ON paquete_id_destino = destino_id"
             + " WHERE paquete_id = ?";
 
     private static final String BUSCAR_TODOS = "select paquete.*, destino_nombre FROM paquete"
             + " JOIN  destino ON paquete_id_destino = destino_id";
-    
+
     private static final String BUSCAR_POR_DESTINO = "select paquete.*, destino_nombre FROM paquete"
             + " JOIN  destino ON paquete_id_destino = destino_id where destino_id = ?";
-    
+
     private static final String BUSCAR_PAQUETES_ACTIVOS = "select paquete.*, destino_nombre FROM paquete"
             + " JOIN  destino ON paquete_id_destino = destino_id where paquete_activo = 1";
 
@@ -78,6 +79,9 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
     private static final String OBTENER_PRECIO_PAQUETE = "select paquete_precio from paquete where paquete_id = ?";
 
     private static final String ACTUALIZAR_GANANCIA = "update paquete set paquete_ganancia = ? where paquete_id = ?";
+
+    private static final String BUSCAR_SI_TIENE_ALTA_DEMANDA = "select rs_numero_reservacion from reservacion where rs_fecha_viaje >= ?"
+            + " AND rs_id_paquete  = ? AND rs_cantidad_pasajeros >= ? AND rs_id_estado != 3";
 
     @Override
     public int crear(Paquete entidad) throws ExceptionGenerica {
@@ -147,8 +151,7 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
             throw new ExceptionGenerica("Falló al buscar paquete");
         }
     }
-    
-    
+
     public Paquete buscarPorId(int id) throws ExceptionGenerica {
         try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(BUSCAR_UNO_POR_ID)) {
             ps.setInt(1, id);
@@ -161,8 +164,6 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
             throw new ExceptionGenerica("Falló al buscar paquete");
         }
     }
-    
-    
 
     @Override
     public Paquete extraer(ResultSet rs) throws SQLException {
@@ -184,13 +185,12 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
     public ArrayList<Paquete> buscarTodos() throws ExceptionGenerica {
         return this.buscarTodos(BUSCAR_TODOS);
     }
-    
+
     public ArrayList<Paquete> buscarPaquetesActivos() throws ExceptionGenerica {
         return this.buscarTodos(BUSCAR_PAQUETES_ACTIVOS);
     }
-    
-    
-    private  ArrayList<Paquete> buscarTodos(String sql) throws ExceptionGenerica {
+
+    private ArrayList<Paquete> buscarTodos(String sql) throws ExceptionGenerica {
         ArrayList<Paquete> lista = new ArrayList();
         try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
@@ -235,9 +235,10 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
 
     /**
      * Suma
+     *
      * @param idPaquete
      * @param ganancia
-     * @throws ExceptionGenerica 
+     * @throws ExceptionGenerica
      */
     public void actualizarGanancia(int idPaquete, double ganancia) throws ExceptionGenerica {
         try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(ACTUALIZAR_GANANCIA)) {
@@ -262,6 +263,27 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
             throw new ExceptionGenerica("Falló al buscar paquetes por destino");
         }
         return lista;
+    }
+
+    public boolean paqueteTieneAltaDemanda(Paquete paquete) throws ExceptionGenerica {  
+    /*
+            private static final String BUSCAR_SI_TIENE_ALTA_DEMANDA = "select rs_numero_reservacion from reservacion where rs_fecha_viaje >= ?"
+            + " AND rs_id_paquete  = ? AND rs_cantidad_pasajeros >= ? AND rs_id_estado != 3"
+        */
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(BUSCAR_SI_TIENE_ALTA_DEMANDA)) {
+            ps.setDate(1, Date.valueOf(LocalDate.now()));
+            ps.setInt(2, paquete.getId());
+            
+            double porcentaje = paquete.getCapacidadMaxima()*80/100;
+            ps.setDouble(3, porcentaje);
+            try (ResultSet rs = ps.executeQuery()) {
+               if(rs.next()) return true;
+            }
+        } catch (SQLException e) {
+            throw new ExceptionGenerica("Falló al buscar la demanda del paquete");
+        }
+        return  false;
+
     }
 
 }

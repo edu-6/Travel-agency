@@ -17,12 +17,12 @@ CREATE TABLE empleado (
 );
 
 CREATE TABLE pais (
-     pais_id INTEGER NOT NULL PRIMARY KEY,
+     pais_id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
      pais_nombre VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE nacionalidad (
-     nacionalidad_id INTEGER NOT NULL PRIMARY KEY,
+     nacionalidad_id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
      nacionalidad_nombre VARCHAR(20) NOT NULL
 );
 
@@ -166,15 +166,16 @@ INSERT INTO metodo_pago (metodo_pago_id, metodo_pago_nombre) VALUES
 (3, 'Transferencia');
 
 
-INSERT INTO pais (pais_id, pais_nombre) VALUES 
-(1, 'Guatemala'),
-(2, 'Mexico'),
-(3, 'Estados Unidos'),
-(4, 'España'),
-(5, 'Colombia');
+INSERT INTO pais (pais_nombre) VALUES 
+('Guatemala'),
+('Mexico'),
+('Estados Unidos'),
+('España'),
+('Colombia');
 
-(1, 'Guatemalteca'),
-(2, 'Mexicana'),
-(3, 'Estadounidense'),
-(4, 'Española'),
-(5, 'Colombiana');
+INSERT INTO nacionalidad (nacionalidad_nombre) VALUES
+('Guatemalteca'),
+('Mexicana'),
+('Estadounidense'),
+('Española'),
+('Colombiana');

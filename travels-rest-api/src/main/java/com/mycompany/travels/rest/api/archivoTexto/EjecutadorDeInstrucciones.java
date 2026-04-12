@@ -4,6 +4,7 @@
  */
 package com.mycompany.travels.rest.api.archivoTexto;
 
+import com.mycompany.travels.rest.api.dtos.paquete.PaqueteGeneral;
 import com.mycompany.travels.rest.api.dtos.reservaciones.ReservacionRequest;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.modelos.Cliente;
@@ -17,25 +18,24 @@ import com.mycompany.travels.rest.api.servicios.ClientesCrudService;
 import com.mycompany.travels.rest.api.servicios.DestinosCrudService;
 import com.mycompany.travels.rest.api.servicios.EmpleadosCrudService;
 import com.mycompany.travels.rest.api.servicios.PagosCrudService;
-import com.mycompany.travels.rest.api.servicios.PaqueteServicioCService;
-import com.mycompany.travels.rest.api.servicios.PaquetesCrudService;
+import com.mycompany.travels.rest.api.servicios.PaquetesCrudServiceGlobal;
 import com.mycompany.travels.rest.api.servicios.ProveedorCrudService;
 import com.mycompany.travels.rest.api.servicios.ReservacionesCrudService;
+import java.util.ArrayList;
 
 /**
  *
  * @author edu
  */
-public class ElecutadorDeInstrucciones {
+public class EjecutadorDeInstrucciones {
 
     private EmpleadosCrudService empleadosCrudService = new EmpleadosCrudService();
     private DestinosCrudService destinosCrudService = new DestinosCrudService();
     private ProveedorCrudService proveedoresCrudService = new ProveedorCrudService();
-    private PaquetesCrudService paqueteCrudService = new PaquetesCrudService();
-    private PaqueteServicioCService servicioPaqeteService = new PaqueteServicioCService();
     private ClientesCrudService clientesService = new ClientesCrudService();
     private ReservacionesCrudService reservacionesService = new ReservacionesCrudService();
     private PagosCrudService pagosService = new PagosCrudService();
+    private PaquetesCrudServiceGlobal paquetesCrudServiceGlobal = new PaquetesCrudServiceGlobal();
 
     private BuscadorDeIds buscadorIds = new BuscadorDeIds();
 
@@ -81,32 +81,49 @@ public class ElecutadorDeInstrucciones {
         if (idDestino <= 0) {
             throw new ExceptionGenerica("no existe el destino " + paquete.getDestino());
         }
+        
+        
         paquete.setId_destino(idDestino);
 
-        paqueteCrudService.crear(paquete);
+        // se crea la clase general para conservar la estructurra crud service
+        ArrayList<Paquete_servicio> servicios = new ArrayList();
+        
+        PaqueteGeneral paqueteGeneral = new PaqueteGeneral(paquete, servicios);
+
+        this.paquetesCrudServiceGlobal.crear(paqueteGeneral);
     }
 
-    public void registrarServicioPaquete(Paquete_servicio ps) throws ExceptionGenerica {
+    public void registrarServicioPaquete(Paquete_servicio paqueteServicio) throws ExceptionGenerica {
 
-        if (ps == null) {
+        if (paqueteServicio == null) {
             throw new ExceptionGenerica("error al recbir el servicio-paquete");
         }
 
-        int idPaquete = buscadorIds.buscarIdPaquete(ps.getNombrePaquete());
-        int idProvedor = buscadorIds.buscarIdProveedor(ps.getNombreProveedor());
+        
+        int idProvedor = buscadorIds.buscarIdProveedor(paqueteServicio.getNombreProveedor());
 
-        if (idPaquete <= 0) {
-            throw new ExceptionGenerica("no existe el paquete " + ps.getNombrePaquete());
+        PaqueteGeneral paqueteGeneral = this.paquetesCrudServiceGlobal.buscar(paqueteServicio.getNombrePaquete());
+        if (paqueteGeneral == null) {
+            throw new ExceptionGenerica("no existe el paquete " + paqueteServicio.getNombrePaquete());
         }
 
         if (idProvedor <= 0) {
-            throw new ExceptionGenerica("no existe el proveedor " + ps.getNombrePaquete());
+            throw new ExceptionGenerica("no existe el proveedor " + paqueteServicio.getNombreProveedor());
         }
 
-        ps.setId_paquete(idPaquete);
-        ps.setId_proveedor(idProvedor);
+        // se toma del que se buscó
+        paqueteServicio.setId_paquete(paqueteGeneral.getPaquete().getId());
+        
+        // se añade id proveedro del servicio
+        paqueteServicio.setId_proveedor(idProvedor);
 
-        servicioPaqeteService.crear(ps);
+        ArrayList<Paquete_servicio> nuevosServicios = new ArrayList();
+        nuevosServicios.add(paqueteServicio);
+        
+        paqueteGeneral.setNuevosServicios(nuevosServicios);
+        
+        paquetesCrudServiceGlobal.editar(paqueteGeneral);
+        
     }
 
     public void registrarCliente(Cliente cliente) throws ExceptionGenerica {
@@ -154,14 +171,14 @@ public class ElecutadorDeInstrucciones {
         if (pago == null) {
             throw new ExceptionGenerica("error al recibir el pago");
         }
-        
+
         // tira una excetión automaticamente si no la encuentra
-       reservacionesService.buscarUnaPorID(pago.getIdReservacion());
-        
-        if(!(pago.getId_metodo_pago() >= 1 && pago.getId_metodo_pago() <= 3)){
-            throw new ExceptionGenerica(" el metoo de pago "+ pago.getId_metodo_pago() + " no existe");
+        reservacionesService.buscarUnaPorID(pago.getIdReservacion());
+
+        if (!(pago.getId_metodo_pago() >= 1 && pago.getId_metodo_pago() <= 3)) {
+            throw new ExceptionGenerica(" el metoo de pago " + pago.getId_metodo_pago() + " no existe");
         }
-        
+
         pagosService.crear(pago);
 
     }
