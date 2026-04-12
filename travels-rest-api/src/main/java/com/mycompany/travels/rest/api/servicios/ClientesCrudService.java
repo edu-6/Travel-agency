@@ -31,7 +31,7 @@ public class ClientesCrudService extends CrudService implements CreacionEntidad<
     @Override
     public void crear(Cliente entidad) throws ExceptionGenerica {
         this.revisarDatosCorrectos(entidad);
-        if(db.existeEntidad(entidad.getNombre())){
+        if(db.existeEntidad(entidad.getIdentificacion())){
             throw new EntidadDuplicadaException("el identificador "+ entidad.getIdentificacion() + " ya está registrado");
         }
         

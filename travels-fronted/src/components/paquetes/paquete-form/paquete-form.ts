@@ -72,7 +72,7 @@ export class PaqueteForm implements OnInit {
   private instanciarFormulario() {
     this.formulario = this.formBuilder.group({
       id: [0], nombre: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(200)]],
-      descripcion: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(300)]],
+      descripcion: ["", [ Validators.minLength(1), Validators.maxLength(300)]],
       precioVenta: [1, [Validators.required, Validators.min(0.01)]],
       duracion: [1, [Validators.required, Validators.min(1)]],
       capacidadMaxima: [1, [Validators.required, Validators.min(1)]],

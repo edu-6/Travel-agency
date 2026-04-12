@@ -31,6 +31,17 @@ public class Paquete_servicio extends Entidad {
     }
     
     
+    // para archivo texto
+
+    public Paquete_servicio(String descripcion, double precio, String nombrePaquete, String nombreProveedor) {
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.nombrePaquete = nombrePaquete;
+        this.nombreProveedor = nombreProveedor;
+    }
+    
+    
+    
 
     /// para mostrar
     public Paquete_servicio(String descripcion, double precio, int id_proveedor, int id_paquete, int id, String nombrePaquete, String nombreProveedor) {
@@ -84,6 +95,12 @@ public class Paquete_servicio extends Entidad {
     public void setId_paquete(int id_paquete) {
         this.id_paquete = id_paquete;
     }
+
+    public void setId_proveedor(int id_proveedor) {
+        this.id_proveedor = id_proveedor;
+    }
+    
+    
     
     
     

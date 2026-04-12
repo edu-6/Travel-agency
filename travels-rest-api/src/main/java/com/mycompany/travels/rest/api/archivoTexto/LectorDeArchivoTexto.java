@@ -65,6 +65,26 @@ public class LectorDeArchivoTexto {
                 procesador.registrarProveedor(conversor.convertirAProveedor(lineaLimpia));
                 listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo proveedor");
                 break;
+            case "PAQUETE":
+                lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
+                procesador.registrarPaquete(conversor.convertirAPaquete(lineaLimpia));
+                listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo paquete");
+                break;
+            case "SERVICIO_PAQUETE":
+                lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
+                procesador.registrarServicioPaquete(conversor.convertirAPaqueteServicio(lineaLimpia));
+                listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo servicio-paquete");
+                break;
+            case "CLIENTE":
+                lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
+                procesador.registrarCliente(conversor.convertirACliente(lineaLimpia));
+                listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo cliente");
+                break;
+            case "RESERVACION":
+                lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
+                procesador.registrarReservacion(conversor.convertirAReservacion(lineaLimpia));
+                listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo cliente");
+                break;
             default:
                 listaLogs.add("Linea No." + numeroLinea + " no se reconoció la instrucción " + linea);
         }

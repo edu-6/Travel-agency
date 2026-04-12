@@ -31,6 +31,19 @@ public class Cliente extends Entidad {
         this.id_nacionalidad = id_nacionalidad;
     }
     
+    // para archivo txt
+
+    public Cliente(String nombre, String correo, String telefono, LocalDate fechaNacimiento, String identificacion, String nacionalidad) {
+        this.nombre = nombre;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
+        this.identificacion = identificacion;
+        this.nacionalidad = nacionalidad;
+    }
+    
+    
+    
 
     //Para mostrar
     public Cliente(String id, String nombre, String correo, String telefono, LocalDate fechaNacimiento, String identificacion, String nacionalidad, int id_nacionalidad) {
@@ -89,5 +102,11 @@ public class Cliente extends Entidad {
     public int getId_nacionalidad() {
         return id_nacionalidad;
     }
+
+    public void setId_nacionalidad(int id_nacionalidad) {
+        this.id_nacionalidad = id_nacionalidad;
+    }
+    
+    
 
 }

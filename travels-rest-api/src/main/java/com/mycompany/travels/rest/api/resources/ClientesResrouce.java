@@ -19,6 +19,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 /**
@@ -139,7 +140,7 @@ public class ClientesResrouce extends HttpServlet {
 
     private boolean esNumero(String parametro) {
         try {
-            Integer.valueOf(parametro);
+            new BigInteger(parametro);
         } catch (NumberFormatException e) {
             return false;
         }

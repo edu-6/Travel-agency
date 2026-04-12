@@ -13,17 +13,43 @@ import java.util.ArrayList;
  * @author edu
  */
 public class ReservacionRequest {
-    
+
     private String idTitular;
     private int idPaquete;
     private int idAgenteCreador;
     private LocalDate fechaCreacion;
     private LocalDate fechaViaje;
     private double totalAPagar;
-    
-    private String [] pasajeros;
-    
+
+    private String[] pasajeros;
+
     private ArrayList<PasajeroRequest> pasajerosRequest;
+
+    private String nombrePaquete;
+    private String nombreAgente;
+
+    // para archivo texto
+    public ReservacionRequest(String idTitular, String nombrePaquete, String nombreAgente, String[] pasajeros, LocalDate fechaViaje) {
+        this.idTitular = idTitular;
+        this.nombrePaquete = nombrePaquete;
+        this.nombreAgente = nombreAgente;
+        this.pasajeros = pasajeros;
+        this.fechaViaje = fechaViaje;
+    }
+
+    public void generarPasajerosRequest(int idReservacion) {
+
+        this.pasajerosRequest = new ArrayList();
+
+        // agregar al titular como pasajero
+        pasajerosRequest.add(new PasajeroRequest(idTitular, idReservacion));
+
+        if (pasajeros != null) {
+            for (String pasajero : pasajeros) {
+                pasajerosRequest.add(new PasajeroRequest(pasajero, idReservacion));
+            }
+        }
+    }
 
     public ReservacionRequest() {
     }
@@ -43,7 +69,6 @@ public class ReservacionRequest {
     public LocalDate getFechaViaje() {
         return fechaViaje;
     }
-    
 
     public void setIdPaquete(int idPaquete) {
         this.idPaquete = idPaquete;
@@ -68,28 +93,9 @@ public class ReservacionRequest {
     public ArrayList<PasajeroRequest> getPasajerosRequest() {
         return pasajerosRequest;
     }
-    
-    
-    
-
-
 
     public String getIdTitular() {
         return idTitular;
-    }
-    
-    public void generarPasajerosRequest(int idReservacion){
-        
-        this.pasajerosRequest = new ArrayList();
-        
-        // agregar al titular como pasajero
-        pasajerosRequest.add(new PasajeroRequest(idTitular, idReservacion));
-        
-        if(pasajeros != null){
-            for (String pasajero : pasajeros) {
-                pasajerosRequest.add(new PasajeroRequest(pasajero, idReservacion));
-            }
-        }
     }
 
     public double getTotalAPagar() {
@@ -99,17 +105,20 @@ public class ReservacionRequest {
     public void setTotalAPagar(double totalAPagar) {
         this.totalAPagar = totalAPagar;
     }
+
+    public String getNombrePaquete() {
+        return nombrePaquete;
+    }
+
+    public String getNombreAgente() {
+        return nombreAgente;
+    }
+
+    public void setIdTitular(String idTitular) {
+        this.idTitular = idTitular;
+    }
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

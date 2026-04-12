@@ -64,7 +64,7 @@ CREATE TABLE destino (
 CREATE TABLE paquete (
      paquete_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
      paquete_nombre VARCHAR(200) NOT NULL UNIQUE,
-     paquete_descripcion VARCHAR (300) NOT NULL,
+     paquete_descripcion VARCHAR (300),
      paquete_precio DECIMAL(15,2) NOT NULL,
      paquete_ganancia DECIMAL(15,2) NOT NULL,
      paquete_duracion INTEGER NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE cancelacion(
 
 
 
-INSERT INTO rol (rol_id, rol_nombre) VALUES 
+INSERT INTO rol (rol_id, rol_nombre) VALUES
 (1, 'Atencion al Cliente'),
 (2, 'Operaciones'),
 (3, 'Administrador');
@@ -173,7 +173,6 @@ INSERT INTO pais (pais_id, pais_nombre) VALUES
 (4, 'España'),
 (5, 'Colombia');
 
-INSERT INTO nacionalidad (nacionalidad_id, nacionalidad_nombre) VALUES 
 (1, 'Guatemalteca'),
 (2, 'Mexicana'),
 (3, 'Estadounidense'),
