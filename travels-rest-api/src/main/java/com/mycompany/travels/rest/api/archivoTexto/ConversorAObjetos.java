@@ -9,6 +9,7 @@ import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.modelos.Cliente;
 import com.mycompany.travels.rest.api.modelos.Destino;
 import com.mycompany.travels.rest.api.modelos.Empleado;
+import com.mycompany.travels.rest.api.modelos.PagoReservacion;
 import com.mycompany.travels.rest.api.modelos.Paquete;
 import com.mycompany.travels.rest.api.modelos.Paquete_servicio;
 import com.mycompany.travels.rest.api.modelos.Proveedor;
@@ -28,6 +29,7 @@ public class ConversorAObjetos {
     private static final int PARAMETROS_SERVICIO_PAQUETE = 4;
     private static final int PARAMETROS_CLIENTE = 6;
     private static final int PARAMETROS_RESERVACION = 4;
+    private static final int PARAMETROS_PAGO = 4;
 
     public Empleado convertirAUsuario(String instruccion) throws ExceptionGenerica {
 
@@ -167,7 +169,7 @@ public class ConversorAObjetos {
         }
 
         try {
-            
+
             String nombrePaquete = parametros[0];
             String nombreAgente = parametros[1];
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -175,17 +177,41 @@ public class ConversorAObjetos {
 
             String pasajerosEntreComillas = parametros[3];
             String[] pasajeros = this.separarPasajeros(pasajerosEntreComillas);
-            
-            
-            if(pasajeros.length == 0) throw new ExceptionGenerica("ingrese los pasasjeros");
+
+            if (pasajeros.length == 0) {
+                throw new ExceptionGenerica("ingrese los pasasjeros");
+            }
 
             String idTitular = pasajeros[0];
             pasajeros = this.quitarElPrimerPasajero(pasajeros);
-            
-            return new ReservacionRequest(idTitular, nombrePaquete,nombreAgente, pasajeros, fechaViaje);
+
+            return new ReservacionRequest(idTitular, nombrePaquete, nombreAgente, pasajeros, fechaViaje);
 
         } catch (IllegalArgumentException e) {
             throw new ExceptionGenerica("Error en los parametros de CLIENTE: " + e.getMessage());
+        }
+    }
+
+    public PagoReservacion  convertirAPago(String instruccion) throws ExceptionGenerica {
+        String[] parametros = separarYQuitarComillas(instruccion);
+
+        if (!(parametros.length == PARAMETROS_PAGO)) {
+            throw new ExceptionGenerica("Error, la instruccion PAGO no tiene la cantidad exacta de parametros necesarios");
+        }
+        
+
+        try {
+            int numeroReservacion = Integer.valueOf(parametros[0]);
+            double monto = Double.valueOf(parametros[1]);
+            int idmetodoPago = Integer.valueOf(parametros[2]);
+            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate fechaPago = LocalDate.parse(parametros[2], formatter);
+            
+            return new PagoReservacion(monto, numeroReservacion, idmetodoPago, fechaPago);
+
+        } catch (IllegalArgumentException e) {
+            throw new ExceptionGenerica("Error en los parametros de PAGO: " + e.getMessage());
         }
     }
 
@@ -210,7 +236,7 @@ public class ConversorAObjetos {
 
     private String[] separarPasajeros(String linea) {
         return linea.trim().split("\\|");
-        
+
     }
 
     private String[] quitarElPrimerPasajero(String[] pasajeros) {

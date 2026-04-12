@@ -9,12 +9,14 @@ import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.modelos.Cliente;
 import com.mycompany.travels.rest.api.modelos.Destino;
 import com.mycompany.travels.rest.api.modelos.Empleado;
+import com.mycompany.travels.rest.api.modelos.PagoReservacion;
 import com.mycompany.travels.rest.api.modelos.Paquete;
 import com.mycompany.travels.rest.api.modelos.Paquete_servicio;
 import com.mycompany.travels.rest.api.modelos.Proveedor;
 import com.mycompany.travels.rest.api.servicios.ClientesCrudService;
 import com.mycompany.travels.rest.api.servicios.DestinosCrudService;
 import com.mycompany.travels.rest.api.servicios.EmpleadosCrudService;
+import com.mycompany.travels.rest.api.servicios.PagosCrudService;
 import com.mycompany.travels.rest.api.servicios.PaqueteServicioCService;
 import com.mycompany.travels.rest.api.servicios.PaquetesCrudService;
 import com.mycompany.travels.rest.api.servicios.ProveedorCrudService;
@@ -33,6 +35,7 @@ public class ElecutadorDeInstrucciones {
     private PaqueteServicioCService servicioPaqeteService = new PaqueteServicioCService();
     private ClientesCrudService clientesService = new ClientesCrudService();
     private ReservacionesCrudService reservacionesService = new ReservacionesCrudService();
+    private PagosCrudService pagosService = new PagosCrudService();
 
     private BuscadorDeIds buscadorIds = new BuscadorDeIds();
 
@@ -133,7 +136,7 @@ public class ElecutadorDeInstrucciones {
         int idPaquete = buscadorIds.buscarIdPaquete(reservacion.getNombrePaquete());
 
         if (idAgente <= 0) {
-            throw new ExceptionGenerica("no existe el agente con usuario " + reservacion.getNombreAgente());
+            throw new ExceptionGenerica("no existe el agente con usuario " + reservacion.getNombreAgente() + " no no tiene el rol correcto");
         }
 
         if (idPaquete <= 0) {
@@ -144,6 +147,23 @@ public class ElecutadorDeInstrucciones {
         reservacion.setIdPaquete(idPaquete);
 
         reservacionesService.crear(reservacion);
+    }
+
+    public void registrarPago(PagoReservacion pago) throws ExceptionGenerica {
+
+        if (pago == null) {
+            throw new ExceptionGenerica("error al recibir el pago");
+        }
+        
+        // tira una excetión automaticamente si no la encuentra
+       reservacionesService.buscarUnaPorID(pago.getIdReservacion());
+        
+        if(!(pago.getId_metodo_pago() >= 1 && pago.getId_metodo_pago() <= 3)){
+            throw new ExceptionGenerica(" el metoo de pago "+ pago.getId_metodo_pago() + " no existe");
+        }
+        
+        pagosService.crear(pago);
+
     }
 
 }

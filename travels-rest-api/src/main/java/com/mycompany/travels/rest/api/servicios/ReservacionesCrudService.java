@@ -35,10 +35,7 @@ public class ReservacionesCrudService extends CrudService implements CreacionRet
 
     @Override
     public int crear(ReservacionRequest entidad) throws ExceptionGenerica {
-
-        if (!empleadosDB.existeEntidad(entidad.getNombreAgente())) {
-            throw new EntidadDuplicadaException("no existe el agente  " + entidad.getNombreAgente() + " con rol atencion-cliente");
-        }
+        
 
         if (!clientesDB.existeEntidad(entidad.getIdTitular())) {
             throw new NotFoundException("no existe el cliente con id :" + entidad.getIdTitular());

@@ -176,7 +176,7 @@ public class PagosDB implements CreacionEntidad<PagoReservacion>, BuscarVariosIn
         } catch (SQLException e) {
             throw new ExceptionGenerica("Error al cambiar estado de la reservación: " + e.getMessage());
         }
-        
+     
     }
 
 }
