@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * @author edu
  */
 public class PaqueteServicioDB implements CreacionReturnId<Paquete_servicio>, EdicionEntidad<Paquete_servicio>,
-        BusquedaUnitariaString<Paquete_servicio>, ExtraerEntidad<Paquete_servicio>,
+         ExtraerEntidad<Paquete_servicio>,
         BuscarVariosInt<Paquete_servicio>, EliminacionEntidad {
 
     private static final String CREAR = "INSERT INTO servicio_paquete "
@@ -107,10 +107,9 @@ public class PaqueteServicioDB implements CreacionReturnId<Paquete_servicio>, Ed
     }
     
 
-    @Override
-    public Paquete_servicio buscar(String nombre) throws ExceptionGenerica {
+    public Paquete_servicio buscarPorId(int id) throws ExceptionGenerica {
         try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(BUSCAR_UNO)) {
-            ps.setString(1, nombre);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return extraer(rs);

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { ConstantesRest } from '../../../services/login/restConstantes';
 import { Observable } from 'rxjs';
+import { ErrorBackend } from '../../../modelos/ErrorBackend';
 
 @Component({
   selector: 'app-archivo-texto-page',
@@ -50,7 +51,9 @@ export class ArchivoTextoPage {
         this.logs.set(null);
         this.logs.set(res);
       },
-      error: (err) => {
+      error: (err: any) => {
+        const errorData: ErrorBackend = err.error;
+                alert(errorData.detalles);
         console.error("Error en el servidor", err);
         alert("Hubo un error al subir el archivo");
       }

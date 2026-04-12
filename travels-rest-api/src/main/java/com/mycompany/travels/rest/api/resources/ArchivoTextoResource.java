@@ -44,6 +44,9 @@ public class ArchivoTextoResource extends HttpServlet {
             escritor.escribirJson(resp, logs);
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            escritor.escribirError(e.getMessage(), resp);
+            
         }
     }
 }

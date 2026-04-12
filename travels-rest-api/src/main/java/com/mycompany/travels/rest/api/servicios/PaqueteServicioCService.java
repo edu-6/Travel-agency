@@ -8,10 +8,10 @@ import com.mycompany.travels.rest.api.db.PaqueteServicioDB;
 import com.mycompany.travels.rest.api.db.PaquetesDB;
 import com.mycompany.travels.rest.api.exceptions.ExceptionGenerica;
 import com.mycompany.travels.rest.api.interfaces.BuscarVariosInt;
-import com.mycompany.travels.rest.api.interfaces.BusquedaUnitariaString;
 import com.mycompany.travels.rest.api.interfaces.CreacionEntidad;
 import com.mycompany.travels.rest.api.interfaces.EdicionEntidad;
 import com.mycompany.travels.rest.api.interfaces.EliminacionEntidad;
+import com.mycompany.travels.rest.api.modelos.Paquete;
 import com.mycompany.travels.rest.api.modelos.Paquete_servicio;
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author edu
  */
 public class PaqueteServicioCService extends CrudService implements CreacionEntidad<Paquete_servicio>, EdicionEntidad<Paquete_servicio>,
-        BusquedaUnitariaString<Paquete_servicio>, BuscarVariosInt<Paquete_servicio>, EliminacionEntidad{
+         BuscarVariosInt<Paquete_servicio>, EliminacionEntidad{
 
     private final PaquetesDB paquetesDB = new PaquetesDB();
     private final PaqueteServicioDB db = new PaqueteServicioDB();
@@ -40,12 +40,8 @@ public class PaqueteServicioCService extends CrudService implements CreacionEnti
 
     }
 
-    @Override
-    public Paquete_servicio buscar(String nombre) throws ExceptionGenerica {
-        if (nombre == null || nombre.isBlank()) {
-            throw new ExceptionGenerica("Busqueda vacia");
-        }
-        return db.buscar(nombre);
+    public Paquete_servicio buscarPorId(int id) throws ExceptionGenerica {
+        return db.buscarPorId(id);
 
     }
 
@@ -56,7 +52,21 @@ public class PaqueteServicioCService extends CrudService implements CreacionEnti
 
     @Override
     public void eliminar(int id) throws ExceptionGenerica {
+        Paquete_servicio servicio = this.buscarPorId(id);
+        double costoPaquete = servicio.getPrecio();
         db.eliminar(id);
+        
+        
+        Paquete paquete = paquetesDB.buscarPorId(id);
+        
+        double gananciaPaquete = paquete.getGanancia();
+        
+        gananciaPaquete+= costoPaquete;
+        
+        // actualizar las ganancias
+        paquetesDB.actualizarGanancia(paquete.getId(), gananciaPaquete);
+        
+        
     }
 
 }

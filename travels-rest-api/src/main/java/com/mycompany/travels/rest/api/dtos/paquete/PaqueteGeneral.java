@@ -13,20 +13,24 @@ import java.util.ArrayList;
  * @author edu
  */
 public class PaqueteGeneral {
-    
+
     private Paquete paquete;
     private ArrayList<Paquete_servicio> servicios;
     private ArrayList<Paquete_servicio> nuevosServicios;
+    
 
+    // para archivo texto
+    public PaqueteGeneral(Paquete paquete, ArrayList<Paquete_servicio> servicios, ArrayList<Paquete_servicio> nuevosServicios) {
+        this.paquete = paquete;
+        this.servicios = servicios;
+        this.nuevosServicios = nuevosServicios;
+    }
+
+    // para mostrar
     public PaqueteGeneral(Paquete paquete, ArrayList<Paquete_servicio> servicios) {
         this.paquete = paquete;
         this.servicios = servicios;
     }
-    
-    
-    
-    
-    
 
     public PaqueteGeneral() {
     }
@@ -54,9 +58,5 @@ public class PaqueteGeneral {
     public void setNuevosServicios(ArrayList<Paquete_servicio> nuevosServicios) {
         this.nuevosServicios = nuevosServicios;
     }
-    
-    
-    
-    
-    
+
 }

@@ -87,8 +87,9 @@ public class EjecutadorDeInstrucciones {
 
         // se crea la clase general para conservar la estructurra crud service
         ArrayList<Paquete_servicio> servicios = new ArrayList();
+        ArrayList<Paquete_servicio> nuevosServicios = new ArrayList();
         
-        PaqueteGeneral paqueteGeneral = new PaqueteGeneral(paquete, servicios);
+        PaqueteGeneral paqueteGeneral = new PaqueteGeneral(paquete, servicios, nuevosServicios);
 
         this.paquetesCrudServiceGlobal.crear(paqueteGeneral);
     }

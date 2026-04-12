@@ -15,6 +15,7 @@ import com.mycompany.travels.rest.api.modelos.Paquete_servicio;
 import com.mycompany.travels.rest.api.modelos.Proveedor;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  *
@@ -158,6 +159,8 @@ public class ConversorAObjetos {
 
         } catch (IllegalArgumentException e) {
             throw new ExceptionGenerica("Error en los parametros de CLIENTE: " + e.getMessage());
+        } catch (DateTimeParseException e){
+            throw new ExceptionGenerica("Error al parsear la fecha de naciiento: " + e.getMessage());
         }
     }
 
@@ -189,6 +192,8 @@ public class ConversorAObjetos {
 
         } catch (IllegalArgumentException e) {
             throw new ExceptionGenerica("Error en los parametros de CLIENTE: " + e.getMessage());
+        }catch (DateTimeParseException e){
+            throw new ExceptionGenerica("Error al parsear fechas : " + e.getMessage());
         }
     }
 
@@ -212,6 +217,8 @@ public class ConversorAObjetos {
 
         } catch (IllegalArgumentException e) {
             throw new ExceptionGenerica("Error en los parametros de PAGO: " + e.getMessage());
+        }catch (DateTimeParseException e){
+            throw new ExceptionGenerica("Error al parsear la fecha de pago: " + e.getMessage());
         }
     }
 
