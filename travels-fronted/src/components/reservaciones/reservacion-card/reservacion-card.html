@@ -1,29 +1,29 @@
 <div class="card shadow h-100">
     <div class="card-header text-center bg-light">
         <div class="fw-bold fs-5 text-truncate">
-             No.{{reservacion.id}}
+            No.{{reservacion.id}}
         </div>
     </div>
 
     <div class="card-body d-flex flex-column">
 
         <div class="mb-3 text-muted small">
-            
+
             <span class="me-4 text-success">
-                <i class="bi bi-bookmark-plus-fill"></i> Reservado:  {{reservacion.fechaCreacion}}
+                <i class="bi bi-bookmark-plus-fill"></i> Reservado: {{reservacion.fechaCreacion}}
             </span>
 
             <span>
-                <i class="bi bi-airplane"></i>  {{reservacion.fechaViaje}} 
+                <i class="bi bi-airplane"></i> {{reservacion.fechaViaje}}
             </span>
         </div>
 
         <div class="mb-3 text-muted small">
             <span class="me-4 ">
-                <h5 >Titular :  {{reservacion.titular}}</h5>
+                <h5>Titular : {{reservacion.titular}}</h5>
             </span>
             <span>
-                <h5>Paquete:  {{reservacion.nombrePaquete}}</h5>
+                <h5>Paquete: {{reservacion.nombrePaquete}}</h5>
             </span>
         </div>
 
@@ -54,8 +54,10 @@
             </div>
         </div>
 
+
+
         @if(mostrarBtnDetalles){
-                    <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+        <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
 
             @if(true){
             <a [routerLink]="['/reservaciones/detalle-page', reservacion.id]" class="btn btn-primary btn-sm px-3">
@@ -64,6 +66,12 @@
             }
         </div>
 
+        }@else {
+            @if(reservacion.pagadaCompletamente){
+            <div class="mt-4">
+                <button type="button" class="btn btn-secondary py-2 w-10"  (click)="descargarComprobante()">Descargar comprobante</button>
+            </div>
+        }
         }
 
     </div>

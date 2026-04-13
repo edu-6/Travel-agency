@@ -23,6 +23,7 @@ public class ReservacionResponse {
     private double precioTotal;
     private int idEstado;
     private boolean cancelada;
+    private boolean pagadaCompletamente;
     
     private ArrayList<PasajeroResponse> pasajeros;
 
@@ -39,6 +40,7 @@ public class ReservacionResponse {
         this.idEstado = rs_id_estado;
         
         this.cancelada = (idEstado == 3);
+        this.pagadaCompletamente = (idEstado == 2);
     }
 
     public ReservacionResponse() {

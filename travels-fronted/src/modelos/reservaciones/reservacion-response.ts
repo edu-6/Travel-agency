@@ -10,5 +10,6 @@ export interface ReservacionResponse {
     fechaViaje: string | Date;
     precioTotal: number;
     totalPagado: number;
+    pagadaCompletamente: boolean;
     pasajeros: PasajeroResponse[];
 }
