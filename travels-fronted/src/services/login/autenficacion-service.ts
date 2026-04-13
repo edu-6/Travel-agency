@@ -11,17 +11,17 @@ import { Router } from "@angular/router";
 })
 
 
-export class AutenticacionServicio{
+export class AutenticacionServicio {
   private constantesRest = new ConstantesRest();
 
-  constructor(private httpCliente : HttpClient, private router : Router){
+  constructor(private httpCliente: HttpClient, private router: Router) {
   }
 
   isAuthenticated = signal<boolean>(!!localStorage.getItem('auth_token'));
 
   login(usuarioLogin: UsuarioLoginRequest): Observable<UsuarioLoginResponse> {
     return this.httpCliente.post<UsuarioLoginResponse>(
-      this.constantesRest.getApiURL() + '/api/login', 
+      this.constantesRest.getApiURL() + '/api/login',
       usuarioLogin
     ).pipe(
       tap((res) => {
@@ -35,8 +35,8 @@ export class AutenticacionServicio{
   }
 
   logout() {
-    localStorage.clear(); 
-    this.isAuthenticated.set(false); 
+    localStorage.clear();
+    this.isAuthenticated.set(false);
     this.router.navigate(['/']);
   }
 
@@ -44,5 +44,21 @@ export class AutenticacionServicio{
     return localStorage.getItem('auth_token');
   }
 
-  
+  getRol(): string | null {
+    return localStorage.getItem('rol');
+  }
+
+  esAdmin(){
+    return localStorage.getItem('rol') === "Administrador";
+  }
+
+  esOperador(){
+    return localStorage.getItem('rol') === "Operaciones";
+  }
+
+  esAtencionCliente(){
+    return localStorage.getItem('rol') === "Atencion al Cliente";
+  }
+
+
 }

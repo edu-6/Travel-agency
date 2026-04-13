@@ -34,40 +34,40 @@ export const routes: Routes = [
     
     { path: "home", component: Home, canActivate: [authGuard] },
 
-    { path: "proveedores", component: ProveedoresPage, canActivate: [authGuard] },
-    { path: "proveedores/form-page", component: ProveedorFormPage, canActivate: [authGuard] },
-    { path: "proveedores/editar-page/:nombre", component: ProveedorEditarPage, canActivate: [authGuard] },
+    { path: "proveedores", component: ProveedoresPage, canActivate: [authGuard],data: { roles: ['Operaciones']} },
+    { path: "proveedores/form-page", component: ProveedorFormPage, canActivate: [authGuard],data: { roles: ['Operaciones']} },
+    { path: "proveedores/editar-page/:nombre", component: ProveedorEditarPage, canActivate: [authGuard],data: { roles: ['Operaciones']} },
 
-    { path: "destinos", component: DestinosPage, canActivate: [authGuard] },
-    { path: "destinos/form-page", component: DestinosFormPage, canActivate: [authGuard] },
-    { path: "destinos/editar-page/:nombre", component: DestinosEditarPage, canActivate: [authGuard] },
-
-
-    { path: "paquetes", component: PaquetesPage, canActivate: [authGuard] },
-    { path: "paquetes/form-page", component: PaquetesFormPage, canActivate: [authGuard] },
-    { path: "paquetes/editar-page/:nombre", component: PaquetesEditarPage, canActivate: [authGuard] },
+    { path: "destinos", component: DestinosPage, canActivate: [authGuard],data: { roles: ['Operaciones']} },
+    { path: "destinos/form-page", component: DestinosFormPage, canActivate: [authGuard],data: { roles: ['Operaciones']} },
+    { path: "destinos/editar-page/:nombre", component: DestinosEditarPage, canActivate: [authGuard],data: { roles: ['Operaciones']} },
 
 
-    { path: "empleados", component: EmpleadosPage },
-    { path: "empleados/form-page", component: EmpleadosFormPage, },
-    { path: "empleados/editar-page/:nombre", component: EmpleadosEditarPage, canActivate: [authGuard] },
-
-    { path: "reservaciones", component: ReservacionesPage,canActivate: [authGuard] },
-    { path: "reservaciones/form-page", component: ReservacionesFormPage,canActivate: [authGuard] },
-    { path: "reservaciones/form-page/:identificacion", component: ReservacionesFormPage,canActivate: [authGuard] },
-    { path: "reservaciones/detalle-page/:id", component: ReservacionesDetallePage,canActivate: [authGuard] },
+    { path: "paquetes", component: PaquetesPage, canActivate: [authGuard],data: { roles: ['Operaciones','Administrador']} },
+    { path: "paquetes/form-page", component: PaquetesFormPage, canActivate: [authGuard],data: { roles: ['Operaciones','Administrador']} },
+    { path: "paquetes/editar-page/:nombre", component: PaquetesEditarPage, canActivate: [authGuard],data: { roles: ['Operaciones','Administrador']} },
 
 
+    { path: "empleados", component: EmpleadosPage,canActivate: [authGuard],data: { roles: ['Administrador']}},
+    { path: "empleados/form-page", component: EmpleadosFormPage,canActivate: [authGuard],data: { roles: ['Administrador']} },
+    { path: "empleados/editar-page/:nombre", component: EmpleadosEditarPage, canActivate: [authGuard],data: { roles: ['Administrador']} },
 
-    { path: "clientes", component: ClientesPage,canActivate: [authGuard] },
-    { path: "clientes/form-page", component: ClientesFormPage,canActivate: [authGuard] },
-    { path: "clientes/:identificacion", component: ClientesPage,canActivate: [authGuard] },  
-    { path: "clientes/detalles-page/:identificacion", component: ClientesDetallePage,canActivate: [authGuard] },
+    { path: "reservaciones", component: ReservacionesPage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },
+    { path: "reservaciones/form-page", component: ReservacionesFormPage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },
+    { path: "reservaciones/form-page/:identificacion", component: ReservacionesFormPage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },
+    { path: "reservaciones/detalle-page/:id", component: ReservacionesDetallePage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },
+
+
+
+    { path: "clientes", component: ClientesPage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },
+    { path: "clientes/form-page", component: ClientesFormPage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },
+    { path: "clientes/:identificacion", component: ClientesPage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },  
+    { path: "clientes/detalles-page/:identificacion", component: ClientesDetallePage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },
     { path: "clientes/editar-page/:identificacion", component: ClientesEditarPage,canActivate: [authGuard] },
     
-    { path: "clientes/form-page/:identificacion", component: ClientesFormPage,canActivate: [authGuard] },
+    { path: "clientes/form-page/:identificacion", component: ClientesFormPage,canActivate: [authGuard],data: { roles: ['Atencion al Cliente']} },
 
-    {path: "reportes", component: ReportesPage,canActivate: [authGuard]},
+    {path: "reportes", component: ReportesPage,canActivate: [authGuard],data: { roles: ['Administrador']}},
 
 
     {path: "archivo-texto", component: ArchivoTextoPage}

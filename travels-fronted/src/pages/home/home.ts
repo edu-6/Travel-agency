@@ -23,7 +23,6 @@ export class Home implements OnInit {
   private actualizarReservaciones(){
     this.actualizacionesService.actualizarEstadoReservaciones().subscribe({
       next: ()=>{
-        console.log("actualizadas correctamente");
       },
       error:(error: any)=>{
           const errorData: ErrorBackend = error.error;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AutenticacionServicio } from '../../services/login/autenficacion-service';
 
@@ -8,18 +8,47 @@ import { AutenticacionServicio } from '../../services/login/autenficacion-servic
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header {
-  constructor(private router: Router, private autenticacionSerivice: AutenticacionServicio){
+export class Header implements OnInit {
 
+
+  titulo = signal<string>("");
+
+  ngOnInit(): void {
+    this.titulo.set("");
+    if(this.esAdmin()){
+      this.titulo.set(" Area de adinistracion");
+    }
+
+    if(this.esAtencionCliente()){
+      this.titulo.set(" Atención al cliente");
+    }
+
+    if(this.esOperador()){
+      this.titulo.set(" Area de operaciones");
+    }
   }
-  
-  public operador: boolean = true;
-  public administrativo: boolean = true;
-  public superAdmin: boolean = false;
 
+
+
+
+  constructor(private router: Router, private autenticacionSerivice: AutenticacionServicio){
+    
+  }
 
   public logout(): void {
     this.autenticacionSerivice.logout();
+  }
+
+  esAdmin(): boolean{
+     return this.autenticacionSerivice.esAdmin();
+  }
+
+  esAtencionCliente(): boolean{
+    return this.autenticacionSerivice.esAtencionCliente();
+  }
+
+  esOperador(): boolean{
+    return this.autenticacionSerivice.esOperador();
   }
 
 
