@@ -83,7 +83,7 @@ export class EmpleadoForm {
     if (!this.formulario.valid) return;
 
     let nuevo: EmpleadoRequest = this.formulario.value as EmpleadoRequest;
-    console.log(nuevo);
+    
 
     if (this.enEdicion) {
       this.editar(nuevo);

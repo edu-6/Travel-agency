@@ -105,7 +105,6 @@ export class ClienteForm implements OnInit {
     if (!this.formulario.valid) return;
 
     let nuevo = this.formulario.value as ClienteRequest;
-    console.log(nuevo);
     if (this.enEdicion()) {
       this.editar(nuevo);
     } else {

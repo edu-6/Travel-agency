@@ -37,4 +37,13 @@ public class EscritorJson {
         res.setCharacterEncoding("UTF-8");
         res.getWriter().write(gsonParaFecha.toJson(data));
     }
+    
+    public void escribirErrorArgumentacion( HttpServletResponse reponse) throws IOException {
+        String mesaje = "Error en los parametros, ingrese enteros y decimales correctamente";
+        ErrorRequest error = new ErrorRequest(mesaje, mesaje);
+        this.escribirJson(reponse, error);
+    }
+    
+    
+    
 }

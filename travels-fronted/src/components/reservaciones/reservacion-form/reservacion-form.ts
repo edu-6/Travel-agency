@@ -104,7 +104,7 @@ export class ReservacionForm implements OnInit {
       pasajeros: this.componenteHijo.pasajerosIds
     };
 
-    console.log(nuevo);
+    
 
     return nuevo;
   }

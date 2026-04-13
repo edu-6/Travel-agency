@@ -8,7 +8,7 @@
     <div class="card-body d-flex flex-column">
 
         <div class="mb-3 text-muted small">
-            
+
             <span class="me-4">
                 <i class="bi bi-geo-alt-fill text-danger"></i> {{paquete.destino}}
             </span>
@@ -29,12 +29,18 @@
 
 
             <span class="fw-bold text-primary">
-                 Ganancia:  {{paquete.ganancia}}
+                     Ganancia: {{paquete.ganancia}}
+            </span>
+            <br>
+
+
+            <span class="fw-bold text-danger">
+                @if(paquete.topadoEnProximasSalidas){
+                ALTA demanda en proximas salidas
+                }
             </span>
 
-            @if(paquete.topadoEnProximasSalidas){
-                ALTA demanda en proximas salidas
-            }
+
         </div>
 
 
@@ -58,7 +64,7 @@
                 }
             </div>
 
-            @if(true){
+            @if(false){
             <a [routerLink]="['/juegos/detalles', paquete.nombre]" class="btn btn-primary btn-sm px-3">
                 <i class="bi bi-eye-fill me-1"></i> Ver detalles
             </a>

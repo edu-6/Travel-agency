@@ -36,6 +36,9 @@ public class LectorDeArchivoTexto {
                     } catch (ExceptionGenerica e) {
                         listaLogs.add("Error linea " + numeroLinea + " " + e.getMessage());
                     }
+                }else{
+                    numeroLinea++;
+                    listaLogs.add("------------------------------------ ");
                 }
             }
         } catch (IOException e) {

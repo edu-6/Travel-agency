@@ -34,9 +34,10 @@ public class ProveedoresResource extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Proveedor nuevo = gson.fromJson(req.getReader(), Proveedor.class);
+        
 
         try {
+            Proveedor nuevo = gson.fromJson(req.getReader(), Proveedor.class);
             crudService.crear(nuevo);
             resp.setStatus(HttpServletResponse.SC_CREATED);
             
@@ -54,7 +55,14 @@ public class ProveedoresResource extends HttpServlet {
             
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        }catch (IllegalArgumentException e) {
+            
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
 
     @Override
@@ -86,9 +94,11 @@ public class ProveedoresResource extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-         Proveedor edicion = gson.fromJson(req.getReader(), Proveedor.class);
+         
         
         try {
+            Proveedor edicion = gson.fromJson(req.getReader(), Proveedor.class);
+            
             crudService.editar(edicion);
             resp.setStatus(HttpServletResponse.SC_OK);
         } catch (EntidadDuplicadaException ex) {
@@ -100,7 +110,14 @@ public class ProveedoresResource extends HttpServlet {
             
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        }catch (IllegalArgumentException e) {
+            
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
     
     

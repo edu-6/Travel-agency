@@ -27,7 +27,7 @@ import java.io.IOException;
  *   5. Si es válido → guardar el username en el request y continuar la cadena.
  *   6. Si es inválido o falta → responder 401 Unauthorized.
  */
-@WebFilter(urlPatterns = "/api/*")
+@WebFilter(urlPatterns = "/naddaaa/*")
 public class AuthFilter implements Filter {
 
     private static final String LOGIN_PATH = "/api/login";

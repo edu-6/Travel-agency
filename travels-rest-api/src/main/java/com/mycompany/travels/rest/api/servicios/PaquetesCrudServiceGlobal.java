@@ -177,7 +177,6 @@ public class PaquetesCrudServiceGlobal implements CreacionEntidad<PaqueteGeneral
         for (Paquete p : listaPaquetes) {
             boolean altaDemanda = paquetesService.tieneAltaDemanda(p);
             p.setTopadoEnProximasSalidas(altaDemanda);
-            System.out.println("alta demanda es "+ altaDemanda);
             lista.add(new PaqueteGeneral(p,serviciosService.buscarVariosInt(p.getId())));
         }
         return lista;

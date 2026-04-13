@@ -49,7 +49,7 @@ public class ConversorAObjetos {
             return new Empleado(nombre, contraseña, activo, idRol);
 
         } catch (IllegalArgumentException e) {
-            throw new ExceptionGenerica("Error en los datos de la instrucción USUARIO: " + e.getMessage());
+            throw new ExceptionGenerica("Error en los datos de la instrucción USUARIO, ingrese enteros y decimales correctamente ");
         }
     }
 
@@ -69,7 +69,7 @@ public class ConversorAObjetos {
             return new Destino(nombre, descripcion, nombrePais);
 
         } catch (IllegalArgumentException e) {
-            throw new ExceptionGenerica("Error en los parametros de DESTINO: " + e.getMessage());
+            throw new ExceptionGenerica("Error en los parametros de DESTINO: ingrese enteros y decimales correctamente");
         }
     }
 
@@ -92,7 +92,7 @@ public class ConversorAObjetos {
             return new Proveedor(nombre, nombrePais, tipoServicio);
 
         } catch (IllegalArgumentException e) {
-            throw new ExceptionGenerica("Error en los parametros de PROVEEDOR: " + e.getMessage());
+            throw new ExceptionGenerica("Error en los parametros de PROVEEDOR: ingrese enteros y decimales correctamente");
         }
     }
 
@@ -114,7 +114,7 @@ public class ConversorAObjetos {
             return new Paquete(nombre, nombreDestino, duracion, cupoMaximo, precioVenta);
 
         } catch (IllegalArgumentException e) {
-            throw new ExceptionGenerica("Error en los parametros de PAQUETE: " + e.getMessage());
+            throw new ExceptionGenerica("Error en los parametros de PAQUETE: ingrese enteros y decimales correctamente ");
         }
     }
 
@@ -134,7 +134,7 @@ public class ConversorAObjetos {
             return new Paquete_servicio(descripcion, costo, nombrePaquete, nombreProveedor);
 
         } catch (IllegalArgumentException e) {
-            throw new ExceptionGenerica("Error en los parametros de SERVICIO_PAQUETE: " + e.getMessage());
+            throw new ExceptionGenerica("Error en los parametros de SERVICIO_PAQUETE: ingrese enteros y decimales correctamente");
         }
     }
 
@@ -158,9 +158,9 @@ public class ConversorAObjetos {
             return new Cliente(nombre, correo, telefono, fechaNacimiento, identificacion, nacionalidad);
 
         } catch (IllegalArgumentException e) {
-            throw new ExceptionGenerica("Error en los parametros de CLIENTE: " + e.getMessage());
+            throw new ExceptionGenerica("Error en los parametros de CLIENTE: ingrese enteros y decimales correctamente ");
         } catch (DateTimeParseException e){
-            throw new ExceptionGenerica("Error al parsear la fecha de naciiento: " + e.getMessage());
+            throw new ExceptionGenerica("Error al parsear la fecha de nacimiento: ingrese formato dd/MM/yyyy ");
         }
     }
 
@@ -191,9 +191,9 @@ public class ConversorAObjetos {
             return new ReservacionRequest(idTitular, nombrePaquete, nombreAgente, pasajeros, fechaViaje);
 
         } catch (IllegalArgumentException e) {
-            throw new ExceptionGenerica("Error en los parametros de CLIENTE: " + e.getMessage());
+            throw new ExceptionGenerica("Error en los parametros de CLIENTE: ingrese enteros y decimales correctamente");
         }catch (DateTimeParseException e){
-            throw new ExceptionGenerica("Error al parsear fechas : " + e.getMessage());
+            throw new ExceptionGenerica("Error al parsear fechas : ingrese formato dd/MM/yyyy ");
         }
     }
 
@@ -216,9 +216,9 @@ public class ConversorAObjetos {
             return new PagoReservacion(monto, numeroReservacion, idmetodoPago, fechaPago);
 
         } catch (IllegalArgumentException e) {
-            throw new ExceptionGenerica("Error en los parametros de PAGO: " + e.getMessage());
+            throw new ExceptionGenerica("Error en los parametros de PAGO: ingrese enteros y decimales correctamente");
         }catch (DateTimeParseException e){
-            throw new ExceptionGenerica("Error al parsear la fecha de pago: " + e.getMessage());
+            throw new ExceptionGenerica("Error al parsear la fecha de pago: ingrese formato dd/MM/yyyy");
         }
     }
 

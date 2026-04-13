@@ -53,9 +53,10 @@ public class PaquetesSource extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PaqueteGeneral nuevo = gson.fromJson(req.getReader(), PaqueteGeneral.class);
+        
 
         try {
+            PaqueteGeneral nuevo = gson.fromJson(req.getReader(), PaqueteGeneral.class);
             crudService.editar(nuevo);
             resp.setStatus(HttpServletResponse.SC_OK);
 
@@ -77,14 +78,22 @@ public class PaquetesSource extends HttpServlet {
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        }catch (IllegalArgumentException e) {
+            
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PaqueteGeneral nuevo = gson.fromJson(req.getReader(), PaqueteGeneral.class);
+        
 
         try {
+            PaqueteGeneral nuevo = gson.fromJson(req.getReader(), PaqueteGeneral.class);
             crudService.crear(nuevo);
             resp.setStatus(HttpServletResponse.SC_CREATED);
 
@@ -106,7 +115,14 @@ public class PaquetesSource extends HttpServlet {
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        }catch (IllegalArgumentException e) {
+            
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
 
     @Override

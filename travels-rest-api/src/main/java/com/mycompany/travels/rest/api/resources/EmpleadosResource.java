@@ -48,9 +48,12 @@ public class EmpleadosResource extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Empleado empleado = gson.fromJson(req.getReader(), Empleado.class);
+        
 
         try {
+            
+            Empleado empleado = gson.fromJson(req.getReader(), Empleado.class);
+            
             crudService.editar(empleado);
         } catch (CamposVaciosException | DatosMuyLargosException ex) {
 
@@ -65,15 +68,26 @@ public class EmpleadosResource extends HttpServlet {
         } catch (ExceptionGenerica ex) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        }catch (IllegalArgumentException e) {
+            
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Empleado empleado = gson.fromJson(req.getReader(), Empleado.class);
+        
 
         try {
+            
+            Empleado empleado = gson.fromJson(req.getReader(), Empleado.class);
+            
+            
             crudService.crear(empleado);
         } catch (CamposVaciosException | DatosMuyLargosException ex) {
 
@@ -88,7 +102,14 @@ public class EmpleadosResource extends HttpServlet {
         } catch (ExceptionGenerica ex) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        }catch (IllegalArgumentException e) {
+            
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
 
     @Override

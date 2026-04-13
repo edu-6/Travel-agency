@@ -41,29 +41,39 @@ public class ReservacionesResource extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
-        IdReservacion id = gson.fromJson(req.getReader(), IdReservacion.class);
         
-        CancelacionRequest cancelacion = new CancelacionRequest(id.getIdReservacion(), LocalDate.now());
         
         try {
+            IdReservacion id = gson.fromJson(req.getReader(), IdReservacion.class);
+
+            CancelacionRequest cancelacion = new CancelacionRequest(id.getIdReservacion(), LocalDate.now());
+
             this.cancelacionesCrudService.cancelarReservacion(cancelacion);
             resp.setStatus(HttpServletResponse.SC_OK);
         } catch (ExceptionGenerica ex) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        } catch (IllegalArgumentException e) {
+
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ReservacionRequest reservacion = gson.fromJson(req.getReader(), ReservacionRequest.class);
-
+        
         try {
-           int id = crudService.crear(reservacion);
-           IdReservacion idR = new IdReservacion(id);
-           resp.setStatus(HttpServletResponse.SC_OK);
-           escritor.escribirJson(resp, idR);
-            
+
+            ReservacionRequest reservacion = gson.fromJson(req.getReader(), ReservacionRequest.class);
+
+            int id = crudService.crear(reservacion);
+            IdReservacion idR = new IdReservacion(id);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            escritor.escribirJson(resp, idR);
 
         } catch (CamposVaciosException | DatosMuyLargosException ex) {
 
@@ -79,7 +89,14 @@ public class ReservacionesResource extends HttpServlet {
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        } catch (IllegalArgumentException e) {
+
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
 
     @Override

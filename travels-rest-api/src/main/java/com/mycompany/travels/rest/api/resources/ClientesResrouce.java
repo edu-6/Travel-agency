@@ -50,9 +50,12 @@ public class ClientesResrouce extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Cliente cliente = gson.fromJson(req.getReader(), Cliente.class);
+        
 
         try {
+            Cliente cliente = gson.fromJson(req.getReader(), Cliente.class);
+            
+            
             crudService.editar(cliente);
             resp.setStatus(HttpServletResponse.SC_OK);
 
@@ -70,16 +73,26 @@ public class ClientesResrouce extends HttpServlet {
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        }catch (IllegalArgumentException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Cliente cliente = gson.fromJson(req.getReader(), Cliente.class);
+        
 
         try {
+            
+            Cliente cliente = gson.fromJson(req.getReader(), Cliente.class);
+            
+            
             crudService.crear(cliente);
             resp.setStatus(HttpServletResponse.SC_CREATED);
 
@@ -97,7 +110,13 @@ public class ClientesResrouce extends HttpServlet {
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        }catch (IllegalArgumentException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
     }
 
     @Override

@@ -33,16 +33,25 @@ public class PagosResource extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
-        PagoReservacion pago = gson.fromJson(req.getReader(), PagoReservacion.class);
-        pago.setFechaPago(LocalDate.now());
         
-          try {
+        try {
+
+            PagoReservacion pago = gson.fromJson(req.getReader(), PagoReservacion.class);
+            pago.setFechaPago(LocalDate.now());
+            
             crudService.crear(pago);
             resp.setStatus(HttpServletResponse.SC_OK);
         } catch (ExceptionGenerica ex) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             escritor.escribirError(ex.getMessage(), resp);
-        }
+        } catch (IllegalArgumentException e) {
+
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        }catch (IOException | RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            escritor.escribirErrorArgumentacion(resp);
+        } 
        
     }
 

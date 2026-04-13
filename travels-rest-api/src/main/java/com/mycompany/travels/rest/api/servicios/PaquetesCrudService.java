@@ -66,12 +66,20 @@ public class PaquetesCrudService extends CrudService implements CreacionReturnId
             throw new ExceptionGenerica("Busqueda vacia");
         }
         
-        return db.buscar(nombre);
+        Paquete paquete = db.buscar(nombre);
+        boolean altaDemanda = db.paqueteTieneAltaDemanda(paquete);
+        paquete.setTopadoEnProximasSalidas(altaDemanda);
+        
+        return paquete;
     }
     
     
     public Paquete buscarPorId(int id) throws ExceptionGenerica {
-        return db.buscarPorId(id);
+        Paquete paquete = db.buscarPorId(id);
+        boolean altaDemanda = db.paqueteTieneAltaDemanda(paquete);
+        paquete.setTopadoEnProximasSalidas(altaDemanda);
+        
+        return paquete;
     }
     
     
@@ -87,7 +95,13 @@ public class PaquetesCrudService extends CrudService implements CreacionReturnId
 
     @Override
     public ArrayList<Paquete> buscarVariosInt(int param) throws ExceptionGenerica {
-       return db.buscarVariosInt(param);
+        ArrayList<Paquete> lista = db.buscarVariosInt(param);
+        for (Paquete paquete : lista) {
+            boolean altaDemanda = db.paqueteTieneAltaDemanda(paquete);
+            paquete.setTopadoEnProximasSalidas(altaDemanda);
+            
+        }
+        return lista;
     }
     
     

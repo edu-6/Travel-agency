@@ -147,7 +147,7 @@ export class ReportesPage implements OnInit {
   generarReporteGanancias(request: ReporteRequest) {
     this.reportesService.obtenerReporteGanancias(request).subscribe({
       next: (rep: ReporteGanancias) => {
-        console.log(rep);
+        
         this.reporteGanancias.set(rep);
       },
       error: (error: any) => {
@@ -161,7 +161,7 @@ export class ReportesPage implements OnInit {
     this.reportesService.obtenerReporteAgenteMasVentas(request).subscribe({
       next: (rep: ReporteAgenteMasVentas) => {
         this.reporteAgenteMasVentas.set(rep);
-        console.log(rep);
+        
       },
       error: (error: any) => {
         this.registrarError(error);
@@ -173,7 +173,7 @@ export class ReportesPage implements OnInit {
     this.reportesService.obtenerAgenteMasGanancias(request).subscribe({
       next: (rep: ReporteAgenteMasGanancias) => {
         this.reproteAgenteMasGanancias.set(rep);
-        console.log(rep);
+        
       },
       error: (error: any) => {
         this.registrarError(error);
@@ -200,7 +200,6 @@ export class ReportesPage implements OnInit {
       next: (rep: ReportePaqueteMasVendido) => {
         if (rep) {
           this.reportePaqueteMenosVendido.set(rep);
-          console.log(rep);
         }
       },
       error: (error: any) => {
@@ -213,7 +212,6 @@ export class ReportesPage implements OnInit {
     this.reportesService.obtenerReporteOcupacion(request).subscribe({
       next: (res: ReporteOcupacion[]) => {
         this.reporteOcupacionDestino.set(res);
-        console.log(res);
       },
       error: (error: any) => {
         this.registrarError(error);
@@ -225,7 +223,7 @@ export class ReportesPage implements OnInit {
     this.reportesService.obtenerReporteVentas(request).subscribe({
       next: (res: ReporteVenta[]) => {
         this.reporteVentas.set(res);
-        console.log(res);
+        
       },
       error: (error: any) => {
         this.registrarError(error);
