@@ -9,5 +9,5 @@ export interface PaqueteResponse {
   ganancia: number;
   id_destino: number;
   activo: boolean;
-    topadoEnProximasSalidas: boolean;
+  topadoEnProximasSalidas: boolean;
 }

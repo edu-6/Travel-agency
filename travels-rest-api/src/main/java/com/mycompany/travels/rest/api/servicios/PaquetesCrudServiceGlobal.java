@@ -104,6 +104,9 @@ public class PaquetesCrudServiceGlobal implements CreacionEntidad<PaqueteGeneral
 
         ArrayList<Paquete> paquetes = paquetesService.buscarPaquetesActivos();
         for (Paquete paquete : paquetes) {
+            
+            boolean altaDemanda = paquetesService.tieneAltaDemanda(paquete);
+            paquete.setTopadoEnProximasSalidas(altaDemanda);
 
             ArrayList<Paquete_servicio> listaServicios = serviciosService.buscarVariosInt(paquete.getId());
 
@@ -172,6 +175,9 @@ public class PaquetesCrudServiceGlobal implements CreacionEntidad<PaqueteGeneral
         
         ArrayList<Paquete> listaPaquetes = paquetesService.buscarVariosInt(param);
         for (Paquete p : listaPaquetes) {
+            boolean altaDemanda = paquetesService.tieneAltaDemanda(p);
+            p.setTopadoEnProximasSalidas(altaDemanda);
+            System.out.println("alta demanda es "+ altaDemanda);
             lista.add(new PaqueteGeneral(p,serviciosService.buscarVariosInt(p.getId())));
         }
         return lista;

@@ -133,7 +133,7 @@ export class PaqueteServicioForm implements OnInit {
     let indice;
     if (existeEnDB) {
       this.existenes.update(lista => lista.filter(p => p.id !== seleccionado.id));
-      
+
       this.eliminarServicioEnPaquete(seleccionado.id.toString());
     } else {
       this.nuevos.update(lista => lista.filter(p => p.id !== seleccionado.id));
@@ -164,7 +164,6 @@ export class PaqueteServicioForm implements OnInit {
   private eliminarServicioEnPaquete(id: string){
     this.paquetesService.eliminarServicioEnPaquete(id).subscribe({
       next:() =>{
-
       },
       error :(httpError: any)=>{
         console.log(httpError.error);

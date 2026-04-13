@@ -3,10 +3,11 @@ import { Component, signal } from '@angular/core';
 import { ConstantesRest } from '../../../services/login/restConstantes';
 import { Observable } from 'rxjs';
 import { ErrorBackend } from '../../../modelos/ErrorBackend';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-archivo-texto-page',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './archivo-texto-page.html',
   styleUrl: './archivo-texto-page.css',
 })

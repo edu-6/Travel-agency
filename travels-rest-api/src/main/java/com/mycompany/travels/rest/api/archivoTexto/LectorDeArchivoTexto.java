@@ -83,11 +83,11 @@ public class LectorDeArchivoTexto {
             case "RESERVACION":
                 lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
                 procesador.registrarReservacion(conversor.convertirAReservacion(lineaLimpia));
-                listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo cliente");
+                listaLogs.add("Linea No." + numeroLinea + " Se registró nueva reservacion");
                 break;
             case "PAGO":
                 lineaLimpia = dejarUnicamenteParametros(linea, nombreInstruccion);
-                procesador.registrarPago(conversor.convertirAPago(nombreInstruccion));
+                procesador.registrarPago(conversor.convertirAPago(lineaLimpia));
                 listaLogs.add("Linea No." + numeroLinea + " Se registró nuevo pago");
                 break;
             default:

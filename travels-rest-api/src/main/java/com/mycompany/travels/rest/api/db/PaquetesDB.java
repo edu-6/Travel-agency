@@ -242,8 +242,8 @@ public class PaquetesDB implements CreacionReturnId<Paquete>, EdicionEntidad<Paq
      */
     public void actualizarGanancia(int idPaquete, double ganancia) throws ExceptionGenerica {
         try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(ACTUALIZAR_GANANCIA)) {
-            ps.setInt(1, idPaquete);
-            ps.setDouble(2, ganancia);
+            ps.setDouble(1, ganancia);
+            ps.setInt(2, idPaquete);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new ExceptionGenerica("falló al actualizar paquete");

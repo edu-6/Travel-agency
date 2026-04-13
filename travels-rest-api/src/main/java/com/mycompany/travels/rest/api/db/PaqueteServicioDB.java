@@ -47,8 +47,10 @@ public class PaqueteServicioDB implements CreacionReturnId<Paquete_servicio>, Ed
             + " JOIN  paquete ON servicio_paquete_id_paquete = paquete_id"
             + " WHERE servicio_paquete_id_paquete = ?";
 
-    private static final String BUSCAR_UNO = "select servicio_paquete.*, proveedor_nombre FROM servicio_paquete"
-            + " JOIN  proveedor ON servicio_paquete_id_proveedor = proveedor_id where servicio_paquete_id = ?";
+    private static final String BUSCAR_UNO = "select servicio_paquete.*, proveedor_nombre, paquete_nombre FROM servicio_paquete"
+            + " JOIN  proveedor ON servicio_paquete_id_proveedor = proveedor_id"
+            + " JOIN  paquete ON servicio_paquete_id_paquete = paquete_id"
+            + " where servicio_paquete_id = ?";
     
     
     private static final String ELIMINAR = "delete from servicio_paquete where servicio_paquete_id = ?";

@@ -30,7 +30,9 @@ export const routes: Routes = [
     //{path: "proveedores", component: ProveedoresPage, canActivate: [authGuard]},
 
     { path: "", component: LoginForm },
-    { path: "home", component: Home, },
+    { path: "login", component: LoginForm },
+    
+    { path: "home", component: Home, canActivate: [authGuard] },
 
     { path: "proveedores", component: ProveedoresPage, canActivate: [authGuard] },
     { path: "proveedores/form-page", component: ProveedorFormPage, canActivate: [authGuard] },
@@ -50,22 +52,22 @@ export const routes: Routes = [
     { path: "empleados/form-page", component: EmpleadosFormPage, },
     { path: "empleados/editar-page/:nombre", component: EmpleadosEditarPage, canActivate: [authGuard] },
 
-    { path: "reservaciones", component: ReservacionesPage },
-    { path: "reservaciones/form-page", component: ReservacionesFormPage },
-    { path: "reservaciones/form-page/:identificacion", component: ReservacionesFormPage },
-    { path: "reservaciones/detalle-page/:id", component: ReservacionesDetallePage },
+    { path: "reservaciones", component: ReservacionesPage,canActivate: [authGuard] },
+    { path: "reservaciones/form-page", component: ReservacionesFormPage,canActivate: [authGuard] },
+    { path: "reservaciones/form-page/:identificacion", component: ReservacionesFormPage,canActivate: [authGuard] },
+    { path: "reservaciones/detalle-page/:id", component: ReservacionesDetallePage,canActivate: [authGuard] },
 
 
 
-    { path: "clientes", component: ClientesPage },
-    { path: "clientes/form-page", component: ClientesFormPage },
-    { path: "clientes/:identificacion", component: ClientesPage },  
-    { path: "clientes/detalles-page/:identificacion", component: ClientesDetallePage },
-    { path: "clientes/editar-page/:identificacion", component: ClientesEditarPage },
+    { path: "clientes", component: ClientesPage,canActivate: [authGuard] },
+    { path: "clientes/form-page", component: ClientesFormPage,canActivate: [authGuard] },
+    { path: "clientes/:identificacion", component: ClientesPage,canActivate: [authGuard] },  
+    { path: "clientes/detalles-page/:identificacion", component: ClientesDetallePage,canActivate: [authGuard] },
+    { path: "clientes/editar-page/:identificacion", component: ClientesEditarPage,canActivate: [authGuard] },
     
-    { path: "clientes/form-page/:identificacion", component: ClientesFormPage },
+    { path: "clientes/form-page/:identificacion", component: ClientesFormPage,canActivate: [authGuard] },
 
-    {path: "reportes", component: ReportesPage},
+    {path: "reportes", component: ReportesPage,canActivate: [authGuard]},
 
 
     {path: "archivo-texto", component: ArchivoTextoPage}

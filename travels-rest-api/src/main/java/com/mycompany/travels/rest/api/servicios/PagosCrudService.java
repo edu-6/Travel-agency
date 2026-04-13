@@ -65,8 +65,9 @@ public class PagosCrudService extends CrudService implements CreacionEntidad<Pag
         
         
         //cambios de estado
-        int estado = 1;
-        if(pagoRestante > 0 && pagoRestante < costoReservacion){ // ya emepzó a pagar
+        int estado = 1; // empezando a pagar
+        
+        if(pagoRestante== 0){
             estado = 2;
         }
         

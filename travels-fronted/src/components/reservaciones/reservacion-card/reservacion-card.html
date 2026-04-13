@@ -30,11 +30,16 @@
 
 
         <div class="mb-3 small">
-            <span class="me-4 text-danger">
-                <i class="bi bi-currency-dollar"></i> Total a pagar : {{reservacion.precioTotal}}
+            <span class=" fw-bold  text-danger">
+                <i class="bi bi-currency-dollar"></i> Total: {{reservacion.precioTotal}}
             </span>
 
-            <span class="fw-bold text-primary">
+
+            <span class=" fw-bold  text-primary">
+                <i class="bi bi-currency-dollar"></i> Restante: {{reservacion.precioTotal - reservacion.totalPagado}}
+            </span>
+
+            <span class="fw-bold text-success">
                 <i class="bi bi-currency-dollar"></i> Pagado: {{reservacion.totalPagado}}
             </span>
         </div>

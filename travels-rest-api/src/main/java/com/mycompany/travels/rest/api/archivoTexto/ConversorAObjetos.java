@@ -203,15 +203,15 @@ public class ConversorAObjetos {
         if (!(parametros.length == PARAMETROS_PAGO)) {
             throw new ExceptionGenerica("Error, la instruccion PAGO no tiene la cantidad exacta de parametros necesarios");
         }
-        
 
+   
         try {
             int numeroReservacion = Integer.valueOf(parametros[0]);
             double monto = Double.valueOf(parametros[1]);
             int idmetodoPago = Integer.valueOf(parametros[2]);
             
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate fechaPago = LocalDate.parse(parametros[2], formatter);
+            LocalDate fechaPago = LocalDate.parse(parametros[3], formatter);
             
             return new PagoReservacion(monto, numeroReservacion, idmetodoPago, fechaPago);
 
